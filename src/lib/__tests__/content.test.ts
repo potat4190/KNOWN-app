@@ -54,7 +54,8 @@ describe('content pack', () => {
   });
 
   it('has a bridge for every selection and no-words', () => {
-    for (const lang of LANGS) for (const k of [...Object.keys(MATRIX), 'NW'] as const) expect(B(k as never, lang).h).toBeTruthy();
+    for (const lang of LANGS)
+      for (const k of [...Object.keys(MATRIX), 'NW'] as const) expect(B(k as never, lang).h).toBeTruthy();
   });
 
   it('builds USFM references per consecutive run', () => {

@@ -11,7 +11,7 @@
  * Resolution: byPath[path][moment] → bySelection[sel][moment] → moments[moment] → silence.
  * A missing or failed track is silence, never a crash.
  */
-export type Track = number /* require('…mp3') */ | string /* https URL */;
+export type Track = number /* require('…mp3') */ | string; /* https URL */
 export type MusicMoment = 'pray' | 'sit' | 'scripture';
 type MomentTracks = Partial<Record<MusicMoment, Track | null>>;
 

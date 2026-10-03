@@ -17,7 +17,10 @@ const applied = JSON.parse(readFileSync(join(ROOT, 'src/content/overrides.applie
   reviewer: string;
 }[];
 
-const cell = (s: unknown) => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+const cell = (s: unknown) =>
+  String(s ?? '')
+    .replace(/\|/g, '\\|')
+    .replace(/\n/g, ' ');
 const fmt = (v: unknown) =>
   v && typeof v === 'object' && !Array.isArray(v)
     ? Object.entries(v as Record<string, unknown>)

@@ -28,15 +28,29 @@ const info: string[] = [];
 const err = (s: string) => errors.push(s);
 
 type PathContent = Record<string, string | string[]>;
-const passages = read('passages.json') as Record<string, { ex: number[]; list?: number[]; from: number; to: number; text: Partial<Record<Lang, Record<string, string>>> }>;
-const paths = Object.fromEntries(LANGS.map((l) => [l, read(`paths.${l}.json`)])) as Record<Lang, Record<string, PathContent>>;
-const bridges = Object.fromEntries(LANGS.map((l) => [l, read(`bridges.${l}.json`)])) as Record<Lang, Record<string, { h: string; p: string }>>;
+const passages = read('passages.json') as Record<
+  string,
+  { ex: number[]; list?: number[]; from: number; to: number; text: Partial<Record<Lang, Record<string, string>>> }
+>;
+const paths = Object.fromEntries(LANGS.map((l) => [l, read(`paths.${l}.json`)])) as Record<
+  Lang,
+  Record<string, PathContent>
+>;
+const bridges = Object.fromEntries(LANGS.map((l) => [l, read(`bridges.${l}.json`)])) as Record<
+  Lang,
+  Record<string, { h: string; p: string }>
+>;
 const breath = read('breath.json') as Record<string, { v: string; t: Partial<Record<Lang, string[]>> }>;
 const rotation = read('rotation.json') as Record<string, string[]>;
 const { matrix, nw } = read('matrix.json') as { matrix: Record<string, { path: string; alt: string }>; nw: string };
 const alt = read('alt.json') as Record<string, string>;
 const laments = read('laments.json') as string[];
-const applied = read('overrides.applied.json') as { target: string; status: string; reviewer: string; reason: string }[];
+const applied = read('overrides.applied.json') as {
+  target: string;
+  status: string;
+  reviewer: string;
+  reason: string;
+}[];
 const pathKeys = Object.keys(paths.en);
 
 /* ------------------------------------------------------------------ */
@@ -63,16 +77,22 @@ const enStrings = CONTENT_STRINGS.en;
 for (const lang of LANGS) {
   for (const k of Object.keys(enStrings)) {
     if (CONTENT_STRINGS[lang][k] != null) continue;
-    if (GAP_STRINGS[k]?.includes(lang)) review.push(`strings.${lang}.${k}: missing (known gap; English fallback is not used — see GAP_STRINGS)`);
+    if (GAP_STRINGS[k]?.includes(lang))
+      review.push(`strings.${lang}.${k}: missing (known gap; English fallback is not used — see GAP_STRINGS)`);
     else err(`strings.${lang}.${k}: missing`);
   }
   for (const pk of pathKeys) {
     const p = paths[lang][pk];
-    if (!p) { err(`paths.${lang}.${pk}: missing`); continue; }
+    if (!p) {
+      err(`paths.${lang}.${pk}: missing`);
+      continue;
+    }
     for (const f of Object.keys(paths.en[pk])) {
       if (p[f] == null) err(`paths.${lang}.${pk}.${f}: missing`);
       else if (Array.isArray(paths.en[pk][f]) && (p[f] as string[]).length !== (paths.en[pk][f] as string[]).length)
-        err(`paths.${lang}.${pk}.${f}: ${(p[f] as string[]).length} items, English has ${(paths.en[pk][f] as string[]).length}`);
+        err(
+          `paths.${lang}.${pk}.${f}: ${(p[f] as string[]).length} items, English has ${(paths.en[pk][f] as string[]).length}`,
+        );
     }
   }
   for (const b of Object.keys(bridges.en)) {
@@ -91,8 +111,12 @@ for (const lang of LANGS) {
 }
 const arGaps = pathKeys.filter((k) => GAP_PASSAGE(k, 'ar'));
 const myGaps = pathKeys.filter((k) => GAP_PASSAGE(k, 'my'));
-review.push(`Arabic Scripture exists only for neh and hab; ${arGaps.length} passages show English with lang_fallback (known gap 2.2)`);
-review.push(`Lament psalms have no Burmese text (${myGaps.join(', ')}); English is shown with lang_fallback (known gap 2.2)`);
+review.push(
+  `Arabic Scripture exists only for neh and hab; ${arGaps.length} passages show English with lang_fallback (known gap 2.2)`,
+);
+review.push(
+  `Lament psalms have no Burmese text (${myGaps.join(', ')}); English is shown with lang_fallback (known gap 2.2)`,
+);
 
 // Drafted strings: same keys in every language, and every plural form each language needs.
 const resources = buildResources();
@@ -108,7 +132,8 @@ for (const lang of LANGS) {
   const cats = new Intl.PluralRules(lang).resolvedOptions().pluralCategories.filter((c) => c !== 'zero');
   for (const base of pluralBases)
     for (const c of cats)
-      if (!resources[lang].translation[`${base}_${c}`]) err(`plural ${lang}.${base}_${c}: missing (Intl.PluralRules needs ${cats.join('/')})`);
+      if (!resources[lang].translation[`${base}_${c}`])
+        err(`plural ${lang}.${base}_${c}: missing (Intl.PluralRules needs ${cats.join('/')})`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -124,7 +149,8 @@ const EMOTION: Record<Lang, RegExp> = {
 const scanUi = (label: string, lang: Lang, text: string) => {
   const m = EMOTION[lang].exec(text);
   if (!m) return;
-  if (EMOTION_REVIEW.has(label)) review.push(`${label}: names her emotion ("${m[0]}") in reviewed copy — for Dorcas: "${text}"`);
+  if (EMOTION_REVIEW.has(label))
+    review.push(`${label}: names her emotion ("${m[0]}") in reviewed copy — for Dorcas: "${text}"`);
   else err(`${label}: emotion word "${m[0]}" in user-facing text: "${text}"`);
 };
 for (const lang of LANGS) {
@@ -134,14 +160,18 @@ for (const lang of LANGS) {
     scanUi(`bridges.${lang}.${k}.h`, lang, v.h);
     scanUi(`bridges.${lang}.${k}.p`, lang, v.p);
   }
-  for (const [k, v] of Object.entries(breath)) for (const line of v.t[lang] ?? []) scanUi(`breath.${k}.${lang}`, lang, line);
+  for (const [k, v] of Object.entries(breath))
+    for (const line of v.t[lang] ?? []) scanUi(`breath.${k}.${lang}`, lang, line);
   // Story copy describes people in Scripture, not her; options and prayers are her own
   // editable voice. Reported for native readers, not failed (see docs/DECISIONS.md).
   const hits: string[] = [];
   for (const [pk, p] of Object.entries(paths[lang]))
     for (const [f, v] of Object.entries(p))
       for (const s of ([] as string[]).concat(v)) if (EMOTION[lang].test(s)) hits.push(`${pk}.${f}`);
-  if (hits.length) info.push(`paths.${lang}: emotion words in story/voice copy (allowed; about a person in Scripture or her own words): ${hits.join(', ')}`);
+  if (hits.length)
+    info.push(
+      `paths.${lang}: emotion words in story/voice copy (allowed; about a person in Scripture or her own words): ${hits.join(', ')}`,
+    );
 }
 
 /* ------------------------------------------------------------------ */
@@ -150,7 +180,8 @@ for (const lang of LANGS) {
 for (const lang of LANGS)
   for (const [pk, p] of Object.entries(paths[lang]))
     for (const para of (p.story as string[]) ?? [])
-      if (/^\s*[“"「『«]/.test(para) && /[”"」』»]\s*$/.test(para)) err(`paths.${lang}.${pk}.story: a paragraph is wrapped in quotation marks`);
+      if (/^\s*[“"「『«]/.test(para) && /[”"」』»]\s*$/.test(para))
+        err(`paths.${lang}.${pk}.story: a paragraph is wrapped in quotation marks`);
 
 /* ------------------------------------------------------------------ */
 /* 4. Time-neutral copy (she may open KNOWN at 2 p.m.)                    */
@@ -158,19 +189,36 @@ for (const lang of LANGS)
 const userFacing = (lang: Lang): [string, string][] => [
   ...Object.entries(CONTENT_STRINGS[lang]).map(([k, v]) => [`strings.${lang}.${k}`, v] as [string, string]),
   ...Object.entries(DRAFTED[lang]).map(([k, v]) => [`drafted.${lang}.${k}`, v] as [string, string]),
-  ...Object.entries(bridges[lang]).flatMap(([k, v]) => [[`bridges.${lang}.${k}.h`, v.h], [`bridges.${lang}.${k}.p`, v.p]] as [string, string][]),
-  ...Object.entries(paths[lang]).flatMap(([pk, p]) =>
-    Object.entries(p).flatMap(([f, v]) => ([] as string[]).concat(v).map((s) => [`paths.${lang}.${pk}.${f}`, s] as [string, string])),
+  ...Object.entries(bridges[lang]).flatMap(
+    ([k, v]) =>
+      [
+        [`bridges.${lang}.${k}.h`, v.h],
+        [`bridges.${lang}.${k}.p`, v.p],
+      ] as [string, string][],
   ),
-  ...Object.entries(breath).flatMap(([k, v]) => (v.t[lang] ?? []).map((s) => [`breath.${k}.${lang}`, s] as [string, string])),
+  ...Object.entries(paths[lang]).flatMap(([pk, p]) =>
+    Object.entries(p).flatMap(([f, v]) =>
+      ([] as string[]).concat(v).map((s) => [`paths.${lang}.${pk}.${f}`, s] as [string, string]),
+    ),
+  ),
+  ...Object.entries(breath).flatMap(([k, v]) =>
+    (v.t[lang] ?? []).map((s) => [`breath.${k}.${lang}`, s] as [string, string]),
+  ),
 ];
 for (const [label, s] of userFacing('en')) {
   const m = /\b(tonight|this evening|same evening)\b/i.exec(s);
   if (m) err(`${label}: time-bound "${m[0]}" (use "today" or "right now"): "${s}"`);
 }
-const NIGHT: Partial<Record<Lang, RegExp>> = { zh: /今晚|今夜|晚上/, ja: /今夜|今晩/, my: /ဒီည|ညနေ/, ar: /الليلة|هذا المساء|المساء/ };
+const NIGHT: Partial<Record<Lang, RegExp>> = {
+  zh: /今晚|今夜|晚上/,
+  ja: /今夜|今晩/,
+  my: /ဒီည|ညနေ/,
+  ar: /الليلة|هذا المساء|المساء/,
+};
 for (const lang of ['zh', 'ja', 'my', 'ar'] as Lang[]) {
-  const hits = userFacing(lang).filter(([, s]) => NIGHT[lang]!.test(s)).map(([l]) => l);
+  const hits = userFacing(lang)
+    .filter(([, s]) => NIGHT[lang]!.test(s))
+    .map(([l]) => l);
   if (hits.length) review.push(`time-neutral candidates for the ${lang} native reader: ${hits.join(', ')}`);
 }
 
@@ -209,7 +257,9 @@ if (process.argv.includes('--update-snapshot') || !existsSync(SNAPSHOT)) {
   const snap = JSON.parse(readFileSync(SNAPSHOT, 'utf8')) as Record<string, string>;
   for (const k of new Set([...Object.keys(snap), ...Object.keys(hashes)])) {
     if (snap[k] !== hashes[k])
-      err(`Scripture changed: ${k} ${!snap[k] ? '(new verse)' : !hashes[k] ? '(verse removed)' : '(text edited)'} — review, then run with --update-snapshot`);
+      err(
+        `Scripture changed: ${k} ${!snap[k] ? '(new verse)' : !hashes[k] ? '(verse removed)' : '(text edited)'} — review, then run with --update-snapshot`,
+      );
   }
 }
 for (const [pk, p] of Object.entries(passages)) {
@@ -222,7 +272,9 @@ for (const [pk, p] of Object.entries(passages)) {
       err(`passages.${pk}.${lang}: final verse looks truncated: "…${last.slice(-30)}"`);
   }
 }
-review.push('Final verses ending mid-sentence by design: Neh 1:4 (all languages; the prayer begins in 1:5); Van Dyck Arabic has no final punctuation');
+review.push(
+  'Final verses ending mid-sentence by design: Neh 1:4 (all languages; the prayer begins in 1:5); Van Dyck Arabic has no final punctuation',
+);
 
 /* ------------------------------------------------------------------ */
 /* 8. Rotation pools reference only existing keys                       */
@@ -231,14 +283,17 @@ for (const [sel, pool] of Object.entries(rotation)) {
   if (!matrix[sel]) err(`rotation.${sel}: not a picture selection`);
   for (const k of pool) if (!pathKeys.includes(k)) err(`rotation.${sel}: unknown story "${k}"`);
   if (pool.includes(nw)) err(`rotation.${sel}: ${nw} is reserved for "I don't have the words"`);
-  if (matrix[sel] && !pool.includes(matrix[sel].path)) err(`rotation.${sel}: pool must include the primary ${matrix[sel].path}`);
+  if (matrix[sel] && !pool.includes(matrix[sel].path))
+    err(`rotation.${sel}: pool must include the primary ${matrix[sel].path}`);
 }
-for (const [k, v] of Object.entries(alt)) if (!pathKeys.includes(k) || !pathKeys.includes(v)) err(`alt.${k}: unknown key`);
+for (const [k, v] of Object.entries(alt))
+  if (!pathKeys.includes(k) || !pathKeys.includes(v)) err(`alt.${k}: unknown key`);
 
 /* ------------------------------------------------------------------ */
 /* Drafted overrides and strings waiting for review                     */
 /* ------------------------------------------------------------------ */
-for (const o of applied.filter((o) => o.status === 'drafted')) review.push(`override ${o.target} is drafted (reviewer: ${o.reviewer})`);
+for (const o of applied.filter((o) => o.status === 'drafted'))
+  review.push(`override ${o.target} is drafted (reviewer: ${o.reviewer})`);
 review.push(`${Object.keys(DRAFTED.en).length} drafted UI strings per language (src/i18n/drafted.ts) await review`);
 
 /* ------------------------------------------------------------------ */

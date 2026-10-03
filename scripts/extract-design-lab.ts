@@ -41,7 +41,6 @@ const dom = new JSDOM(html, {
   pretendToBeVisual: true,
   virtualConsole,
 });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const K = (dom.window as any).__KNOWN__;
 if (!K) fail('The Design Lab script did not expose __KNOWN__.');
 
@@ -75,7 +74,11 @@ expect('Arabic passage text', arPassages, ['hab', 'neh']);
 expect('ORDER', K.ORDER, ['S', 'F', 'A', 'J']);
 expect('NW', K.NW, 'ps77');
 expect('LAMENTS', K.LAMENTS, ['ps61', 'ps13', 'ps62', 'ps56', 'ps139']);
-expect('LANGS', K.LANGS.map((l: { code: string }) => l.code), ['en', 'my', 'zh', 'ja', 'ar']);
+expect(
+  'LANGS',
+  K.LANGS.map((l: { code: string }) => l.code),
+  ['en', 'my', 'zh', 'ja', 'ar'],
+);
 if (problems.length) fail('Content counts differ from the brief:\n  - ' + problems.join('\n  - '));
 
 /* ---------- build the content pack ---------- */
@@ -227,7 +230,10 @@ export type SceneKey = keyof typeof SCENES;
   'utf8',
 );
 
-writeFileSync(join(OUT, 'README.md'), `# src/content (generated)\n\nWritten by \`scripts/extract-design-lab.ts\` from \`reference/KNOWN_Design_Lab.html\`.\nDo not hand-edit. Team-requested fixes go in \`scripts/content-overrides.json\`.\n`);
+writeFileSync(
+  join(OUT, 'README.md'),
+  `# src/content (generated)\n\nWritten by \`scripts/extract-design-lab.ts\` from \`reference/KNOWN_Design_Lab.html\`.\nDo not hand-edit. Team-requested fixes go in \`scripts/content-overrides.json\`.\n`,
+);
 
 console.log(
   `Extracted ${count(pack.passages)} passages, 16 paths × ${LANG_CODES.length} languages, ` +
@@ -271,4 +277,3 @@ function setAt(obj: Record<string | number, unknown>, segs: (string | number)[],
   o[last] = value;
   return previous;
 }
-

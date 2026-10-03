@@ -66,7 +66,10 @@ export const BRIDGES = { en: bridgesEn, my: bridgesMy, zh: bridgesZh, ja: bridge
   Lang,
   Record<BridgeKey, { h: string; p: string }>
 >;
-export const BREATH = breathJson as unknown as Record<PathKey, { v: string; t: Partial<Record<Lang, [string, string]>> }>;
+export const BREATH = breathJson as unknown as Record<
+  PathKey,
+  { v: string; t: Partial<Record<Lang, [string, string]>> }
+>;
 export const ORDER = matrixJson.order as Pic[];
 export const MATRIX = matrixJson.matrix as Record<SelKey, { path: PathKey; alt: PathKey }>;
 export const NW = matrixJson.nw as PathKey;
