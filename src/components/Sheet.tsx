@@ -60,7 +60,7 @@ export function Sheet({ open, onClose, title, eyebrow, locked, children, testID 
         borderTopRightRadius: radius.sheet,
       }}
       handleIndicatorStyle={{ backgroundColor: c.border, width: 40 }}
-      accessibilityViewIsModal
+      accessibilityViewIsModal={open}
     >
       <BottomSheetScrollView
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: insets.bottom + 20, gap: 14 }}

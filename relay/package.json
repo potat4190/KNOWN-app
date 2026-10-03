@@ -1,0 +1,19 @@
+{
+  "name": "known-relay",
+  "private": true,
+  "version": "1.0.0",
+  "description": "KNOWN AI relay (Cloudflare Worker): /match and /translate",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.131.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261003.1",
+    "typescript": "~6.0.3",
+    "wrangler": "^4.147.0"
+  }
+}

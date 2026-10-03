@@ -19,7 +19,15 @@ npm run android             # local dev build on an Android device/emulator (or:
 npm start                   # Metro for an installed dev client
 ```
 
-EAS: `npx eas-cli@latest build --profile development --platform android|ios`.
+EAS (recommended for device builds): `npx eas-cli@latest build --profile development --platform android|ios`.
+
+Local native builds need **JDK 17** (React Native's Gradle plugin uses a JDK 17 toolchain; set `JAVA_HOME` to it) and about 10 GB of free disk for the NDK and build cache.
+
+## Tests
+
+- `npm test`: the content validator, then Jest (`app` project: unit + screen smoke tests with native modules mocked; `relay` project: prompt-contract tests). No test calls the network.
+- `npm run typecheck`, `npm run lint`.
+- `npm run yv:versions` (`-- --all` for the whole catalog): lists YouVersion versions for the five languages with the app key from `.env`.
 
 ## Environment variables (`.env`, never committed)
 

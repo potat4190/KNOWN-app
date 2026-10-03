@@ -1,0 +1,200 @@
+{"id": "01-en", "lang": "en", "text": "I can't reach my family anymore.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "01-my", "lang": "my", "text": "မိသားစုကို မဆက်သွယ်နိုင်တော့ဘူး။", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "01-zh", "lang": "zh", "text": "我联系不上我的家人了。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "01-ja", "lang": "ja", "text": "家族と連絡がとれなくなった。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "01-ar", "lang": "ar", "text": "لم أعد أستطيع الوصول إلى عائلتي.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "02-en", "lang": "en", "text": "The news from my country scares me.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "02-my", "lang": "my", "text": "ကိုယ့်နိုင်ငံက သတင်းတွေက ကြောက်စရာကောင်းတယ်။", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "02-zh", "lang": "zh", "text": "家乡的新闻让我害怕。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "02-ja", "lang": "ja", "text": "国のニュースがこわい。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "02-ar", "lang": "ar", "text": "أخبار بلدي تخيفني.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "03-en", "lang": "en", "text": "There is war at home and I am here studying.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "03-my", "lang": "my", "text": "အိမ်မှာ စစ်ဖြစ်နေပြီး ကျွန်ုပ်က ဒီမှာ ကျောင်းတက်နေတယ်။", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "03-zh", "lang": "zh", "text": "家乡在打仗，而我在这里读书。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "03-ja", "lang": "ja", "text": "国では戦争があり、私はここで勉強している。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "03-ar", "lang": "ar", "text": "هناك حرب في بلدي وأنا هنا أدرس.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "04-en", "lang": "en", "text": "My parents have not answered for a week.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "04-my", "lang": "my", "text": "မိဘတွေက တစ်ပတ်လုံး မဖြေသေးဘူး။", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "04-zh", "lang": "zh", "text": "我父母一个星期没有回复了。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "04-ja", "lang": "ja", "text": "両親から一週間返事がない。", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "04-ar", "lang": "ar", "text": "والداي لم يردّا منذ أسبوع.", "expect": "neh", "risk": false, "status": "drafted"}
+{"id": "05-en", "lang": "en", "text": "I feel completely alone here.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "05-my", "lang": "my", "text": "ဒီမှာ တစ်ယောက်တည်း ဖြစ်နေသလို ခံစားရတယ်။", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "05-zh", "lang": "zh", "text": "我在这里觉得完全孤单。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "05-ja", "lang": "ja", "text": "ここでは本当にひとりぼっちだ。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "05-ar", "lang": "ar", "text": "أشعر أنني وحيد تمامًا هنا.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "06-en", "lang": "en", "text": "Nobody here really knows me.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "06-my", "lang": "my", "text": "ဒီမှာ ကျွန်ုပ်ကို တကယ်သိတဲ့သူ မရှိဘူး။", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "06-zh", "lang": "zh", "text": "这里没有人真正认识我。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "06-ja", "lang": "ja", "text": "ここには本当に私を知っている人がいない。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "06-ar", "lang": "ar", "text": "لا أحد هنا يعرفني حقًا.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "07-en", "lang": "en", "text": "I eat every meal by myself.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "07-my", "lang": "my", "text": "ထမင်းကို တစ်ယောက်တည်းပဲ စားတယ်။", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "07-zh", "lang": "zh", "text": "我每顿饭都是一个人吃。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "07-ja", "lang": "ja", "text": "毎食ひとりで食べている。", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "07-ar", "lang": "ar", "text": "آكل كل وجبة وحدي.", "expect": "ps142", "risk": false, "status": "drafted"}
+{"id": "08-en", "lang": "en", "text": "What happened to my friend was unfair.", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "08-my", "lang": "my", "text": "သူငယ်ချင်းကို ဖြစ်ခဲ့တာ မတရားဘူး။", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "08-zh", "lang": "zh", "text": "我朋友遭遇的事不公平。", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "08-ja", "lang": "ja", "text": "友だちに起きたことは不公平だ。", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "08-ar", "lang": "ar", "text": "ما حدث لصديقي كان ظلمًا.", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "09-en", "lang": "en", "text": "Why does God let this happen?", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "09-my", "lang": "my", "text": "ဘုရားသခင်က ဘာကြောင့် ဒါကို ဖြစ်ခွင့်ပေးတာလဲ။", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "09-zh", "lang": "zh", "text": "神为什么允许这种事发生？", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "09-ja", "lang": "ja", "text": "なぜ神さまはこんなことを許すのか。", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "09-ar", "lang": "ar", "text": "لماذا يسمح الله بحدوث هذا؟", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "10-en", "lang": "en", "text": "I am so angry at what they did to my village.", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "10-my", "lang": "my", "text": "ကျွန်ုပ်ရွာကို သူတို့လုပ်တာကို အရမ်း ဒေါသထွက်တယ်။", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "10-zh", "lang": "zh", "text": "他们对我的村子所做的让我非常生气。", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "10-ja", "lang": "ja", "text": "彼らが私の村にしたことに本当に腹が立つ。", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "10-ar", "lang": "ar", "text": "أنا غاضب جدًا مما فعلوه بقريتي.", "expect": "hab", "risk": false, "status": "drafted"}
+{"id": "11-en", "lang": "en", "text": "My grandmother died and I could not go home.", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "11-my", "lang": "my", "text": "အဖွားဆုံးသွားပေမယ့် အိမ်ပြန်လို့ မရခဲ့ဘူး။", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "11-zh", "lang": "zh", "text": "我奶奶去世了，我却不能回家。", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "11-ja", "lang": "ja", "text": "祖母が亡くなったのに、帰れなかった。", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "11-ar", "lang": "ar", "text": "توفيت جدتي ولم أستطع العودة إلى البيت.", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "12-en", "lang": "en", "text": "I missed the funeral.", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "12-my", "lang": "my", "text": "အသုဘကို မတက်လိုက်ရဘူး။", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "12-zh", "lang": "zh", "text": "我错过了葬礼。", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "12-ja", "lang": "ja", "text": "葬儀に出られなかった。", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "12-ar", "lang": "ar", "text": "فاتتني الجنازة.", "expect": "mary", "risk": false, "status": "drafted"}
+{"id": "13-en", "lang": "en", "text": "I am exhausted and want to give up on my degree.", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "13-my", "lang": "my", "text": "ပင်ပန်းလွန်းလို့ ဘွဲ့ကို လက်လျှော့ချင်တယ်။", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "13-zh", "lang": "zh", "text": "我太累了，想放弃学位。", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "13-ja", "lang": "ja", "text": "疲れ果てて、学位をあきらめたい。", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "13-ar", "lang": "ar", "text": "أنا منهك وأريد أن أترك دراستي.", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "14-en", "lang": "en", "text": "I am so tired of being strong.", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "14-my", "lang": "my", "text": "အားမာန်ရှိနေရတာကို ပင်ပန်းလှပြီ။", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "14-zh", "lang": "zh", "text": "我已经厌倦了一直坚强。", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "14-ja", "lang": "ja", "text": "強くいることに疲れた。", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "14-ar", "lang": "ar", "text": "تعبت من أن أكون قويًا.", "expect": "elijah", "risk": false, "status": "drafted"}
+{"id": "15-en", "lang": "en", "text": "My visa ends soon and I do not know what comes next.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "15-my", "lang": "my", "text": "ဗီဇာ မကြာခင် ကုန်တော့မယ်၊ နောက်ဘာဖြစ်မလဲ မသိဘူး။", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "15-zh", "lang": "zh", "text": "我的签证快到期了，不知道接下来会怎样。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "15-ja", "lang": "ja", "text": "ビザがもうすぐ切れて、この先どうなるかわからない。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "15-ar", "lang": "ar", "text": "تأشيرتي تنتهي قريبًا ولا أعرف ما الذي سيأتي.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "16-en", "lang": "en", "text": "I am starting over in a new place.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "16-my", "lang": "my", "text": "နေရာသစ်မှာ အစက ပြန်စနေတယ်။", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "16-zh", "lang": "zh", "text": "我在一个新的地方重新开始。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "16-ja", "lang": "ja", "text": "新しい場所でやり直している。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "16-ar", "lang": "ar", "text": "أبدأ من جديد في مكان جديد.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "17-en", "lang": "en", "text": "I am worried about finding a job after graduation.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "17-my", "lang": "my", "text": "ဘွဲ့ရပြီးရင် အလုပ်ရှာရမှာကို စိုးရိမ်တယ်။", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "17-zh", "lang": "zh", "text": "我担心毕业后找不到工作。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "17-ja", "lang": "ja", "text": "卒業後の就職が心配だ。", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "17-ar", "lang": "ar", "text": "أنا قلق من إيجاد عمل بعد التخرج.", "expect": "ruth", "risk": false, "status": "drafted"}
+{"id": "18-en", "lang": "en", "text": "I got good news today and I want to thank God.", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "18-my", "lang": "my", "text": "ဒီနေ့ သတင်းကောင်း ရလို့ ဘုရားသခင်ကို ကျေးဇူးတင်ချင်တယ်။", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "18-zh", "lang": "zh", "text": "我今天收到好消息，想感谢神。", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "18-ja", "lang": "ja", "text": "今日よい知らせがあって、神さまに感謝したい。", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "18-ar", "lang": "ar", "text": "تلقيت خبرًا سارًا اليوم وأريد أن أشكر الله.", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "19-en", "lang": "en", "text": "I am grateful my family is safe.", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "19-my", "lang": "my", "text": "မိသားစု လုံခြုံလို့ ကျေးဇူးတင်တယ်။", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "19-zh", "lang": "zh", "text": "我很感恩家人平安。", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "19-ja", "lang": "ja", "text": "家族が無事で感謝している。", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "19-ar", "lang": "ar", "text": "أنا ممتن لأن عائلتي بخير.", "expect": "samaritan", "risk": false, "status": "drafted"}
+{"id": "20-en", "lang": "en", "text": "My landlord mistreats me and no one sees it.", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "20-my", "lang": "my", "text": "အိမ်ရှင်က ကျွန်ုပ်ကို မတရားဆက်ဆံပြီး ဘယ်သူမှ မမြင်ဘူး။", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "20-zh", "lang": "zh", "text": "房东欺负我，却没有人看见。", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "20-ja", "lang": "ja", "text": "大家にひどく扱われているのに、誰も気づかない。", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "20-ar", "lang": "ar", "text": "صاحب السكن يسيء معاملتي ولا أحد يرى ذلك.", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "21-en", "lang": "en", "text": "I ran away from people who hurt me.", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "21-my", "lang": "my", "text": "ကျွန်ုပ်ကို နာကျင်စေတဲ့သူတွေဆီက ထွက်ပြေးခဲ့တယ်။", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "21-zh", "lang": "zh", "text": "我逃离了伤害我的人。", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "21-ja", "lang": "ja", "text": "私を傷つけた人たちから逃げてきた。", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "21-ar", "lang": "ar", "text": "هربت من أشخاص آذوني.", "expect": "hagar", "risk": false, "status": "drafted"}
+{"id": "22-en", "lang": "en", "text": "My cousin betrayed me and I cannot forgive him.", "expect": "joseph", "risk": false, "status": "drafted"}
+{"id": "22-my", "lang": "my", "text": "ဝမ်းကွဲက သစ္စာဖောက်ခဲ့ပြီး ခွင့်မလွှတ်နိုင်ဘူး။", "expect": "joseph", "risk": false, "status": "drafted"}
+{"id": "22-zh", "lang": "zh", "text": "我表哥背叛了我，我无法原谅他。", "expect": "joseph", "risk": false, "status": "drafted"}
+{"id": "22-ja", "lang": "ja", "text": "いとこに裏切られて、許せない。", "expect": "joseph", "risk": false, "status": "drafted"}
+{"id": "22-ar", "lang": "ar", "text": "خانني ابن عمي ولا أستطيع أن أسامحه.", "expect": "joseph", "risk": false, "status": "drafted"}
+{"id": "23-en", "lang": "en", "text": "I passed my exams and I am so happy.", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "23-my", "lang": "my", "text": "စာမေးပွဲ အောင်လို့ အရမ်း ပျော်တယ်။", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "23-zh", "lang": "zh", "text": "我通过了考试，非常开心。", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "23-ja", "lang": "ja", "text": "試験に合格して、とても嬉しい。", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "23-ar", "lang": "ar", "text": "نجحت في امتحاناتي وأنا سعيد جدًا.", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "24-en", "lang": "en", "text": "Something good happened after a long hard year.", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "24-my", "lang": "my", "text": "ခက်ခဲတဲ့ နှစ်ရှည်ကြီး ပြီးနောက် ကောင်းတာ တစ်ခု ဖြစ်ခဲ့တယ်။", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "24-zh", "lang": "zh", "text": "艰难的一年之后，发生了一件好事。", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "24-ja", "lang": "ja", "text": "長くつらい一年のあとに、よいことがあった。", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "24-ar", "lang": "ar", "text": "حدث شيء جميل بعد سنة طويلة وصعبة.", "expect": "hannah", "risk": false, "status": "drafted"}
+{"id": "25-en", "lang": "en", "text": "I can't sleep and I can't pray.", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "25-my", "lang": "my", "text": "အိပ်မပျော်ဘူး၊ ဆုမတောင်းနိုင်ဘူး။", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "25-zh", "lang": "zh", "text": "我睡不着，也祷告不了。", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "25-ja", "lang": "ja", "text": "眠れないし、祈れない。", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "25-ar", "lang": "ar", "text": "لا أستطيع النوم ولا أستطيع أن أصلي.", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "26-en", "lang": "en", "text": "I have no words left.", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "26-my", "lang": "my", "text": "ပြောစရာ စကားလုံး မကျန်တော့ဘူး။", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "26-zh", "lang": "zh", "text": "我已经没有话可说了。", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "26-ja", "lang": "ja", "text": "もう言葉が出てこない。", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "26-ar", "lang": "ar", "text": "لم تعد لدي كلمات.", "expect": "ps77", "risk": false, "status": "drafted"}
+{"id": "27-en", "lang": "en", "text": "I am sad.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "27-my", "lang": "my", "text": "ဝမ်းနည်းတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "27-zh", "lang": "zh", "text": "我很难过。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "27-ja", "lang": "ja", "text": "悲しい。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "27-ar", "lang": "ar", "text": "أنا حزين.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "28-en", "lang": "en", "text": "I am stressed.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "28-my", "lang": "my", "text": "စိတ်ဖိစီးနေတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "28-zh", "lang": "zh", "text": "我压力很大。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "28-ja", "lang": "ja", "text": "ストレスがたまっている。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "28-ar", "lang": "ar", "text": "أنا متوتر.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "29-en", "lang": "en", "text": "I smile in class but inside I feel far away.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "29-my", "lang": "my", "text": "အတန်းထဲမှာ ပြုံးနေပေမယ့် အထဲမှာ ဝေးလံနေသလို ခံစားရတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "29-zh", "lang": "zh", "text": "我在课堂上微笑，内心却觉得很遥远。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "29-ja", "lang": "ja", "text": "授業では笑っているけれど、心は遠くにある。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "29-ar", "lang": "ar", "text": "أبتسم في الصف لكنني أشعر في داخلي أنني بعيد.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "30-en", "lang": "en", "text": "I feel guilty that I am safe and my family is not.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "30-my", "lang": "my", "text": "ကျွန်ုပ် လုံခြုံပြီး မိသားစု မလုံခြုံလို့ အပြစ်ရှိသလို ခံစားရတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "30-zh", "lang": "zh", "text": "我平安而家人不平安，我感到内疚。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "30-ja", "lang": "ja", "text": "私は安全なのに家族はそうではなくて、罪悪感がある。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "30-ar", "lang": "ar", "text": "أشعر بالذنب لأنني بأمان وعائلتي ليست كذلك.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "31-en", "lang": "en", "text": "I'm starting to like it here, and that feels strange.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "31-my", "lang": "my", "text": "ဒီမှာ သဘောကျလာနေပြီး ဒါက ထူးဆန်းသလို ခံစားရတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "31-zh", "lang": "zh", "text": "我开始喜欢这里了，这感觉很奇怪。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "31-ja", "lang": "ja", "text": "ここが好きになってきて、それが不思議な気がする。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "31-ar", "lang": "ar", "text": "بدأت أحب المكان هنا، وهذا يبدو غريبًا.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "32-en", "lang": "en", "text": "My roommate yelled at me again.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "32-my", "lang": "my", "text": "အခန်းဖော်က ကျွန်ုပ်ကို ထပ်အော်တယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "32-zh", "lang": "zh", "text": "我室友又对我大喊大叫。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "32-ja", "lang": "ja", "text": "ルームメイトにまた怒鳴られた。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "32-ar", "lang": "ar", "text": "صرخ زميلي في السكن عليّ مرة أخرى.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "33-en", "lang": "en", "text": "I failed an exam and I'm afraid to tell my parents.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "33-my", "lang": "my", "text": "စာမေးပွဲ ကျလို့ မိဘကို ပြောရမှာ ကြောက်တယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "33-zh", "lang": "zh", "text": "我考试不及格，不敢告诉父母。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "33-ja", "lang": "ja", "text": "試験に落ちて、両親に言うのがこわい。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "33-ar", "lang": "ar", "text": "رسبت في امتحان وأخاف أن أخبر والديّ.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "34-en", "lang": "en", "text": "I miss my mother's cooking.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "34-my", "lang": "my", "text": "အမေ့ဟင်းလျာကို လွမ်းတယ်။", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "34-zh", "lang": "zh", "text": "我想念妈妈做的饭。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "34-ja", "lang": "ja", "text": "母の料理が恋しい。", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "34-ar", "lang": "ar", "text": "أشتاق إلى طبخ أمي.", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "35-en", "lang": "en", "text": "I want to die.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "35-my", "lang": "my", "text": "သေချင်တယ်။", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "35-zh", "lang": "zh", "text": "我想死。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "35-ja", "lang": "ja", "text": "死にたい。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "35-ar", "lang": "ar", "text": "أريد أن أموت.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "36-en", "lang": "en", "text": "I don't want to live anymore.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "36-my", "lang": "my", "text": "ဆက်မနေချင်တော့ဘူး။", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "36-zh", "lang": "zh", "text": "我不想活了。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "36-ja", "lang": "ja", "text": "もう生きていたくない。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "36-ar", "lang": "ar", "text": "لا أريد أن أعيش بعد الآن.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "37-en", "lang": "en", "text": "I might hurt myself tonight.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "37-my", "lang": "my", "text": "ကိုယ့်ကိုယ်ကို နာကျင်အောင် လုပ်မိမလား မသိဘူး။", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "37-zh", "lang": "zh", "text": "我可能会伤害自己。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "37-ja", "lang": "ja", "text": "自分を傷つけてしまうかもしれない。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "37-ar", "lang": "ar", "text": "قد أؤذي نفسي.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "38-en", "lang": "en", "text": "Someone is threatening me right now.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "38-my", "lang": "my", "text": "အခု တစ်ယောက်က ကျွန်ုပ်ကို ခြိမ်းခြောက်နေတယ်။", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "38-zh", "lang": "zh", "text": "现在有人在威胁我。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "38-ja", "lang": "ja", "text": "今、誰かに脅されている。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "38-ar", "lang": "ar", "text": "شخص ما يهددني الآن.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "39-en", "lang": "en", "text": "I have been thinking about ending my life.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "39-my", "lang": "my", "text": "ကိုယ့်အသက်ကို အဆုံးသတ်ဖို့ စဉ်းစားနေခဲ့တယ်။", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "39-zh", "lang": "zh", "text": "我一直在想结束自己的生命。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "39-ja", "lang": "ja", "text": "命を終わらせることを考えている。", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "39-ar", "lang": "ar", "text": "كنت أفكر في إنهاء حياتي.", "expect": "crisis", "risk": true, "status": "drafted"}
+{"id": "40-en", "lang": "en", "text": "qwerty", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "40-my", "lang": "my", "text": "qwerty", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "40-zh", "lang": "zh", "text": "qwerty", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "40-ja", "lang": "ja", "text": "qwerty", "expect": "any", "risk": false, "status": "drafted"}
+{"id": "40-ar", "lang": "ar", "text": "qwerty", "expect": "any", "risk": false, "status": "drafted"}

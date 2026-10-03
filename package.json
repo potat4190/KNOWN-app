@@ -49,7 +49,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@testing-library/react-native": "^14.0.1",
+    "@testing-library/react-native": "^13.3.3",
     "@types/jest": "29.5.14",
     "@types/jsdom": "^30.0.0",
     "@types/react": "~19.2.2",
@@ -60,7 +60,7 @@
     "jest-expo": "~56.0.5",
     "jsdom": "^28.1.0",
     "prettier": "^3.9.9",
-    "test-renderer": "^1.3.0",
+    "react-test-renderer": "^19.2.3",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3"
   },
@@ -76,7 +76,7 @@
     "content:extract": "tsx scripts/extract-design-lab.ts && tsx scripts/build-rotation.ts",
     "content:rotation:reset": "tsx scripts/build-rotation.ts --reset",
     "content:validate": "tsx scripts/validate-content.ts",
-    "yv:versions": "tsx scripts/list-youversion-versions.ts",
+    "yv:versions": "tsx --env-file=.env scripts/list-youversion-versions.ts",
     "content:review": "tsx scripts/content-review.ts"
   },
   "private": true

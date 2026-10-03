@@ -135,6 +135,7 @@ export default function Panel() {
   const clear = async () => {
     const st = getStore();
     await st.session.clear();
+    await st.rotation.clear(); // so Fear opens Nehemiah first again (demo)
     for (const m of await st.moments.list()) await st.moments.remove(m.id);
     p.set({ clockOffset: 0 });
     void relaunch();

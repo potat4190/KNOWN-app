@@ -7,6 +7,7 @@
  * The relay's reason is the only AI text in the app besides translations, and never Scripture.
  */
 import { CRISIS } from '@/content/crisis';
+import { CRISIS_EXTRA } from '@/config/crisis-extra';
 import { isPathKey } from '@/lib/content';
 import { LANG_INFO, type Lang } from '@/i18n/langs';
 import type { MatchResult } from '@/state/session';
@@ -32,7 +33,8 @@ export type RelayDeps = {
   now?: () => number;
 };
 
-export const isCrisis = (text: string) => CRISIS.test(text);
+/** Reviewed Design Lab regex, plus the drafted supplementary phrases (Kezia to review). */
+export const isCrisis = (text: string) => CRISIS.test(text) || CRISIS_EXTRA.test(text);
 
 async function post(deps: RelayDeps, path: string, body: unknown, timeoutMs: number): Promise<unknown> {
   const ctrl = new AbortController();

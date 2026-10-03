@@ -59,6 +59,10 @@ These reviewed bridge lines name her emotion, which boundary 1 forbids. They are
 
 Time-neutral candidates for native readers (the English check passes): \`paths.my.ps77.story\`, \`paths.ar.ps77.story\` (they may mention night as part of Asaph's story, which is fine if so).
 
+## Drafted safeguarding patterns
+
+\`src/config/crisis-extra.ts\` adds supplementary crisis phrases (drafted, for Kezia) to the reviewed Design Lab regex, because the reviewed regex missed 18 of the 25 crisis test phrases in \`relay/test-set.jsonl\`. \`relay/test-set.jsonl\` itself (200 drafted sentences in 5 languages, including short crisis phrases) also needs Kezia's review.
+
 ## Drafted overrides
 
 | Target | Status | Reviewer | Reason | Was | Now |

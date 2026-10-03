@@ -1,0 +1,15 @@
+name = "known-relay"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Non-secret settings. Secrets (never in this file):
+#   wrangler secret put ANTHROPIC_API_KEY   (AI_PROVIDER=anthropic)
+#   wrangler secret put GLOO_API_KEY        (AI_PROVIDER=gloo)
+[vars]
+AI_PROVIDER = "anthropic"         # anthropic | gloo  (team decision 18.2 #2)
+ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
+GLOO_MODEL = ""                   # a Claude-family id from GET https://platform.ai.gloo.com/platform/v2/models
+
+[observability]
+enabled = true
