@@ -15,9 +15,9 @@ Honest state of the build. Updated at the end of every phase. Last update: 2026-
 | 6 Onboarding guide | First-run cards, coach marks (TourProvider/TourTarget), Settings controls, drafted strings in 5 languages. Tips not yet verified on a device. |
 | 7 Judge panel | Full port + new sections (YouVersion, rotation, music, tour, build, content review), Settings toggle, env gating. |
 | 8 Own words and translate | Relay Worker (both providers) + tests + `test-set.jsonl`; app client with 8 s timeout and on-device fallback; translate with back-translation. **Relay not deployed** (team step). |
-| 9 Hardening | Not started: Maestro flows, QA doc, accessibility pass on devices. |
+| 9 Hardening | Maestro flows (`e2e/`, 11 flows) and `docs/QA.md` written; EAS profiles in `eas.json`; `PRIVACY.md` written. **Not run**: needs a device build. The Android JS bundle builds (`npx expo export --platform android`, 9.8 MB Hermes). |
 
-Tests: `npm test` = content validator + 287 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean.
+Tests: `npm test` = content validator + 288 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean.
 
 ## Native build (not verified yet)
 
