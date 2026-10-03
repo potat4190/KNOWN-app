@@ -1,0 +1,22 @@
+{
+  "en": {
+    "abbr": "WEBBE",
+    "name": "World English Bible, British Edition · Public domain"
+  },
+  "zh": {
+    "abbr": "和合本",
+    "name": "新标点和合本 · 公有领域"
+  },
+  "ja": {
+    "abbr": "口語訳",
+    "name": "口語訳聖書（1955）· パブリックドメイン"
+  },
+  "my": {
+    "abbr": "Judson",
+    "name": "Judson Bible (1835) · Public domain"
+  },
+  "ar": {
+    "abbr": "فان دايك",
+    "name": "ترجمة سميث وفان دايك (1865) · ملكية عامة"
+  }
+}

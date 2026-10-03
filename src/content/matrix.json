@@ -1,0 +1,51 @@
+{
+  "order": [
+    "S",
+    "F",
+    "A",
+    "J"
+  ],
+  "matrix": {
+    "S": {
+      "path": "ps142",
+      "alt": "hagar"
+    },
+    "F": {
+      "path": "neh",
+      "alt": "ruth"
+    },
+    "A": {
+      "path": "hab",
+      "alt": "elijah"
+    },
+    "J": {
+      "path": "samaritan",
+      "alt": "hannah"
+    },
+    "SF": {
+      "path": "elijah",
+      "alt": "neh"
+    },
+    "SA": {
+      "path": "mary",
+      "alt": "hab"
+    },
+    "SJ": {
+      "path": "ruth",
+      "alt": "joseph"
+    },
+    "FA": {
+      "path": "hagar",
+      "alt": "hab"
+    },
+    "FJ": {
+      "path": "hannah",
+      "alt": "ruth"
+    },
+    "AJ": {
+      "path": "joseph",
+      "alt": "samaritan"
+    }
+  },
+  "nw": "ps77"
+}

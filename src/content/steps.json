@@ -1,0 +1,24 @@
+{
+  "dot": {
+    "feel": 1,
+    "thinking": 1,
+    "crisis": 2,
+    "scripture": 2,
+    "pray": 3,
+    "after": 4,
+    "reach": 4,
+    "sit": 4,
+    "keep": 4
+  },
+  "stepName": {
+    "feel": "st_feel",
+    "thinking": "st_feel",
+    "crisis": "st_scripture",
+    "scripture": "st_scripture",
+    "pray": "st_pray",
+    "after": "st_after",
+    "reach": "st_after",
+    "sit": "st_after",
+    "keep": "st_after"
+  }
+}

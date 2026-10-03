@@ -1,0 +1,32 @@
+{
+  "emo": {
+    "S": "Sadness",
+    "F": "Fear",
+    "A": "Anger",
+    "J": "Enjoyment"
+  },
+  "demoWords": "I can’t reach my family anymore, and I’m scared watching the news about my country.",
+  "demoReason": "Nehemiah was far from home when hard news came about his people, and he brought it straight to God.",
+  "yvPrototypeGuesses": {
+    "en": {
+      "id": 206,
+      "abbr": "WEBUS"
+    },
+    "my": {
+      "id": 386,
+      "abbr": "JBMLE"
+    },
+    "zh": {
+      "id": 48,
+      "abbr": "CUNPSS-神"
+    },
+    "ja": {
+      "id": 1819,
+      "abbr": "JA1955"
+    },
+    "ar": {
+      "id": 13,
+      "abbr": "AVD"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "code": "en",
+    "name": "English",
+    "en": "English",
+    "html": "en"
+  },
+  {
+    "code": "my",
+    "name": "မြန်မာ",
+    "en": "Burmese",
+    "html": "my"
+  },
+  {
+    "code": "zh",
+    "name": "简体中文",
+    "en": "Simplified Chinese",
+    "html": "zh-Hans"
+  },
+  {
+    "code": "ja",
+    "name": "日本語",
+    "en": "Japanese",
+    "html": "ja"
+  },
+  {
+    "code": "ar",
+    "name": "العربية",
+    "en": "Arabic",
+    "html": "ar",
+    "dir": "rtl"
+  }
+]

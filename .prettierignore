@@ -1,0 +1,5 @@
+reference/
+src/content/
+node_modules/
+relay/node_modules/
+scripts/scripture-snapshot.json

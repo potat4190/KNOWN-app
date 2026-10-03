@@ -1,0 +1,32 @@
+{
+  "$comment": "Reviewed content fixes, applied by scripts/extract-design-lab.ts after extraction (brief section 2.4). Never hand-edit src/content/. status: drafted (waiting for review) or approved. Drafted entries are listed in docs/CONTENT_REVIEW.md and in the judge panel.",
+  "overrides": [
+    {
+      "target": "storyChapters.hannah",
+      "value": { "book": "sa1", "from": 1, "to": 2 },
+      "reason": "Hannah's story is retold from 1 Samuel 1, but story_src used the passage chapter (1 Samuel 2). Judges' critique, 'Copy slips'.",
+      "status": "drafted",
+      "reviewer": "Deb"
+    },
+    {
+      "target": "storyChapters.joseph",
+      "value": { "book": "gen", "from": 37, "to": 50 },
+      "reason": "Joseph's story spans Genesis 37–50 but was labelled Genesis 50.",
+      "status": "drafted",
+      "reviewer": "Deb"
+    },
+    {
+      "target": "paths.*.hannah.options[3]",
+      "value": {
+        "en": "I was misunderstood once. Today I can breathe a little.",
+        "zh": "我曾被误解。今天我可以稍微松一口气。",
+        "ja": "誤解されたことがありました。今日は少し息がつけます。",
+        "my": "တစ်ခါက နားလွဲခံခဲ့ရပါတယ်။ ဒီနေ့ နည်းနည်း အသက်ရှူချောင်ပါတယ်။",
+        "ar": "أُسيء فهمي مرة. اليوم أستطيع أن أتنفس قليلًا."
+      },
+      "reason": "Time-neutral copy: she may open KNOWN at 2 p.m. 'Tonight' → 'Today' in all 5 languages (zh 今晚→今天, ja 今夜→今日, my ဒီည→ဒီနေ့, ar الليلة→اليوم).",
+      "status": "drafted",
+      "reviewer": "Dorcas + native readers"
+    }
+  ]
+}
