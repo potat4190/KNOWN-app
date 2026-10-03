@@ -1,0 +1,16 @@
+# Danger phrasing goes to Crisis first (checked on the phone), then Help or Scripture.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- tapOn: { id: "begin" }
+- tapOn: { id: "tab-words" }
+- tapOn: { id: "words-input" }
+- inputText: "I want to die"
+- hideKeyboard
+- tapOn: { id: "find-story" }
+- extendedWaitUntil:
+    visible: { id: "screen-crisis" }
+    timeout: 15000
+- assertVisible: { id: "help-lines" }
+- tapOn: { id: "crisis-go" }
+- assertVisible: { id: "screen-scripture" }

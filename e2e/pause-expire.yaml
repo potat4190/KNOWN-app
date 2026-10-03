@@ -1,0 +1,19 @@
+# Pause, then the judge panel fast-forwards 4 days: the paused moment is gone
+# and Home says so once, without showing what was in it.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- tapOn: { id: "tab-more" }
+- tapOn: { id: "panel-switch" }
+- tapOn: { id: "tab-home" }
+- runFlow: { file: subflows/pick.yaml, env: { A: "2" } }
+- tapOn: { id: "header-x" }
+- tapOn: { id: "exit-save" }
+- tapOn: { id: "paused-done" }
+- tapOn: { id: "panel-tab" }
+- tapOn: { id: "panel-ff" }
+- assertVisible: { id: "screen-home" }
+- assertVisible: "A paused moment was removed after 3 days."
+- assertNotVisible: { id: "paused-card" }
+- tapOn: { id: "panel-tab" }
+- tapOn: { id: "panel-reset" }

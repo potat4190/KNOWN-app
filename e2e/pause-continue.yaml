@@ -1,0 +1,13 @@
+# ✕ → Save this step for later → reopen → Recover sheet → Continue restores the step.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "2" } }
+- tapOn: { id: "header-x" }
+- tapOn: { id: "exit-save" }
+- assertVisible: { id: "screen-paused" }
+- stopApp
+- launchApp
+- assertVisible: { id: "recover-continue" }
+- tapOn: { id: "recover-continue" }
+- assertVisible: { id: "screen-scripture" }

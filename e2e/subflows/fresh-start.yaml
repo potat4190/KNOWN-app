@@ -1,0 +1,13 @@
+# Fresh install: clear state, choose a language (LANG, default en), skip the first-run cards.
+appId: org.ifiusa.known.dev
+env:
+  LANG: en
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "lang-${LANG}"
+- tapOn:
+    id: "tour-skip"
+- assertVisible:
+    id: "screen-home"

@@ -1,0 +1,15 @@
+# Arabic: choosing it reloads once into right-to-left; Nehemiah 1 shows Van Dyck Arabic.
+appId: org.ifiusa.known.dev
+---
+- launchApp:
+    clearState: true
+- tapOn: { id: "lang-ar" }
+- extendedWaitUntil:
+    visible: { id: "screen-onboarding" }
+    timeout: 20000
+- tapOn: { id: "tour-skip" }
+- tapOn: { id: "begin" }
+- tapOn: { id: "pic-2" }
+- tapOn: { id: "continue" }
+- assertVisible: "نحميا"
+- assertVisible: "فان دايك"

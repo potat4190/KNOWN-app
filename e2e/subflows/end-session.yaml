@@ -1,0 +1,9 @@
+# Leave a session without saving: ✕ → End without saving → Home.
+appId: org.ifiusa.known.dev
+---
+- tapOn:
+    id: "header-x"
+- tapOn:
+    id: "exit-end"
+- assertVisible:
+    id: "screen-home"

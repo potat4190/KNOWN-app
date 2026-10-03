@@ -1,0 +1,13 @@
+# Critique: Scripture by tap 3 with pictures, by tap 2 with no words.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- tapOn: { id: "begin" } # 1
+- tapOn: { id: "pic-2" } # 2
+- tapOn: { id: "continue" } # 3
+- assertVisible: { id: "screen-scripture" }
+- runFlow: subflows/end-session.yaml
+- tapOn: { id: "begin" } # 1
+- tapOn: { id: "no-words" } # 2
+- assertVisible: { id: "screen-scripture" }
+- assertVisible: { id: "nw-help" }

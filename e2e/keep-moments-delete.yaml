@@ -1,0 +1,22 @@
+# Pray (choose a line) → Amen → Keep → Save → Done; Back shows it saved once;
+# Moments → open → delete with the inline confirmation.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "2" } }
+- tapOn: { id: "to-pray" }
+- tapOn: { id: "say-0" }
+- assertVisible: { id: "prayer-stay" }
+- tapOn: { id: "amen" }
+- tapOn: { id: "a-keep" }
+- tapOn: { id: "save-moment" }
+- assertVisible: { id: "saved-ok" }
+- back
+- assertVisible: "Saved to Moments on this phone."
+- assertNotVisible: { id: "save-moment" }
+- tapOn: { id: "keep-done" }
+- tapOn: { id: "view-moments" }
+- tapOn: { id: "moment-0" }
+- tapOn: { id: "delete-moment" }
+- tapOn: { id: "delete-confirm-yes" }
+- assertVisible: { id: "moments-empty" }

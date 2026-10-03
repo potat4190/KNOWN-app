@@ -1,0 +1,24 @@
+# All 10 picture selections reach Scripture with a page card:
+# S, F, A, J, SF, SA, SJ, FA, FJ, AJ.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "1" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "2" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "3" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "4" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "1", B: "2" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "1", B: "3" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "1", B: "4" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "2", B: "3" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "2", B: "4" } }
+- runFlow: subflows/end-session.yaml
+- runFlow: { file: subflows/pick.yaml, env: { A: "3", B: "4" } }

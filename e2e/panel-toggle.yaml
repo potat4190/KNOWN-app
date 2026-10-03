@@ -1,0 +1,13 @@
+# Judge panel on: the edge tab appears and the panel is English. Off: no trace.
+# Needs a development or preview build (EXPO_PUBLIC_SHOW_PANEL_TOGGLE=true).
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- assertNotVisible: { id: "panel-tab" }
+- tapOn: { id: "tab-more" }
+- tapOn: { id: "panel-switch" }
+- tapOn: { id: "panel-tab" }
+- assertVisible: "Golden path"
+- tapOn: { id: "panel-close" }
+- tapOn: { id: "panel-switch" }
+- assertNotVisible: { id: "panel-tab" }

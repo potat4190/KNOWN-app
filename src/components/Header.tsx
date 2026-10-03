@@ -135,6 +135,7 @@ export function Header({ step, inSession, onBack, hideHelp, hideGear }: Props) {
           <TourTarget id="header_x">
             <Pressable
               onPress={() => openSheet('exit')}
+              testID="header-x"
               accessibilityRole="button"
               accessibilityLabel={t('exit_aria')}
               style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}

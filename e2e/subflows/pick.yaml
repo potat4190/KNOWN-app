@@ -1,0 +1,22 @@
+# Begin, tap picture A (and B when set), Continue → Scripture.
+# Pictures in order: 1 rain window, 2 dark hallway, 3 clenched fists, 4 dancing.
+appId: org.ifiusa.known.dev
+env:
+  B: ""
+---
+- tapOn:
+    id: "begin"
+- tapOn:
+    id: "pic-${A}"
+- runFlow:
+    when:
+      true: ${B != ''}
+    commands:
+      - tapOn:
+          id: "pic-${B}"
+- tapOn:
+    id: "continue"
+- assertVisible:
+    id: "screen-scripture"
+- assertVisible:
+    id: "page-card"

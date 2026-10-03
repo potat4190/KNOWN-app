@@ -1,0 +1,16 @@
+# Own words with no relay (or the relay down): the on-device matcher answers and says so.
+# Run with EXPO_PUBLIC_AI_RELAY_URL empty, or with the relay unreachable.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- tapOn: { id: "begin" }
+- tapOn: { id: "tab-words" }
+- tapOn: { id: "words-input" }
+- inputText: "I cannot reach my family"
+- hideKeyboard
+- tapOn: { id: "find-story" }
+- extendedWaitUntil:
+    visible: { id: "screen-scripture" }
+    timeout: 15000
+- assertVisible: "Nehemiah"
+- assertVisible: { id: "ai-local-tag" }
