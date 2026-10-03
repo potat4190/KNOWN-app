@@ -11,6 +11,7 @@ import { usePrefs } from '@/state/prefs';
 import { useUi } from '@/state/ui';
 import { useSession, cleanupPaused, daysLeft } from '@/state/session-store';
 import { now } from '@/state/clock';
+import { recoverOffered } from '@/state/launch';
 import { getStore } from '@/data/store';
 import { DAY_MS, PAUSE_TTL_MS } from '@/config/privacy';
 import { BIBLE_TRACK } from '@/config/bible-track';
@@ -115,6 +116,7 @@ export default function Panel() {
 
   /** Re-run the launch logic after changing the clock. */
   const relaunch = async () => {
+    recoverOffered.done = false; // re-run the launch logic
     const removed = await cleanupPaused();
     setCleaned(removed ? 'On reopen, a paused moment older than 3 days was deleted.' : '');
     useSession.getState().end();

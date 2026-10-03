@@ -16,6 +16,7 @@ import { setStore, getStore } from '@/data/store';
 import { usePrefs, defaultPrefs } from '@/state/prefs';
 import { useSession, pauseSession, cleanupPaused, saveMoment, setRotationRng } from '@/state/session-store';
 import { useUi } from '@/state/ui';
+import { recoverOffered } from '@/state/launch';
 import * as S from '@/state/session';
 import { LANGS, type Lang } from '@/i18n/langs';
 import { MATRIX, P, SEL_KEYS, B, type SelKey } from '@/lib/content';
@@ -78,6 +79,7 @@ function setup(lang: Lang = 'en') {
   usePrefs.setState({ ...defaultPrefs(), lang, tourDone: true, tipsOn: false });
   useSession.setState({ s: null, stack: [] });
   useUi.setState({ sheet: null, status: '', aiLog: [] });
+  recoverOffered.done = false;
 }
 
 function startWith(lang: Lang, fn: (s: S.SessionState) => S.SessionState, stack: S.Screen[]) {
@@ -242,6 +244,19 @@ it('pause → recover sheet; after 3 days the paused moment is gone and a quiet 
   // Home shows the one-time quiet line (and never what was in the moment), then clears the flag.
   expect(await screen.findByText(translate(i18n, 'en', 'paused_removed', { count: 3 }))).toBeTruthy();
   expect(usePrefs.getState().removedNotice).toBe(false);
+});
+
+it('the recover sheet is offered once per launch, not every time Home is shown', async () => {
+  recoverOffered.done = true; // Home was already shown this launch (e.g. before she paused)
+  startWith('en', openSel('F'), ['feel', 'scripture']);
+  await act(async () => {
+    await pauseSession();
+  });
+  renderRouter(routes, { initialUrl: '/' });
+  expect(await screen.findByTestId('paused-card')).toBeTruthy();
+  expect(useUi.getState().sheet).toBeNull();
+  fireEvent.press(screen.getByTestId('begin'));
+  await waitFor(() => expect(useUi.getState().sheet).toBe('recover'));
 });
 
 it('exit sheet: asks before ending a moment with typed words', async () => {

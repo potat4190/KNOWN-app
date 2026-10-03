@@ -22,6 +22,7 @@ import { getStore } from '@/data/store';
 import { beginSession } from '@/state/nav';
 import { daysLeft, loadPaused } from '@/state/session-store';
 import { PAUSE_TTL_MS, DAY_MS } from '@/config/privacy';
+import { recoverOffered } from '@/state/launch';
 
 export default function Home() {
   const { t, tc, lang } = useT();
@@ -46,8 +47,11 @@ export default function Home() {
     useCallback(() => {
       let alive = true;
       void refresh().then((p) => {
-        // On launch (and on return), a paused moment under 3 days old opens the Recover sheet.
-        if (alive && p && !useUi.getState().sheet && usePrefs.getState().lang && usePrefs.getState().tourDone)
+        // On launch, a paused moment under 3 days old opens the Recover sheet (once per launch;
+        // after that, Begin or the "Continue my previous moment" card open it).
+        if (!alive || recoverOffered.done) return;
+        recoverOffered.done = true;
+        if (p && !useUi.getState().sheet && usePrefs.getState().lang && usePrefs.getState().tourDone)
           openSheet('recover');
       });
       return () => {
