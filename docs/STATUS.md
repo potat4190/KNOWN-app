@@ -19,15 +19,25 @@ Honest state of the build. Updated at the end of every phase. Last update: 2026-
 
 Tests: `npm test` = content validator + 288 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean.
 
-## Native build (not verified yet)
+## Device runs (Android emulator, 2026-10-03)
 
-- A local Android debug build was attempted on this PC. It failed first on a missing JDK 17 toolchain (React Native's Gradle plugin needs JDK 17; this PC has 8/16/21/24/25/26), then, with JDK 17, **the C: drive ran out of space** while Gradle installed the NDK (≈4.4 GB). The build outputs, the NDK and the downloaded JDK were removed again to free space; nothing else was touched. About 12 GB is free now; a local Android build needs roughly 10 GB more (NDK + build cache).
-- **Recommended:** build in the cloud with EAS (needs `npx eas-cli@latest login` with the team's Expo account), then install the dev client on a phone:
-  ```bash
-  npx eas-cli@latest build --profile development --platform android
-  npx eas-cli@latest build --profile development --platform ios   # needs an Apple developer account
-  ```
-- So far nothing has been run on a real phone or emulator. Treat device behaviour (SQLCipher, MMKV, YouVersion DOM components, RTL reload, fonts, tips placement) as unverified until then.
+A local Android **debug build succeeded** (Pixel 10 Pro XL emulator, x86_64). The heavy build pieces live on `E:\KNOWN-build` (see README). Walked by hand on the dev build:
+
+| Checked | Result |
+|---|---|
+| Language → onboarding cards → Home | Works. Noto Sans Myanmar, CJK and Arabic render. |
+| Feel → Fear picture → Continue → Nehemiah 1 (WEBBE) | Works; bridge, scene banner, page card, edition label. 3 taps. |
+| Sadness picture → Psalm 142 | Works; poetry line breaks render. |
+| Pray: chosen line joins the prayer card | Works. |
+| After → Keep → Save → Done → Back shows "Saved" (save once) | Works. |
+| Settings: Bible-version row appears (YouVersion key works), Judge panel switch → edge tab | Works. |
+| Coach marks | Fixed on device: ring was a status-bar height too high; bubble covered the primary button. |
+| Headings serif on fast start | Fixed on device (SerifGate). |
+| ✕ exit sheet → Save this step for later → Paused | **Fixed on device**: dismissing never-presented sheets fired their onDismiss and closed the open one. Now works. |
+| Judge panel → Fast-forward 4 days | Works: the paused moment is deleted; Home shows the one-time notice; the tab turns red while the clock is offset. |
+| Story rotation | Works: second Sadness pick → Psalm 13, second Fear pick → Psalm 56, each with the selection's heading and the story's own frame. |
+
+**Known issue (native, intermittent):** two SIGSEGV crashes inside React Native's Fabric renderer (`MountingCoordinator::pullTransaction` at a cold start; `ShadowNode::getTag` during a hot reload). Not reproducible on demand (3 clean cold starts in a row afterwards). Needs watching in release builds; candidates are native mounting hooks (Reanimated / bottom sheet) on RN 0.85.3.
 
 ## YouVersion (checked 2026-10-03 with the app key)
 

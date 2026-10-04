@@ -16,7 +16,7 @@ module.exports = defineConfig([
       'ios/*',
       'relay/node_modules/*',
       'relay/.wrangler/*',
-      'coverage/*',
+      'coverage/*', '.expo/*',
     ],
   },
   {
