@@ -8,6 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Children, type ReactNode } from 'react';
 import { useTheme } from '@/theme';
+import { TourTarget } from '@/features/tour/TourTarget';
+import { ACTIONS_TARGET } from '@/features/tour/TourProvider';
 
 type Props = {
   header?: ReactNode;
@@ -63,19 +65,21 @@ export function Screen({ header, children, actions, center, contentStyle, scroll
           <View style={{ flex: 1 }}>{body}</View>
         )}
         {actions ? (
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingTop: 12,
-              paddingBottom: 8,
-              gap: 4,
-              borderTopWidth: 1,
-              borderTopColor: c.border,
-              backgroundColor: c.background,
-            }}
-          >
-            {actions}
-          </View>
+          <TourTarget id={ACTIONS_TARGET}>
+            <View
+              style={{
+                paddingHorizontal: 20,
+                paddingTop: 12,
+                paddingBottom: 8,
+                gap: 4,
+                borderTopWidth: 1,
+                borderTopColor: c.border,
+                backgroundColor: c.background,
+              }}
+            >
+              {actions}
+            </View>
+          </TourTarget>
         ) : null}
       </KeyboardAvoidingView>
     </SafeAreaView>

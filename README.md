@@ -23,6 +23,9 @@ EAS (recommended for device builds): `npx eas-cli@latest build --profile develop
 
 Local native builds need **JDK 17** (React Native's Gradle plugin uses a JDK 17 toolchain; set `JAVA_HOME` to it) and about 10 GB of free disk for the NDK and build cache.
 
+On the build lead's PC the heavy pieces live on `E:\KNOWN-build` (C: is nearly full): `jdk\` (JDK 17), `gradle-home\` (`GRADLE_USER_HOME`), `ndk\` (target of the junction `%LOCALAPPDATA%\Android\Sdk
+dk`) and `maestro\` (Maestro CLI). All of it is regenerable; to remove it, delete that folder and the junction.
+
 ## Tests
 
 - `npm test`: the content validator, then Jest (`app` project: unit + screen smoke tests with native modules mocked; `relay` project: prompt-contract tests). No test calls the network.

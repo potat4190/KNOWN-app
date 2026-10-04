@@ -41,6 +41,11 @@ export default function Thinking() {
     if (!cur || started.current) return;
     started.current = true;
     const text = cur.words.trim();
+    // Nothing to match (e.g. a stale route after a reload): go back to Feel instead.
+    if (!text) {
+      replaceSession('feel');
+      return;
+    }
     void match(text, lang, relayDeps()).then((r) => {
       const now = useSession.getState().s;
       if (!now || now.screen !== 'thinking') return;

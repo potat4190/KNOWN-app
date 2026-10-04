@@ -39,6 +39,8 @@ export const TIPS: Record<string, string> = {
 
 const HEADER_H = 56;
 const ACTIONS_RESERVE = 150;
+/** The sticky actions bar registers under this id (src/components/Screen.tsx). */
+export const ACTIONS_TARGET = '__actions';
 
 type Ctx = { show: (ids: string[]) => void; clear: () => void };
 const TourCtx = createContext<Ctx>({ show: () => {}, clear: () => {} });
@@ -108,12 +110,25 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const bubble = useRef<View>(null);
+  const root = useRef<View>(null);
+  // The overlay's own window origin: targets and overlay are measured in the same frame,
+  // so the ring lands on the target even with Android edge-to-edge status-bar offsets.
+  const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
+  // The real top of the screen's sticky actions bar (primary button), when the screen has one.
+  const [actionsTop, setActionsTop] = useState<number | null>(null);
+  const [bubbleH, setBubbleH] = useState(170);
+  useEffect(() => {
+    void measureTarget(ACTIONS_TARGET).then((a) => setActionsTop(a ? a.y : null));
+  }, [id]);
+  const ox = origin?.x ?? 0;
+  const oy = origin?.y ?? 0;
   const top = insets.top + HEADER_H;
-  const bottom = height - insets.bottom - ACTIONS_RESERVE;
+  // Never cover the primary button: everything stays above the actions bar.
+  const bottom = actionsTop != null ? actionsTop - oy : height - insets.bottom - ACTIONS_RESERVE;
   const pad = 6;
-  const r = { x: rect.x - pad, y: rect.y - pad, w: rect.width + pad * 2, h: rect.height + pad * 2 };
-  const below = r.y + r.h + 180 < bottom;
-  const bubbleTop = below ? Math.min(r.y + r.h + 10, bottom - 170) : Math.max(top + 8, r.y - 180);
+  const r = { x: rect.x - ox - pad, y: rect.y - oy - pad, w: rect.width + pad * 2, h: rect.height + pad * 2 };
+  const below = r.y + r.h + 10 + bubbleH <= bottom - 8;
+  const bubbleTop = below ? r.y + r.h + 10 : Math.max(top + 8, Math.min(r.y, bottom) - 10 - bubbleH);
 
   useEffect(() => {
     const msg = t(TIPS[id]);
@@ -128,6 +143,15 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
   const scrim = { position: 'absolute' as const, backgroundColor: c.scrim };
   const cy = Math.max(top, Math.min(r.y, bottom));
   const cb = Math.max(top, Math.min(r.y + r.h, bottom));
+  if (!origin)
+    return (
+      <View
+        ref={root}
+        style={{ position: 'absolute', inset: 0 }}
+        pointerEvents="none"
+        onLayout={() => root.current?.measureInWindow((x, y) => setOrigin({ x, y }))}
+      />
+    );
   return (
     <View style={{ position: 'absolute', inset: 0 }} pointerEvents="box-none">
       {/* Scrim with a cut-out, limited to the content area. */}
@@ -154,6 +178,7 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
       >
         <View
           ref={bubble}
+          onLayout={(e) => setBubbleH(Math.ceil(e.nativeEvent.layout.height))}
           accessible={false}
           accessibilityViewIsModal={false}
           style={{

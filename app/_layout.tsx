@@ -20,6 +20,7 @@ import { NotoNaskhArabic_400Regular } from '@expo-google-fonts/noto-naskh-arabic
 import { NotoNaskhArabic_700Bold } from '@expo-google-fonts/noto-naskh-arabic/700Bold';
 import { YOUVERSION_APP_KEY } from '@/config/flags';
 import { ThemeProvider, useTheme } from '@/theme';
+import { SerifGate } from '@/theme/SerifGate';
 import { usePrefs } from '@/state/prefs';
 import { openStore } from '@/data/store';
 import { cleanupPaused } from '@/state/session-store';
@@ -113,14 +114,16 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <YouVersionProvider appKey={YOUVERSION_APP_KEY} theme={theme} locale={LANG_INFO[lang].tag}>
-          <ThemeProvider>
-            <BottomSheetModalProvider>
-              <TourProvider>
-                <MusicHost />
-                <Shell />
-              </TourProvider>
-            </BottomSheetModalProvider>
-          </ThemeProvider>
+          <SerifGate>
+            <ThemeProvider>
+              <BottomSheetModalProvider>
+                <TourProvider>
+                  <MusicHost />
+                  <Shell />
+                </TourProvider>
+              </BottomSheetModalProvider>
+            </ThemeProvider>
+          </SerifGate>
         </YouVersionProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
