@@ -11,6 +11,9 @@ appId: org.ifiusa.known.dev
 - tapOn: { id: "to-pray" }
 - tapOn: { id: "say-0" }
 - assertVisible: { id: "prayer-stay" }
+- scrollUntilVisible:
+    element: { id: "prayer-input" }
+    direction: DOWN
 - tapOn: { id: "prayer-input" }
 - inputText: " ."
 - hideKeyboard
@@ -19,6 +22,9 @@ appId: org.ifiusa.known.dev
 # Continuation: reach out to the guide, who reads English; translate when a relay is set
 - tapOn: { id: "a-reach" }
 - tapOn: { id: "to-guide" }
+- scrollUntilVisible:
+    element: { id: "reader-en" }
+    direction: DOWN
 - tapOn: { id: "reader-en" }
 - runFlow:
     when:
@@ -28,7 +34,13 @@ appId: org.ifiusa.known.dev
       - extendedWaitUntil:
           visible: { id: "back-translation" }
           timeout: 20000
+- scrollUntilVisible:
+    element: { id: "keep-msg" }
+    direction: DOWN
 - tapOn: { id: "keep-msg" }
+- scrollUntilVisible:
+    element: { id: "back-choices" }
+    direction: DOWN
 - tapOn: { id: "back-choices" }
 - tapOn: { id: "a-keep" }
 - tapOn: { id: "save-moment" }

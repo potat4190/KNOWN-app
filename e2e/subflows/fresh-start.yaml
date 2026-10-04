@@ -1,4 +1,5 @@
-# Fresh install: clear state, choose a language (LANG, default en), skip the first-run cards.
+# Fresh install: clear state, choose a language (LANG, default en), skip the first-run cards,
+# and turn coach-mark tips off so they never sit over a tap target in these flows.
 appId: org.ifiusa.known.dev
 env:
   LANG: en
@@ -9,5 +10,13 @@ env:
     id: "lang-${LANG}"
 - tapOn:
     id: "tour-skip"
+- assertVisible:
+    id: "screen-home"
+- tapOn:
+    id: "tab-more"
+- tapOn:
+    id: "tips-switch"
+- tapOn:
+    id: "tab-home"
 - assertVisible:
     id: "screen-home"

@@ -42,10 +42,12 @@ export async function applyLanguage(lang: Lang): Promise<boolean> {
   try {
     if (__DEV__) DevSettings.reload();
     else await Updates.reloadAsync();
+    return true;
   } catch {
-    // If reload isn't possible, the new direction applies on next launch.
+    // Reload isn't possible (e.g. expo-updates not configured): carry on in this direction;
+    // the new direction applies on the next launch. Never leave her stuck on this screen.
+    return false;
   }
-  return true;
 }
 
 /** On launch: make sure the native direction matches the saved language. */

@@ -17,6 +17,12 @@ appId: org.ifiusa.known.dev
 - tapOn: { id: "keep-done" }
 - tapOn: { id: "view-moments" }
 - tapOn: { id: "moment-0" }
+- scrollUntilVisible:
+    element: { id: "delete-moment" }
+    direction: DOWN
 - tapOn: { id: "delete-moment" }
+- scrollUntilVisible:
+    element: { id: "delete-confirm-yes" }
+    direction: DOWN
 - tapOn: { id: "delete-confirm-yes" }
 - assertVisible: { id: "moments-empty" }

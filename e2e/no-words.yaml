@@ -4,6 +4,9 @@ appId: org.ifiusa.known.dev
 - runFlow: subflows/fresh-start.yaml
 - tapOn: { id: "begin" }
 - tapOn: { id: "no-words" }
+- scrollUntilVisible:
+    element: { id: "page-card" }
+    direction: DOWN
 - assertVisible: "Psalm 77:1–4"
 - tapOn: { id: "nw-help" }
 - assertVisible: { id: "screen-help" }
