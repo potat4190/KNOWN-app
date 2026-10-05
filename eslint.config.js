@@ -10,6 +10,7 @@ module.exports = defineConfig([
   {
     ignores: [
       'dist/*',
+      'dist-web/*',
       'reference/*',
       'src/content/*',
       'android/*',

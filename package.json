@@ -1,6 +1,6 @@
 {
   "name": "known",
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "version": "1.0.0",
   "dependencies": {
     "@expo-google-fonts/noto-naskh-arabic": "^0.4.5",

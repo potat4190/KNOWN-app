@@ -1,6 +1,9 @@
 import { match, parseMatch, translateMessage, isCrisis, type RelayDeps } from '@/services/matcher/matcher';
 import { matchLocal } from '@/services/matcher/local';
 import { resolve, youVersionLink, clearScriptureCache, type ScriptureDeps } from '@/services/scripture/scripture';
+import { scriptureDeps } from '@/services/scripture/useScripture';
+import { BIBLE_VERSIONS } from '@/config/bible-versions';
+import { usePrefs } from '@/state/prefs';
 import { resolveTrack, anyMusicConfigured, fadeSteps } from '@/services/music/resolve';
 import { MUSIC, type MusicConfig } from '@/config/music';
 import { ALL_HELP_LINES, isVerified, localEmergencyFor } from '@/config/help-lines';
@@ -154,6 +157,28 @@ describe('ScriptureService fallback (YouVersion mocked)', () => {
       abbr: 'WEBBE',
     });
     expect(await resolve('neh', 'ar', deps({ appKey: '' }))).toMatchObject({ textLang: 'ar', fallback: false });
+  });
+
+  it('defaults chosen on 2026-10-04: every language but Burmese has a YouVersion version', () => {
+    expect(BIBLE_VERSIONS).toEqual({
+      en: { id: 206, abbr: 'WEBUS' },
+      my: null,
+      zh: { id: 43, abbr: 'CSBS' },
+      ja: { id: 81, abbr: 'JA1955' },
+      ar: { id: 195, abbr: 'ت ع م' },
+    });
+  });
+
+  it('uses the language default until she picks a version', () => {
+    usePrefs.getState().set({ yvVersion: null });
+    expect(scriptureDeps('ja').version).toEqual({ id: 81, abbr: 'JA1955' });
+    expect(scriptureDeps('my').version).toBeNull();
+  });
+
+  it('Burmese: bundled Judson and no YouVersion pill', async () => {
+    const r = await resolve('neh', 'my', deps({ version: BIBLE_VERSIONS.my }));
+    expect(r).toMatchObject({ source: 'bundled', reason: 'no-version', abbr: 'Judson' });
+    expect(youVersionLink(r, 'neh')).toBeNull();
   });
 
   it('the version label matches what "Open in YouVersion" opens', async () => {

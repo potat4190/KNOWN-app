@@ -31,8 +31,11 @@ import { PanelTab } from '@/features/panel/PanelTab';
 import { TourProvider } from '@/features/tour/TourProvider';
 import { MusicHost } from '@/services/music/MusicHost';
 import { LampGlow } from '@/components/Lamp';
+import { keepYouVersionInPage } from '@/lib/youversion-web';
 
 void SplashScreen.preventAutoHideAsync().catch(() => {});
+// Web: the YouVersion SDK (imported above) replaced fetch for phone WebViews; take it back.
+keepYouVersionInPage();
 
 /** When KNOWN leaves the foreground, cover the screen so the app switcher doesn't show her words. */
 function PrivacyCover() {
