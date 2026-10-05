@@ -3,7 +3,7 @@ import { matchLocal } from '@/services/matcher/local';
 import { resolve, youVersionLink, clearScriptureCache, type ScriptureDeps } from '@/services/scripture/scripture';
 import { scriptureDeps } from '@/services/scripture/useScripture';
 import { BIBLE_VERSIONS } from '@/config/bible-versions';
-import { usePrefs } from '@/state/prefs';
+import { migratePrefs, usePrefs } from '@/state/prefs';
 import { resolveTrack, anyMusicConfigured, fadeSteps } from '@/services/music/resolve';
 import { MUSIC, type MusicConfig } from '@/config/music';
 import { ALL_HELP_LINES, isVerified, localEmergencyFor } from '@/config/help-lines';
@@ -182,7 +182,7 @@ describe('ScriptureService fallback (YouVersion mocked)', () => {
 
   it('defaults chosen on 2026-10-04: every language but Burmese has a YouVersion version', () => {
     expect(BIBLE_VERSIONS).toEqual({
-      en: { id: 206, abbr: 'WEBUS' },
+      en: { id: 3034, abbr: 'BSB' },
       my: null,
       zh: { id: 43, abbr: 'CSBS' },
       ja: { id: 81, abbr: 'JA1955' },
@@ -191,9 +191,24 @@ describe('ScriptureService fallback (YouVersion mocked)', () => {
   });
 
   it('uses the language default until she picks a version', () => {
-    usePrefs.getState().set({ yvVersion: null });
+    usePrefs.getState().set({ yvVersions: {} });
     expect(scriptureDeps('ja').version).toEqual({ id: 81, abbr: 'JA1955' });
     expect(scriptureDeps('my').version).toBeNull();
+  });
+
+  it('her pick stays with the language she picked it in', () => {
+    usePrefs.getState().set({ yvVersions: { zh: { id: 312, abbr: 'CSBT' } } });
+    expect(scriptureDeps('zh').version).toEqual({ id: 312, abbr: 'CSBT' });
+    expect(scriptureDeps('en').version).toEqual({ id: 3034, abbr: 'BSB' });
+    usePrefs.getState().set({ yvVersions: {} });
+  });
+
+  it('a single choice saved by an older build becomes the choice for the language she used', () => {
+    expect(migratePrefs({ lang: 'zh', yvVersion: { id: 312, abbr: 'CSBT' } })).toEqual({
+      lang: 'zh',
+      yvVersions: { zh: { id: 312, abbr: 'CSBT' } },
+    });
+    expect(migratePrefs({ lang: 'en', yvVersion: null })).toEqual({ lang: 'en' });
   });
 
   it('Burmese: bundled Judson and no YouVersion pill', async () => {

@@ -17,7 +17,7 @@ import {
 } from './scripture';
 
 export function scriptureDeps(lang: Lang): ScriptureDeps {
-  const choice = usePrefs.getState().yvVersion;
+  const choice = usePrefs.getState().yvVersions[lang];
   return {
     appKey: YOUVERSION_APP_KEY,
     version: choice ?? BIBLE_VERSIONS[lang],
@@ -34,7 +34,7 @@ export function scriptureDeps(lang: Lang): ScriptureDeps {
  * (show a skeleton, never a blank card; the preflight gives up after 3 s).
  */
 export function useScripture(path: PathKey | null, lang: Lang): Resolved | null {
-  const yvVersion = usePrefs((p) => p.yvVersion);
+  const yvVersion = usePrefs((p) => p.yvVersions[lang]);
   const key = `${path}|${lang}|${yvVersion?.id ?? ''}`;
   const [state, setState] = useState<{ key: string; r: Resolved } | null>(null);
   useEffect(() => {

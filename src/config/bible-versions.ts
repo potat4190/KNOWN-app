@@ -6,8 +6,9 @@
  *
  * Chosen by Rhidaya on 2026-10-04 from `npm run yv:versions` (versions enabled
  * for the app key). Every library passage was checked live in each version.
- *   en 206 WEBUS   same translation as the bundled WEBBE, American spelling;
- *                  it says "Yahweh" where WEBBE says "the LORD"
+ *   en 3034 BSB    Berean Standard Bible (public domain), "the LORD" as in the bundled
+ *                  WEBBE but different wording; Psalms include their titles in verse 1.
+ *                  (206 WEBUS, WEBBE's own translation, says "Yahweh": not chosen.)
  *   ja 81 JA1955   口語訳 (1955), the same edition as the bundled text
  *   zh 43 CSBS     中文标准译本 (© Global Bible Initiative); YouVersion has no 和合本
  *                  for this key, so this is a different translation from the bundled one
@@ -26,7 +27,7 @@ import type { Lang } from '@/i18n/langs';
 export type BibleVersionChoice = { id: number; abbr: string } | null;
 
 export const BIBLE_VERSIONS: Record<Lang, BibleVersionChoice> = {
-  en: { id: 206, abbr: 'WEBUS' },
+  en: { id: 3034, abbr: 'BSB' },
   my: null,
   zh: { id: 43, abbr: 'CSBS' },
   ja: { id: 81, abbr: 'JA1955' },

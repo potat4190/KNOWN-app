@@ -328,12 +328,12 @@ export default function Panel() {
             <KV
               key={l}
               k={`version ${l}`}
-              v={
-                BIBLE_VERSIONS[l] ? `${BIBLE_VERSIONS[l]!.abbr} (${BIBLE_VERSIONS[l]!.id})` : 'not chosen yet → bundled'
-              }
+              v={[
+                BIBLE_VERSIONS[l] ? `${BIBLE_VERSIONS[l]!.abbr} (${BIBLE_VERSIONS[l]!.id})` : 'none for this key → bundled',
+                p.yvVersions[l] ? ` · her choice ${p.yvVersions[l]!.abbr} (${p.yvVersions[l]!.id})` : '',
+              ].join('')}
             />
           ))}
-          <KV k="her choice" v={p.yvVersion ? `${p.yvVersion.abbr} (${p.yvVersion.id})` : '–'} />
           <KV k="last source" v={lastScripture?.source ?? '–'} />
           <KV k="last error" v={lastScripture?.error ?? '–'} />
         </Sec>

@@ -23,8 +23,11 @@ export type Prefs = {
   panelOn: boolean;
   /** Test-clock offset in ms (judge panel only). */
   clockOffset: number;
-  /** Her chosen YouVersion version, overriding the per-language default. */
-  yvVersion: { id: number; abbr: string } | null;
+  /**
+   * Her chosen YouVersion version for each app language, overriding that language's default
+   * (src/config/bible-versions.ts). A version picked while using Chinese stays with Chinese.
+   */
+  yvVersions: Partial<Record<Lang, { id: number; abbr: string }>>;
   /** One-time quiet line on Home after cleanup removed a paused moment. */
   removedNotice: boolean;
   /** Random id for relay rate-limiting. Not tied to identity. */
@@ -48,7 +51,7 @@ export const defaultPrefs = (): Prefs => ({
   tipsSeen: {},
   panelOn: false,
   clockOffset: 0,
-  yvVersion: null,
+  yvVersions: {},
   removedNotice: false,
   installId: randomId(),
 });
@@ -59,9 +62,16 @@ type PrefsStore = Prefs & {
   resetKeepLanguage: () => void;
 };
 
+/** Saved prefs from older builds: a single Bible version choice becomes her choice for the language she used. */
+export function migratePrefs(saved: Partial<Prefs> & { yvVersion?: { id: number; abbr: string } | null }) {
+  const { yvVersion, ...rest } = saved;
+  if (yvVersion && !rest.yvVersions) rest.yvVersions = rest.lang ? { [rest.lang]: yvVersion } : {};
+  return rest;
+}
+
 export const usePrefs = create<PrefsStore>((setState, get) => ({
   ...defaultPrefs(),
-  ...(kv.getJSON<Partial<Prefs>>(KEY) ?? {}),
+  ...migratePrefs(kv.getJSON<Partial<Prefs>>(KEY) ?? {}),
   set: (patch) => {
     setState(patch);
     const { set: _s, resetKeepLanguage: _r, ...data } = get();

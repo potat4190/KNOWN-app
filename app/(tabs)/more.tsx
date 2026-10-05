@@ -88,7 +88,8 @@ export default function More() {
     if (needsDirectionReload(l)) setRtlFor(l);
     else void applyLanguage(l);
   };
-  const currentVersion = p.yvVersion ?? BIBLE_VERSIONS[lang];
+  // Her choice is kept per app language (team decision 2026-10-04).
+  const currentVersion = p.yvVersions[lang] ?? BIBLE_VERSIONS[lang];
 
   return (
     <Screen header={<Header hideGear />} testID="screen-more">
@@ -151,7 +152,8 @@ export default function More() {
             onSelect={async (id) => {
               setPicker(false);
               const meta = await fetchVersionMeta(id).catch(() => null);
-              p.set({ yvVersion: { id, abbr: meta?.abbr || String(id) } });
+              const yvVersions = usePrefs.getState().yvVersions;
+              p.set({ yvVersions: { ...yvVersions, [lang]: { id, abbr: meta?.abbr || String(id) } } });
             }}
           />
         </Section>
