@@ -5,7 +5,7 @@
  */
 import { KeyboardAvoidingView, Platform, ScrollView, View, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Children, type ReactNode } from 'react';
+import { Children, isValidElement, type ReactNode } from 'react';
 import { useTheme } from '@/theme';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { ACTIONS_TARGET } from '@/features/tour/TourProvider';
@@ -32,8 +32,11 @@ export function Screen({ header, children, actions, center, contentStyle, scroll
         contentStyle,
       ]}
     >
+      {/* Keyed by the child's place in the screen (toArray counts empty slots), not its index
+          among the shown ones: a section appearing or going (e.g. a reader-language
+          translation) must not remount and re-animate everything after it. */}
       {Children.toArray(children).map((child, i) => (
-        <Rise key={i} index={i}>
+        <Rise key={isValidElement(child) && child.key != null ? child.key : i} index={i}>
           {child}
         </Rise>
       ))}
