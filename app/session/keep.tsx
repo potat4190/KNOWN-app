@@ -3,13 +3,15 @@
  * shows it as saved (savedMomentId) and can't create a second Moment.
  * "My message" is pre-checked only if she chose to keep one. If the phone's
  * storage couldn't be opened (memory only), Keep says so before and after.
+ * "Finish without saving" asks first if she typed or changed anything.
  */
+import { useState } from 'react';
 import { router } from 'expo-router';
 import { View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
-import { Choice, Heading, Lead, Notice } from '@/components/bits';
+import { Choice, Heading, InlineConfirm, Lead, Notice } from '@/components/bits';
 import { Txt } from '@/components/Txt';
 import { useT } from '@/i18n';
 import { useTheme } from '@/theme';
@@ -29,6 +31,7 @@ export default function Keep() {
   const { t, lang } = useT();
   const { c } = useTheme();
   const msgText = useMsgText();
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   if (!s || !s.path) return null;
   const rows = S.keepRows(s);
   const saved = !!s.savedMomentId;
@@ -63,6 +66,8 @@ export default function Keep() {
     setLastSaved(false);
     leaveTo('/done');
   };
+  // Her own prayer, words or message would be thrown away: ask first (as the ✕ sheet does).
+  const askFinish = () => (S.hasTyped(s, lang) ? setConfirmDiscard(true) : void finishWithout());
 
   return (
     <Screen
@@ -71,10 +76,19 @@ export default function Keep() {
       actions={
         saved ? (
           <Button label={t('done')} onPress={() => router.push('/done')} testID="keep-done" />
+        ) : confirmDiscard ? (
+          <InlineConfirm
+            question={t('discard_q')}
+            yes={t('discard_yes')}
+            no={t('cancel')}
+            onYes={() => void finishWithout()}
+            onNo={() => setConfirmDiscard(false)}
+            testID="finish-confirm"
+          />
         ) : (
           <>
             <Button label={t('save_moment')} onPress={save} disabled={!S.canSave(s)} testID="save-moment" />
-            <Button kind="plain" label={t('end_nosave')} onPress={finishWithout} testID="finish-without" />
+            <Button kind="plain" label={t('end_nosave')} onPress={askFinish} testID="finish-without" />
           </>
         )
       }

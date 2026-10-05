@@ -5,7 +5,7 @@
  * content; recover and the 3-day expiry via the test clock; translate-on-open;
  * prefs persist; the panel stays English. YouVersion is mocked; no network.
  */
-import { Slot } from 'expo-router';
+import { Slot, router } from 'expo-router';
 import { renderRouter, screen, act, fireEvent, waitFor } from 'expo-router/testing-library';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider } from '@/theme';
@@ -14,7 +14,14 @@ import { SheetHost } from '@/features/sheets/SheetHost';
 import { createMemoryStore } from '@/data/memory-store';
 import { setStore, getStore } from '@/data/store';
 import { usePrefs, defaultPrefs } from '@/state/prefs';
-import { useSession, pauseSession, cleanupPaused, saveMoment, setRotationRng, openPictures } from '@/state/session-store';
+import {
+  useSession,
+  pauseSession,
+  cleanupPaused,
+  saveMoment,
+  setRotationRng,
+  openPictures,
+} from '@/state/session-store';
 import { useUi } from '@/state/ui';
 import { recoverOffered } from '@/state/launch';
 import * as S from '@/state/session';
@@ -301,6 +308,40 @@ it('the recover sheet is offered once per launch, not every time Home is shown',
   expect(useUi.getState().sheet).toBeNull();
   fireEvent.press(screen.getByTestId('begin'));
   await waitFor(() => expect(useUi.getState().sheet).toBe('recover'));
+});
+
+describe('Keep → Finish without saving', () => {
+  // Opened straight at Keep, the test router has no stack for leaveTo's dismissAll to pop.
+  beforeEach(() => jest.spyOn(router, 'dismissAll').mockImplementation(() => {}));
+  afterEach(() => jest.restoreAllMocks());
+
+  it('asks first when she changed the prayer', async () => {
+    startWith('en', (s) => S.setPrayer(openSel('F')(s), 'my own prayer'), [
+      'feel',
+      'scripture',
+      'pray',
+      'after',
+      'keep',
+    ]);
+    renderRouter(routes, { initialUrl: '/session/keep' });
+    fireEvent.press(await screen.findByTestId('finish-without'));
+    expect(await screen.findByTestId('finish-confirm')).toBeTruthy();
+    expect(useSession.getState().s).not.toBeNull(); // nothing thrown away yet
+    fireEvent.press(screen.getByTestId('finish-confirm-no'));
+    expect(await screen.findByTestId('save-moment')).toBeTruthy();
+    fireEvent.press(screen.getByTestId('finish-without'));
+    fireEvent.press(await screen.findByTestId('finish-confirm-yes'));
+    expect(await screen.findByTestId('screen-done')).toBeTruthy();
+    expect(useSession.getState().s).toBeNull();
+  });
+
+  it('goes straight on when she typed nothing', async () => {
+    atKeep();
+    renderRouter(routes, { initialUrl: '/session/keep' });
+    fireEvent.press(await screen.findByTestId('finish-without'));
+    expect(await screen.findByTestId('screen-done')).toBeTruthy();
+    expect(screen.queryByTestId('finish-confirm')).toBeNull();
+  });
 });
 
 it('exit sheet: asks before ending a moment with typed words', async () => {
