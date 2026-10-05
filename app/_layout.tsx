@@ -31,6 +31,7 @@ import { PanelTab } from '@/features/panel/PanelTab';
 import { TourProvider } from '@/features/tour/TourProvider';
 import { MusicHost } from '@/services/music/MusicHost';
 import { LampGlow } from '@/components/Lamp';
+import { AppFrame } from '@/components/AppFrame';
 import { keepYouVersionInPage } from '@/lib/youversion-web';
 
 void SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -119,12 +120,14 @@ export default function RootLayout() {
         <YouVersionProvider appKey={YOUVERSION_APP_KEY} theme={theme} locale={LANG_INFO[lang].tag}>
           <SerifGate>
             <ThemeProvider>
-              <BottomSheetModalProvider>
-                <TourProvider>
-                  <MusicHost />
-                  <Shell />
-                </TourProvider>
-              </BottomSheetModalProvider>
+              <AppFrame>
+                <BottomSheetModalProvider>
+                  <TourProvider>
+                    <MusicHost />
+                    <Shell />
+                  </TourProvider>
+                </BottomSheetModalProvider>
+              </AppFrame>
             </ThemeProvider>
           </SerifGate>
         </YouVersionProvider>

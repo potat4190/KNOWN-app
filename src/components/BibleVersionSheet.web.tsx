@@ -16,6 +16,7 @@ import {
 } from '@youversion/platform-react-ui';
 import { getTokens, type BibleVersionPickerSheetProps } from '@youversion/platform-react-native-expo-ui';
 import { YOUVERSION_APP_KEY } from '@/config/flags';
+import { WEB_COLUMN } from '@/config/web-layout';
 import { useT } from '@/i18n';
 import { LANG_INFO } from '@/i18n/langs';
 
@@ -127,7 +128,7 @@ export function BibleVersionSheet({ isOpen, onClose, versionId = 3034, theme, on
           testID="bible-version-sheet"
           style={{
             width: '100%',
-            maxWidth: 640,
+            maxWidth: WEB_COLUMN,
             alignSelf: 'center',
             backgroundColor: tokens.background,
             borderTopLeftRadius: 15,

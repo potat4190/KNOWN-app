@@ -8,6 +8,7 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme';
+import { WEB_COLUMN } from '@/config/web-layout';
 import { Heading } from './bits';
 import { Txt } from './Txt';
 
@@ -42,7 +43,7 @@ export function Sheet({ open, onClose, title, eyebrow, locked, children, testID 
           accessibilityViewIsModal
           style={{
             width: '100%',
-            maxWidth: 640,
+            maxWidth: WEB_COLUMN,
             alignSelf: 'center',
             maxHeight: maxH,
             backgroundColor: c.elevated,

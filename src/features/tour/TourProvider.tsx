@@ -23,6 +23,7 @@ import { useUi } from '@/state/ui';
 import { useSession } from '@/state/session-store';
 import { Txt } from '@/components/Txt';
 import { Button } from '@/components/Button';
+import { useFrameWidth } from '@/components/AppFrame';
 import { isFixedTarget, measureTarget, type Rect } from './targets';
 
 /** Tip id → its drafted text key. */
@@ -164,7 +165,9 @@ function Coach({
 }) {
   const { c, radius, reduceMotion } = useTheme();
   const { t } = useT();
-  const { width, height } = useWindowDimensions();
+  const { height } = useWindowDimensions();
+  // The bubble spans the app's width: the screen on phones, the column in a wide browser window.
+  const width = useFrameWidth();
   const insets = useSafeAreaInsets();
   const bubble = useRef<View>(null);
   const root = useRef<View>(null);

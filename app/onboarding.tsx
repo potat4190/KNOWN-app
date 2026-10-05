@@ -4,7 +4,7 @@
  * (except from Settings → Show me around again). Copy is drafted.
  */
 import { useCallback, useRef, useState } from 'react';
-import { FlatList, View, useWindowDimensions, type ViewToken } from 'react-native';
+import { FlatList, View, type ViewToken } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme';
@@ -16,13 +16,15 @@ import { Txt } from '@/components/Txt';
 import { Lamp } from '@/components/Lamp';
 import { StepDots } from '@/components/Header';
 import { Icon } from '@/components/Icon';
+import { useFrameWidth } from '@/components/AppFrame';
 
 type Card = { key: string; title: string; body: string[]; visual: 'lamp' | 'steps' | 'lock' | 'help' };
 
 export default function Onboarding() {
   const { c, radius } = useTheme();
   const { t } = useT();
-  const { width } = useWindowDimensions();
+  // Each card is one page wide: the screen on phones, the app column in a wide browser window.
+  const width = useFrameWidth();
   const [i, setI] = useState(0);
   const list = useRef<FlatList<Card>>(null);
   const set = usePrefs((p) => p.set);
