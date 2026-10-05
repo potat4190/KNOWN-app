@@ -1,14 +1,19 @@
-/** In-memory Store for tests, and the fallback if the encrypted DB can't open. */
+/**
+ * In-memory Store: the fallback if the encrypted DB can't open (nothing survives closing
+ * KNOWN, and the app says so), and the store tests use (`persistent: true` stands in for a
+ * working DB).
+ */
 import type { Moment, PausedSession, Store } from './types';
 import type { RotationEntry } from '@/services/rotation/rotation';
 
-export function createMemoryStore(): Store {
+export function createMemoryStore({ persistent = false }: { persistent?: boolean } = {}): Store {
   let moments: Moment[] = [];
   let session: PausedSession | null = null;
   let rotation: Record<string, RotationEntry> = {};
   const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
   return {
     encrypted: false,
+    persistent,
     moments: {
       list: async () => clone(moments).sort((a, b) => b.createdAt - a.createdAt),
       get: async (id) => clone(moments.find((m) => m.id === id) ?? null),

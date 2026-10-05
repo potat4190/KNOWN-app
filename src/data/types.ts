@@ -33,6 +33,8 @@ export type PausedSession<S = unknown> = { ts: number; state: S; hist: string[] 
 
 export interface Store {
   readonly encrypted: boolean;
+  /** What's saved survives closing KNOWN. False for the memory-only fallback: the app says so. */
+  readonly persistent: boolean;
   moments: {
     list(): Promise<Moment[]>;
     get(id: string): Promise<Moment | null>;

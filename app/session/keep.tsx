@@ -1,7 +1,8 @@
 /**
  * Keep: she checks what to save on this phone. Save once: after saving, Keep
  * shows it as saved (savedMomentId) and can't create a second Moment.
- * "My message" is pre-checked only if she chose to keep one.
+ * "My message" is pre-checked only if she chose to keep one. If the phone's
+ * storage couldn't be opened (memory only), Keep says so before and after.
  */
 import { router } from 'expo-router';
 import { View } from 'react-native';
@@ -18,6 +19,7 @@ import { leaveTo, useSessionScreen } from '@/state/nav';
 import * as S from '@/state/session';
 import { useMsgText } from '@/state/useMsgText';
 import { setLastSaved } from '@/state/done';
+import { getStore } from '@/data/store';
 
 const clip = (s: string, n = 90) => (s.length > n ? `${s.slice(0, n)}…` : s);
 
@@ -30,6 +32,7 @@ export default function Keep() {
   if (!s || !s.path) return null;
   const rows = S.keepRows(s);
   const saved = !!s.savedMomentId;
+  const persistent = getStore().persistent;
 
   const detail: Record<keyof S.KeepChoice, string | null> = {
     passage: ref(s.path, lang),
@@ -82,9 +85,10 @@ export default function Keep() {
       <Heading>{t('keep_title')}</Heading>
       <Lead>{t('keep_sub')}</Lead>
       {saved ? (
-        <Notice icon="check">{t('saved_ok')}</Notice>
+        <Notice icon="check">{t(persistent ? 'saved_ok' : 'saved_memory')}</Notice>
       ) : (
         <View style={{ gap: 10 }}>
+          {persistent ? null : <Notice icon="lock">{t('store_memory')}</Notice>}
           {rows.map((k) => (
             <Choice
               key={k}

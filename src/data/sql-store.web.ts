@@ -1,8 +1,7 @@
 /**
  * WEB ONLY (Metro picks this file instead of sql-store.ts when building for
  * the web). Browsers have no SQLCipher or device keychain, so the web build
- * keeps the same data in localStorage. It is NOT encrypted: the web build is
- * for testing, and its banner says so.
+ * keeps the same data in localStorage. It is NOT encrypted.
  */
 import type { Moment, PausedSession, Store } from './types';
 import type { RotationEntry } from '@/services/rotation/rotation';
@@ -29,13 +28,17 @@ function remove(key: string) {
 }
 
 export async function openSqlStore(): Promise<Store> {
-  // Fails here (and the app falls back to memory) if the browser blocks storage.
+  // Fails here (and the app falls back to memory, and says so) if the browser blocks storage.
+  // When it does, the YouVersion SDK puts an in-memory stand-in at window.localStorage that
+  // would pass the probe but forget everything on reload: that is not a Storage, so refuse it.
+  if (!(window.localStorage instanceof Storage)) throw new Error('browser storage unavailable');
   write('known.web.probe', 1);
   remove('known.web.probe');
 
   const moments = () => read<Moment[]>(K.moments, []);
   return {
     encrypted: false,
+    persistent: true,
     moments: {
       list: async () => moments().sort((a, b) => b.createdAt - a.createdAt),
       get: async (id) => moments().find((m) => m.id === id) ?? null,

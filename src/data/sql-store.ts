@@ -16,13 +16,27 @@ const DB_NAME = 'known.db';
 const KEY_NAME = 'known.db.key.v1';
 const SECURE = { keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY };
 
-async function dbKey(): Promise<string> {
+/** The DB key, and whether it was just made (no usable key was in SecureStore). */
+async function dbKey(): Promise<{ key: string; fresh: boolean }> {
   const existing = await SecureStore.getItemAsync(KEY_NAME, SECURE);
-  if (existing && /^[0-9a-f]{64}$/.test(existing)) return existing;
+  if (existing && /^[0-9a-f]{64}$/.test(existing)) return { key: existing, fresh: false };
   const bytes = await Crypto.getRandomBytesAsync(32);
   const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
   await SecureStore.setItemAsync(KEY_NAME, hex, SECURE);
-  return hex;
+  return { key: hex, fresh: true };
+}
+
+async function openWithKey(key: string): Promise<SQLite.SQLiteDatabase> {
+  const db = await SQLite.openDatabaseAsync(DB_NAME);
+  try {
+    await db.execAsync(`PRAGMA key = "x'${key}'";`);
+    // Fails here (not later) if the key doesn't match the file.
+    await db.getFirstAsync('SELECT count(*) AS n FROM sqlite_master;');
+    return db;
+  } catch (e) {
+    await db.closeAsync().catch(() => {});
+    throw e;
+  }
 }
 
 type Row = {
@@ -87,11 +101,18 @@ const toSql = (v: unknown): SQLite.SQLiteBindValue =>
   typeof v === 'boolean' ? (v ? 1 : 0) : v == null ? null : (v as string | number);
 
 export async function openSqlStore(): Promise<Store> {
-  const key = await dbKey();
-  const db = await SQLite.openDatabaseAsync(DB_NAME);
-  await db.execAsync(`PRAGMA key = "x'${key}'";`);
-  // Fails here (not later) if the key doesn't match the file.
-  await db.getFirstAsync('SELECT count(*) AS n FROM sqlite_master;');
+  const { key, fresh } = await dbKey();
+  let db: SQLite.SQLiteDatabase;
+  try {
+    db = await openWithKey(key);
+  } catch (e) {
+    // The key was gone from SecureStore while the file stayed (a restore, a cleared keychain):
+    // that file can never be read again, and every launch would fail on it. Start a new one.
+    // A key that exists but doesn't open the file is left alone (the store falls back to memory).
+    if (!fresh) throw e;
+    await SQLite.deleteDatabaseAsync(DB_NAME);
+    db = await openWithKey(key);
+  }
   await db.execAsync('PRAGMA journal_mode = WAL;');
 
   const version = (await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version;'))?.user_version ?? 0;
@@ -111,6 +132,7 @@ export async function openSqlStore(): Promise<Store> {
 
   return {
     encrypted: true,
+    persistent: true,
     moments: {
       list: async () => (await db.getAllAsync<Row>('SELECT * FROM moments ORDER BY created_at DESC;')).map(fromRow),
       get: async (id) => {

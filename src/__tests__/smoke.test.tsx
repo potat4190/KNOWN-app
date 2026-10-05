@@ -75,7 +75,8 @@ const routes = {
 };
 
 function setup(lang: Lang = 'en') {
-  setStore(createMemoryStore());
+  // Stands in for a working encrypted DB (the memory-only fallback is tested on its own).
+  setStore(createMemoryStore({ persistent: true }));
   usePrefs.setState({ ...defaultPrefs(), lang, tourDone: true, tipsOn: false });
   useSession.setState({ s: null, stack: [] });
   useUi.setState({ sheet: null, status: '', aiLog: [] });
@@ -197,6 +198,27 @@ it('save flow: saves once; Keep then shows it as saved', async () => {
   const [m] = await getStore().moments.list();
   expect(m.stay).toBe(P('neh', 'options', 'en')[0]);
   expect(m.msg).toBeNull(); // never pre-checked without "Keep this message"
+});
+
+const atKeep = () =>
+  startWith('en', (s) => S.toggleStay(openSel('F')(s), 0), ['feel', 'scripture', 'pray', 'after', 'keep']);
+
+it('saved with working storage: Done says "Saved to Moments on this phone"', async () => {
+  atKeep();
+  renderRouter(routes, { initialUrl: '/session/keep' });
+  expect(screen.queryByText(tt('en', 'store_memory'))).toBeNull();
+  fireEvent.press(await screen.findByTestId('save-moment'));
+  expect(await screen.findByTestId('saved-ok')).toHaveTextContent(tt('en', 'saved_ok'));
+});
+
+it("storage couldn't be opened (memory only): Keep and Done say it's kept only until KNOWN closes", async () => {
+  setStore(createMemoryStore());
+  atKeep();
+  renderRouter(routes, { initialUrl: '/session/keep' });
+  expect(await screen.findByText(tt('en', 'store_memory'))).toBeTruthy();
+  fireEvent.press(await screen.findByTestId('save-moment'));
+  expect(await screen.findByTestId('saved-ok')).toHaveTextContent(tt('en', 'saved_memory'));
+  expect(screen.queryByText(tt('en', 'saved_ok'))).toBeNull();
 });
 
 it('Home never shows moment content, only a count', async () => {
