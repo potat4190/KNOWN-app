@@ -74,5 +74,11 @@ cd ../KNOWN-webapp && git add -A && git commit -m "Update web build" && git push
 Only a few `*.web.ts(x)` files differ from the phone, because browsers lack the phone's native modules:
 `src/data/sql-store.web.ts` (Moments, paused moment and rotation in localStorage, **not encrypted**),
 `src/state/kv.web.ts` (preferences in localStorage), `src/components/Sheet.web.tsx` (bottom sheets),
-`src/i18n/direction.web.ts` (right-to-left via `<html dir>`; "restart" reloads the page) and
-`src/lib/a11y-focus.web.ts`. The YouVersion app key from `.env` is built into the site's public JavaScript.
+`src/i18n/direction.web.ts` (right-to-left via `<html dir>`; "restart" reloads the page),
+`src/lib/a11y-focus.web.ts`, `src/lib/youversion-web.web.ts` (the YouVersion SDK is made for phone
+WebViews: in the page it keeps the browser's own fetch and the page height; loaded first from `index.ts`),
+`src/components/BibleVersionSheet.web.tsx` (the SDK's picker sheet renders nothing in browsers) and
+`src/components/Rise.web.tsx` (screen entrance as a CSS animation).
+
+YouVersion works in browsers (api.youversion.com allows any origin). The YouVersion app key from `.env` is
+built into the site's public JavaScript, and every visitor shares its rate limit.
