@@ -23,7 +23,7 @@ import { useUi } from '@/state/ui';
 import { useSession } from '@/state/session-store';
 import { Txt } from '@/components/Txt';
 import { Button } from '@/components/Button';
-import { measureTarget, type Rect } from './targets';
+import { isFixedTarget, measureTarget, type Rect } from './targets';
 
 /** Tip id → its drafted text key. */
 export const TIPS: Record<string, string> = {
@@ -51,6 +51,24 @@ export function resetTour() {
   prefs().set({ tourDone: false, tipsSeen: {}, tipsOn: true });
 }
 
+/**
+ * A tip for a content target is drawn only when the target is wholly inside the visible
+ * content area, below the header and above the actions bar; otherwise (e.g. below the fold)
+ * its ring would land on whatever is there, such as the primary button. Targets in the header
+ * or the actions bar are `fixed` (always on screen). `y` values are relative to the overlay.
+ */
+export function targetOnScreen(rect: Rect, originY: number, top: number, bottom: number): boolean {
+  const y = rect.y - originY;
+  return y >= top && y + rect.height <= bottom;
+}
+
+/** Leaving a screen: the tips she was shown count as seen, whether or not she tapped "Got it". */
+export function withShownSeen(seen: Record<string, true>, shown: Iterable<string>): Record<string, true> {
+  const next = { ...seen };
+  for (const id of shown) next[id] = true;
+  return next;
+}
+
 /** Should tips show right now? */
 export function tipsEnabled(): boolean {
   const p = prefs();
@@ -64,12 +82,26 @@ export function TourProvider({ children }: { children: ReactNode }) {
   const current = queue[0] ?? null;
   const sheet = useUi((u) => u.sheet);
   const rect = measured && measured.id === current ? measured.rect : null;
+  // Tips drawn on the current screen. They never come back once she leaves it, so a tip
+  // never has to be tapped away to stop it returning (6 "Got it" taps before After).
+  const shown = useRef(new Set<string>());
 
   const show = useCallback((ids: string[]) => {
     const seen = prefs().tipsSeen;
     setQueue(ids.filter((id) => !seen[id]).slice(0, 2));
   }, []);
-  const clear = useCallback(() => setQueue([]), []);
+  const clear = useCallback(() => {
+    if (shown.current.size) {
+      prefs().set({ tipsSeen: withShownSeen(prefs().tipsSeen, shown.current) });
+      shown.current.clear();
+    }
+    setQueue([]);
+  }, []);
+  const onShown = useCallback((id: string) => {
+    shown.current.add(id);
+  }, []);
+  // Target not visible right now: skip it without marking it seen (it can show next visit).
+  const skipOne = useCallback(() => setQueue((q) => q.slice(1)), []);
 
   useEffect(() => {
     let alive = true;
@@ -100,12 +132,36 @@ export function TourProvider({ children }: { children: ReactNode }) {
   return (
     <TourCtx.Provider value={{ show, clear }}>
       {children}
-      {current && rect && !sheet ? <Coach id={current} rect={rect} onGotIt={gotIt} onSkip={skipAll} /> : null}
+      {current && rect && !sheet ? (
+        <Coach
+          key={current}
+          id={current}
+          rect={rect}
+          onGotIt={gotIt}
+          onSkip={skipAll}
+          onShown={onShown}
+          onOffscreen={skipOne}
+        />
+      ) : null}
     </TourCtx.Provider>
   );
 }
 
-function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt: () => void; onSkip: () => void }) {
+function Coach({
+  id,
+  rect,
+  onGotIt,
+  onSkip,
+  onShown,
+  onOffscreen,
+}: {
+  id: string;
+  rect: Rect;
+  onGotIt: () => void;
+  onSkip: () => void;
+  onShown: (id: string) => void;
+  onOffscreen: () => void;
+}) {
   const { c, radius, reduceMotion } = useTheme();
   const { t } = useT();
   const { width, height } = useWindowDimensions();
@@ -116,7 +172,8 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
   // so the ring lands on the target even with Android edge-to-edge status-bar offsets.
   const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
   // The real top of the screen's sticky actions bar (primary button), when the screen has one.
-  const [actionsTop, setActionsTop] = useState<number | null>(null);
+  // undefined = not measured yet; null = the screen has no actions bar.
+  const [actionsTop, setActionsTop] = useState<number | null | undefined>(undefined);
   const [bubbleH, setBubbleH] = useState(170);
   useEffect(() => {
     void measureTarget(ACTIONS_TARGET).then((a) => setActionsTop(a ? a.y : null));
@@ -130,15 +187,25 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
   const r = { x: rect.x - ox - pad, y: rect.y - oy - pad, w: rect.width + pad * 2, h: rect.height + pad * 2 };
   const below = r.y + r.h + 10 + bubbleH <= bottom - 8;
   const bubbleTop = below ? r.y + r.h + 10 : Math.max(top + 8, Math.min(r.y, bottom) - 10 - bubbleH);
+  const ready = origin != null && actionsTop !== undefined;
+  // Header and actions-bar targets are always on screen; content targets only while in view.
+  const onScreen = ready && (isFixedTarget(id) || targetOnScreen(rect, oy, top, bottom));
 
   useEffect(() => {
+    if (!ready) return;
+    if (onScreen) onShown(id);
+    else onOffscreen();
+  }, [ready, onScreen, id, onShown, onOffscreen]);
+
+  useEffect(() => {
+    if (!onScreen) return;
     const msg = t(TIPS[id]);
     AccessibilityInfo.announceForAccessibility(msg);
     const timer = setTimeout(() => {
       focusForAccessibility(bubble);
     }, 250);
     return () => clearTimeout(timer);
-  }, [id, t]);
+  }, [id, t, onScreen]);
 
   const scrim = { position: 'absolute' as const, backgroundColor: c.scrim };
   const cy = Math.max(top, Math.min(r.y, bottom));
@@ -152,6 +219,7 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
         onLayout={() => root.current?.measureInWindow((x, y) => setOrigin({ x, y }))}
       />
     );
+  if (!onScreen) return null;
   return (
     <View style={{ position: 'absolute', inset: 0 }} pointerEvents="box-none">
       {/* Scrim with a cut-out, limited to the content area. */}

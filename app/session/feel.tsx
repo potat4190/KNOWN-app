@@ -62,7 +62,7 @@ export default function Feel() {
           ) : (
             <Button label={t('continue')} onPress={next} disabled={!n} testID="continue" />
           )}
-          <TourTarget id="feel_nowords">
+          <TourTarget id="feel_nowords" fixed>
             <Button kind="quiet" label={t('no_words')} onPress={noWords} testID="no-words" />
           </TourTarget>
         </>

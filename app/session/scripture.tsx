@@ -60,7 +60,7 @@ export default function Scripture() {
       actions={
         <>
           <Button label={t('continue_ready')} onPress={() => goSession('pray')} testID="to-pray" />
-          <TourTarget id="scripture_nofit">
+          <TourTarget id="scripture_nofit" fixed>
             <Button
               kind="quiet"
               label={t('not_fit')}

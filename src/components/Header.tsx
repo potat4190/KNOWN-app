@@ -132,7 +132,7 @@ export function Header({ step, inSession, onBack, hideHelp, hideGear }: Props) {
           </Pressable>
         )}
         {inSession ? (
-          <TourTarget id="header_x">
+          <TourTarget id="header_x" fixed>
             <Pressable
               onPress={() => openSheet('exit')}
               testID="header-x"
