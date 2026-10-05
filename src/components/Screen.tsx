@@ -5,11 +5,11 @@
  */
 import { KeyboardAvoidingView, Platform, ScrollView, View, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Children, type ReactNode } from 'react';
 import { useTheme } from '@/theme';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { ACTIONS_TARGET } from '@/features/tour/TourProvider';
+import { Rise } from './Rise';
 
 type Props = {
   header?: ReactNode;
@@ -21,20 +21,6 @@ type Props = {
   scroll?: boolean;
   testID?: string;
 };
-
-export function Rise({ children, index = 0 }: { children: ReactNode; index?: number }) {
-  const { reduceMotion } = useTheme();
-  if (reduceMotion) return <>{children}</>;
-  return (
-    <Animated.View
-      entering={FadeInDown.duration(500)
-        .delay(index * 40)
-        .withInitialValues({ transform: [{ translateY: 10 }] })}
-    >
-      {children}
-    </Animated.View>
-  );
-}
 
 export function Screen({ header, children, actions, center, contentStyle, scroll = true, testID }: Props) {
   const { c } = useTheme();
