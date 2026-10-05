@@ -50,36 +50,54 @@ export const session = () => useSession.getState().s;
 let rng: Rng = Math.random;
 export const setRotationRng = (r: Rng) => (rng = r);
 
+// In flight: a second tap while storage is busy must not draw or save twice.
+let opening = false;
+let saving = false;
+
 /**
  * Picks the story for a picture selection (8.2) and advances the rotation.
- * Called only when the story actually opens (Continue on Feel).
+ * Called only when the story actually opens (Continue on Feel). A call while
+ * one is in flight (a double tap) returns null, so the screen doesn't navigate twice.
  */
 export async function openPictures(): Promise<PathKey | null> {
   const s = session();
-  if (!s || !s.pics.length) return null;
-  const sel = selKey(s.pics) as SelKey;
-  const store = getStore();
-  const all = await store.rotation.getAll();
-  const { path, entry } = draw(all[sel], MATRIX[sel].path, ROTATION[sel] ?? [MATRIX[sel].path], rng);
-  await store.rotation.put(sel, entry);
-  useSession.getState().update((x) => S.openStory(x, { from: 'pics', sel, path: path as PathKey }));
-  return path as PathKey;
+  if (opening || !s || !s.pics.length) return null;
+  opening = true;
+  try {
+    const sel = selKey(s.pics) as SelKey;
+    const store = getStore();
+    const all = await store.rotation.getAll();
+    const { path, entry } = draw(all[sel], MATRIX[sel].path, ROTATION[sel] ?? [MATRIX[sel].path], rng);
+    await store.rotation.put(sel, entry);
+    useSession.getState().update((x) => S.openStory(x, { from: 'pics', sel, path: path as PathKey }));
+    return path as PathKey;
+  } finally {
+    opening = false;
+  }
 }
 
 /* ------------------------------ Keep ------------------------------ */
 
 const newId = () => 'm' + now().toString(36) + Math.random().toString(36).slice(2, 6);
 
-/** Saves the Moment once. A second call (Back from Done, re-entering Keep) does nothing. */
+/**
+ * Saves the Moment once. A second call (Back from Done, re-entering Keep, or a
+ * double tap while the first save is still writing) does nothing and returns null.
+ */
 export async function saveMoment(lang: Lang, msgText: string): Promise<Moment | null> {
   const s = session();
-  if (!s || !S.canSave(s)) return null;
-  const scripture = s.scripture ?? { source: 'bundled' as const, versionId: null, abbr: '' };
-  const m = S.buildMoment(s, { id: newId(), now: now(), lang, msgText, scripture });
-  await getStore().moments.add(m);
-  await getStore().session.clear();
-  useSession.getState().update((x) => ({ ...x, savedMomentId: m.id }));
-  return m;
+  if (saving || !s || !S.canSave(s)) return null;
+  saving = true;
+  try {
+    const scripture = s.scripture ?? { source: 'bundled' as const, versionId: null, abbr: '' };
+    const m = S.buildMoment(s, { id: newId(), now: now(), lang, msgText, scripture });
+    await getStore().moments.add(m);
+    await getStore().session.clear();
+    useSession.getState().update((x) => ({ ...x, savedMomentId: m.id }));
+    return m;
+  } finally {
+    saving = false;
+  }
 }
 
 /* -------------------------- Pause and recover -------------------------- */

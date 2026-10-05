@@ -14,7 +14,7 @@ import { SheetHost } from '@/features/sheets/SheetHost';
 import { createMemoryStore } from '@/data/memory-store';
 import { setStore, getStore } from '@/data/store';
 import { usePrefs, defaultPrefs } from '@/state/prefs';
-import { useSession, pauseSession, cleanupPaused, saveMoment, setRotationRng } from '@/state/session-store';
+import { useSession, pauseSession, cleanupPaused, saveMoment, setRotationRng, openPictures } from '@/state/session-store';
 import { useUi } from '@/state/ui';
 import { recoverOffered } from '@/state/launch';
 import * as S from '@/state/session';
@@ -198,6 +198,21 @@ it('save flow: saves once; Keep then shows it as saved', async () => {
   const [m] = await getStore().moments.list();
   expect(m.stay).toBe(P('neh', 'options', 'en')[0]);
   expect(m.msg).toBeNull(); // never pre-checked without "Keep this message"
+});
+
+it('double tap on Save (while the first save is writing) saves one Moment', async () => {
+  startWith('en', (s) => S.toggleStay(openSel('F')(s), 0), ['feel', 'scripture', 'pray', 'after', 'keep']);
+  const results = await Promise.all([saveMoment('en', ''), saveMoment('en', '')]);
+  expect(results.filter(Boolean)).toHaveLength(1);
+  expect(await getStore().moments.count()).toBe(1);
+});
+
+it('double tap on Continue draws the story once (the rotation advances once)', async () => {
+  startWith('en', (s) => ({ ...s, pics: ['F'] as S.SessionState['pics'] }), ['feel']);
+  const put = jest.spyOn(getStore().rotation, 'put');
+  const results = await Promise.all([openPictures(), openPictures()]);
+  expect(results.filter(Boolean)).toHaveLength(1);
+  expect(put).toHaveBeenCalledTimes(1);
 });
 
 const atKeep = () =>
