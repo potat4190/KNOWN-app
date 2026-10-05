@@ -24,7 +24,7 @@ import bridgesZh from '@/content/bridges.zh.json';
 import bridgesJa from '@/content/bridges.ja.json';
 import bridgesAr from '@/content/bridges.ar.json';
 import { SCENES, PICTURES, type SceneKey } from '@/content/images';
-import { localizeDigits, type Lang } from '@/i18n/langs';
+import { LANG_INFO, localizeDigits, type Lang } from '@/i18n/langs';
 
 export type PathKey = keyof typeof pathsEn;
 export type Pic = 'S' | 'F' | 'A' | 'J';
@@ -102,11 +102,17 @@ export const range = (p: Passage): number[] => {
 
 export const bookName = (book: string, lang: Lang) => BOOKS[book][lang] || BOOKS[book].en;
 
+/**
+ * In right-to-left text the bidi algorithm reorders "1:2–4" into "4–1:2". The numbers stay
+ * one left-to-right unit inside U+2066 LEFT-TO-RIGHT ISOLATE … U+2069 POP DIRECTIONAL ISOLATE.
+ */
+const refNumbers = (s: string, lang: Lang) => (LANG_INFO[lang].rtl ? `⁦${s}⁩` : s);
+
 /** "Ruth 1:14–18", "Psalm 13:1–2, 5", with localised book name and digits. */
 export function ref(path: PathKey, lang: Lang): string {
   const p = PASSAGES[path];
   const r = p.vvText ? `${p.ch}:${p.vvText}` : p.from === p.to ? `${p.ch}:${p.from}` : `${p.ch}:${p.from}–${p.to}`;
-  return `${bookName(p.book, lang)} ${localizeDigits(r, lang)}`;
+  return `${bookName(p.book, lang)} ${refNumbers(localizeDigits(r, lang), lang)}`;
 }
 
 /** The {ref} in "In our words, from {ref}": a reviewed storyChapters override, else the passage chapter. */
@@ -114,10 +120,10 @@ export function storySource(path: PathKey, lang: Lang): string {
   const o = STORY_CHAPTERS[path];
   if (o) {
     const chs = o.from === o.to ? `${o.from}` : `${o.from}–${o.to}`;
-    return `${bookName(o.book, lang)} ${localizeDigits(chs, lang)}`;
+    return `${bookName(o.book, lang)} ${refNumbers(localizeDigits(chs, lang), lang)}`;
   }
   const p = PASSAGES[path];
-  return `${bookName(p.book, lang)} ${localizeDigits(p.ch, lang)}`;
+  return `${bookName(p.book, lang)} ${refNumbers(localizeDigits(p.ch, lang), lang)}`;
 }
 
 export const hasLang = (path: PathKey, lang: Lang) => {

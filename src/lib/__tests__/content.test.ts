@@ -36,6 +36,15 @@ describe('content pack', () => {
     expect(ref('hannah', 'my')).toBe('၁ ဓမ္မရာဇဝင် ၂:၁–၂');
   });
 
+  it('keeps Arabic reference numbers in reading order (no "4–1:2")', () => {
+    // U+2066 … U+2069 isolate the numbers as one left-to-right run inside right-to-left text.
+    expect(ref('neh', 'ar')).toBe('نحميا ⁦1:2–4⁩');
+    expect(storySource('hannah', 'ar')).toMatch(/⁦1–2⁩$/);
+    // Left-to-right languages are unchanged.
+    expect(ref('neh', 'en')).toBe('Nehemiah 1:2–4');
+    expect(ref('neh', 'en')).not.toMatch(/[⁦⁩]/);
+  });
+
   it('uses reviewed story chapters for the story source line', () => {
     expect(storySource('hannah', 'en')).toBe('1 Samuel 1–2');
     expect(storySource('joseph', 'en')).toBe('Genesis 37–50');
