@@ -77,8 +77,9 @@ Only a few `*.web.ts(x)` files differ from the phone, because browsers lack the 
 `src/i18n/direction.web.ts` (right-to-left via `<html dir>`; "restart" reloads the page),
 `src/lib/a11y-focus.web.ts`, `src/lib/youversion-web.web.ts` (the YouVersion SDK is made for phone
 WebViews: in the page it keeps the browser's own fetch and the page height; loaded first from `index.ts`),
-`src/components/BibleVersionSheet.web.tsx` (the SDK's picker sheet renders nothing in browsers) and
-`src/components/Rise.web.tsx` (screen entrance as a CSS animation).
+`src/components/BibleVersionSheet.web.tsx` (the SDK's picker sheet renders nothing in browsers),
+`src/components/Rise.web.tsx` (screen entrance as a CSS animation) and `src/components/AppFrame.web.tsx`
+(on wide windows the app sits in a centred phone-width column).
 
 YouVersion works in browsers (api.youversion.com allows any origin). The YouVersion app key from `.env` is
 built into the site's public JavaScript, and every visitor shares its rate limit.
