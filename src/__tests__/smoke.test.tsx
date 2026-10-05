@@ -257,8 +257,8 @@ it('pause → recover sheet; after 3 days the paused moment is gone and a quiet 
   expect(await screen.findByTestId('recover-continue')).toBeTruthy();
   expect(screen.getByText(new RegExp(tt('en', 'recover_where2', { step: tt('en', 'st_scripture') })))).toBeTruthy();
 
-  // Fast-forward 4 days on the test clock and relaunch the cleanup.
-  act(() => usePrefs.getState().set({ clockOffset: 4 * DAY_MS }));
+  // Fast-forward 4 days on the test clock (judge panel on) and relaunch the cleanup.
+  act(() => usePrefs.getState().set({ panelOn: true, clockOffset: 4 * DAY_MS }));
   await act(async () => {
     expect(await cleanupPaused()).toBe(true);
   });
@@ -266,6 +266,13 @@ it('pause → recover sheet; after 3 days the paused moment is gone and a quiet 
   // Home shows the one-time quiet line (and never what was in the moment), then clears the flag.
   expect(await screen.findByText(translate(i18n, 'en', 'paused_removed', { count: 3 }))).toBeTruthy();
   expect(usePrefs.getState().removedNotice).toBe(false);
+});
+
+it('switching the judge panel off in Settings also resets its clock', async () => {
+  usePrefs.getState().set({ panelOn: true, clockOffset: 4 * DAY_MS });
+  renderRouter(routes, { initialUrl: '/more' });
+  fireEvent(await screen.findByTestId('panel-switch'), 'valueChange', false);
+  expect(usePrefs.getState()).toMatchObject({ panelOn: false, clockOffset: 0 });
 });
 
 it('the recover sheet is offered once per launch, not every time Home is shown', async () => {

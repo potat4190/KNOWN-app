@@ -186,7 +186,8 @@ export default function More() {
           label={t('panel_label')}
           desc={t('panel_d')}
           value={p.panelOn}
-          onChange={(v) => p.set({ panelOn: v })}
+          // Off leaves no trace of the panel, including a fast-forwarded clock.
+          onChange={(v) => p.set(v ? { panelOn: true } : { panelOn: false, clockOffset: 0 })}
           testID="panel-switch"
         />
       ) : null}
