@@ -57,3 +57,4 @@ relay/.dev.vars
 
 # test output
 coverage/
+dist-web/

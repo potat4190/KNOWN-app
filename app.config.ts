@@ -46,7 +46,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     predictiveBackGestureEnabled: false,
     blockedPermissions: ['android.permission.RECORD_AUDIO'],
   },
-  web: { output: 'static', favicon: './assets/images/favicon.png' },
+  // Web: one page app (GitHub Pages serves index.html; 404.html is a copy for deep links).
+  web: { output: 'single', favicon: './assets/images/favicon.png' },
   plugins: [
     'expo-router',
     ['expo-sqlite', { useSQLCipher: true }],
@@ -65,6 +66,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
-  experiments: { typedRoutes: true, reactCompiler: true },
-  extra: { variant },
+  experiments: {
+    typedRoutes: true,
+    reactCompiler: true,
+    // The web build is served from a sub-path on GitHub Pages (https://<user>.github.io/<repo>/).
+    ...(process.env.WEB_BASE_URL ? { baseUrl: process.env.WEB_BASE_URL } : {}),
+  },
+  owner: 'rhidayas-team',
+  extra: { variant, eas: { projectId: '547daba6-e339-40f0-ac3a-1adb31aea3f1' } },
 });

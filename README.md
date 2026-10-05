@@ -61,3 +61,18 @@ See `relay/README.md`. The relay has two adapters behind one interface; set `AI_
 ## Judge panel
 
 Settings → **Judge panel** turns on a small "Judge panel" tab on the screen edge (demo controls: golden path, clock fast-forward, state, AI activity, matrix). Off = the clean student version, with no trace of the panel. The switch itself appears only when `EXPO_PUBLIC_SHOW_PANEL_TOGGLE=true`.
+
+## Web version (GitHub Pages)
+
+The website is built from this app's own code, so it matches the phone app screen for screen.
+
+```bash
+npm run web:export        # builds the web version into ../KNOWN-webapp (served at /KNOWN/)
+cd ../KNOWN-webapp && git add -A && git commit -m "Update web build" && git push
+```
+
+Only a few `*.web.ts(x)` files differ from the phone, because browsers lack the phone's native modules:
+`src/data/sql-store.web.ts` (Moments, paused moment and rotation in localStorage, **not encrypted**),
+`src/state/kv.web.ts` (preferences in localStorage), `src/components/Sheet.web.tsx` (bottom sheets),
+`src/i18n/direction.web.ts` (right-to-left via `<html dir>`; "restart" reloads the page) and
+`src/lib/a11y-focus.web.ts`. The YouVersion app key from `.env` is built into the site's public JavaScript.

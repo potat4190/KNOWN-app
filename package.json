@@ -77,7 +77,8 @@
     "content:rotation:reset": "tsx scripts/build-rotation.ts --reset",
     "content:validate": "tsx scripts/validate-content.ts",
     "yv:versions": "tsx --env-file=.env scripts/list-youversion-versions.ts",
-    "content:review": "tsx scripts/content-review.ts"
+    "content:review": "tsx scripts/content-review.ts",
+    "web:export": "tsx scripts/export-web.ts"
   },
   "private": true
 }

@@ -1,6 +1,7 @@
 /** Small building blocks: Heading, Lead, Tile, Chip, Choice, Segmented, Notice, StatusLine, InlineConfirm, Card. */
 import { useEffect, useRef, type ReactNode } from 'react';
-import { AccessibilityInfo, findNodeHandle, Pressable, Text, View, type ViewStyle } from 'react-native';
+import { AccessibilityInfo, Pressable, Text, View, type ViewStyle } from 'react-native';
+import { focusForAccessibility } from '@/lib/a11y-focus';
 import { Image } from 'expo-image';
 import { useTheme } from '@/theme';
 import { Txt } from './Txt';
@@ -23,8 +24,7 @@ export function Heading({
   const text = typeof children === 'string' ? children : '';
   useEffect(() => {
     const id = setTimeout(() => {
-      const node = ref.current && findNodeHandle(ref.current);
-      if (node) AccessibilityInfo.setAccessibilityFocus(node);
+      focusForAccessibility(ref);
     }, 350);
     return () => clearTimeout(id);
   }, [text]);

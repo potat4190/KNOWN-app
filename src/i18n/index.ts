@@ -4,8 +4,7 @@
  * and needs an app reload, which the caller confirms with her first.
  */
 import { useCallback, useMemo } from 'react';
-import { DevSettings, I18nManager } from 'react-native';
-import * as Updates from 'expo-updates';
+import { isRTL, reloadApp, setRTL } from './direction';
 import { usePrefs } from '@/state/prefs';
 import { createI18n, translate, type Vars } from './core';
 import { LANG_INFO, type Lang } from './langs';
@@ -31,17 +30,15 @@ export function useT() {
 }
 
 /** True when switching to `lang` changes the layout direction (and so needs a reload). */
-export const needsDirectionReload = (lang: Lang) => LANG_INFO[lang].rtl !== I18nManager.isRTL;
+export const needsDirectionReload = (lang: Lang) => LANG_INFO[lang].rtl !== isRTL();
 
 /** Sets the language. Returns true if the app is reloading to change direction. */
 export async function applyLanguage(lang: Lang): Promise<boolean> {
   usePrefs.getState().set({ lang });
   if (!needsDirectionReload(lang)) return false;
-  I18nManager.allowRTL(true);
-  I18nManager.forceRTL(LANG_INFO[lang].rtl);
+  setRTL(LANG_INFO[lang].rtl);
   try {
-    if (__DEV__) DevSettings.reload();
-    else await Updates.reloadAsync();
+    await reloadApp();
     return true;
   } catch {
     // Reload isn't possible (e.g. expo-updates not configured): carry on in this direction;
@@ -53,9 +50,8 @@ export async function applyLanguage(lang: Lang): Promise<boolean> {
 /** On launch: make sure the native direction matches the saved language. */
 export function syncDirection() {
   const lang = usePrefs.getState().lang;
-  I18nManager.allowRTL(true);
-  if (lang && LANG_INFO[lang].rtl !== I18nManager.isRTL) {
-    I18nManager.forceRTL(LANG_INFO[lang].rtl);
+  if (lang && LANG_INFO[lang].rtl !== isRTL()) {
+    setRTL(LANG_INFO[lang].rtl);
     return true;
   }
   return false;

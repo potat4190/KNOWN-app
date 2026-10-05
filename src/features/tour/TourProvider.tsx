@@ -11,7 +11,8 @@
  * while any sheet is open (those screens simply don't call useTips).
  */
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { AccessibilityInfo, findNodeHandle, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, useWindowDimensions, View } from 'react-native';
+import { focusForAccessibility } from '@/lib/a11y-focus';
 import { useFocusEffect } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -134,8 +135,7 @@ function Coach({ id, rect, onGotIt, onSkip }: { id: string; rect: Rect; onGotIt:
     const msg = t(TIPS[id]);
     AccessibilityInfo.announceForAccessibility(msg);
     const timer = setTimeout(() => {
-      const node = bubble.current && findNodeHandle(bubble.current);
-      if (node) AccessibilityInfo.setAccessibilityFocus(node);
+      focusForAccessibility(bubble);
     }, 250);
     return () => clearTimeout(timer);
   }, [id, t]);
