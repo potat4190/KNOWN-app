@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Pressable, Switch, View } from 'react-native';
 import { router } from 'expo-router';
 import Constants from 'expo-constants';
-import { BibleVersionPickerSheet } from '@youversion/platform-react-native-expo-ui';
+import { BibleVersionSheet } from '@/components/BibleVersionSheet';
 import { Screen } from '@/components/Screen';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
@@ -143,7 +143,7 @@ export default function More() {
             onPress={() => setPicker(true)}
             testID="bible-version"
           />
-          <BibleVersionPickerSheet
+          <BibleVersionSheet
             isOpen={picker}
             onClose={() => setPicker(false)}
             versionId={currentVersion?.id}
