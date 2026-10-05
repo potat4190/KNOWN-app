@@ -22,6 +22,27 @@ describe('crisis regex', () => {
     },
   );
   it('does not flag ordinary words', () => expect(isCrisis('I miss my family')).toBe(false));
+
+  // Drafted for Kezia (src/config/crisis-extra.ts): these skipped the Crisis screen with no relay.
+  it.each([
+    "I don't want to be here anymore",
+    'I dont want to be here any more.',
+    'I don’t want to be here anymore',
+    "I can't go on",
+    'I cannot go on like this',
+    "I can't go on anymore",
+    'Nobody would miss me',
+    "no one would even notice if I'm gone",
+    'I want to disappear',
+    'I just want to disappear.',
+  ])('catches "%s"', (s) => expect(isCrisis(s)).toBe(true));
+
+  it.each([
+    "I don't want to be here in this cold city",
+    "I can't go on the trip home this year",
+    'I want to disappear from social media for a while',
+    'I miss home and nobody here knows me',
+  ])('does not flag everyday "%s"', (s) => expect(isCrisis(s)).toBe(false));
 });
 
 describe('on-device matcher (AI.local port)', () => {
