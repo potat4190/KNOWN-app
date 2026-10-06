@@ -19,10 +19,24 @@ type Props = {
   center?: boolean;
   contentStyle?: ViewStyle;
   scroll?: boolean;
+  /** Drawn behind everything (e.g. the lamp-lit room). */
+  backdrop?: ReactNode;
+  /** Actions without the divider and page colour, so the backdrop shows through. */
+  bareActions?: boolean;
   testID?: string;
 };
 
-export function Screen({ header, children, actions, center, contentStyle, scroll = true, testID }: Props) {
+export function Screen({
+  header,
+  children,
+  actions,
+  center,
+  contentStyle,
+  scroll = true,
+  backdrop,
+  bareActions,
+  testID,
+}: Props) {
   const { c } = useTheme();
   const body = (
     <View
@@ -44,6 +58,7 @@ export function Screen({ header, children, actions, center, contentStyle, scroll
   );
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.background }} edges={['top', 'bottom']} testID={testID}>
+      {backdrop}
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {header}
         {scroll ? (
@@ -61,9 +76,9 @@ export function Screen({ header, children, actions, center, contentStyle, scroll
                 paddingTop: 12,
                 paddingBottom: 8,
                 gap: 4,
-                borderTopWidth: 1,
+                borderTopWidth: bareActions ? 0 : 1,
                 borderTopColor: c.border,
-                backgroundColor: c.background,
+                backgroundColor: bareActions ? 'transparent' : c.background,
               }}
             >
               {actions}

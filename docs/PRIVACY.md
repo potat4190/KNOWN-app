@@ -18,10 +18,11 @@ KNOWN is for students who may be on a shared phone, or who may face surveillance
 |---|---|---|---|
 | She types in "My own words" and taps Find a story | Her sentence and the app language | The KNOWN relay (a Cloudflare Worker), which forwards it to the AI provider | `ai_note` |
 | She taps Translate on a message | The message text and the two languages | The KNOWN relay → the AI provider | `tr_note` |
+| She opens Sit a little longer (Stay here a moment) | Her prayer as it stands on Pray, and the app language, so the AI can choose where the lines break (it may not change a word; the app checks) | The KNOWN relay → the AI provider | `a_sit_ai_d` on the Sit a little longer tile (shown only when a relay is configured) |
 | Scripture from YouVersion | The Bible reference and version (no personal text) | YouVersion Platform API | Footer names the edition |
 
 - The relay never logs request bodies; it logs counts, latency and errors only. It is rate-limited by IP and by a random install id that is not linked to her identity.
-- If the relay isn't configured or can't be reached, her words never leave the phone: the on-device matcher runs instead, and translation is unavailable (copy still works).
+- If the relay isn't configured or can't be reached, her words never leave the phone: the on-device matcher runs instead, translation is unavailable (copy still works), and Stay here a moment splits her prayer into lines on the phone.
 - **KNOWN never sends a message for her.** Reach out uses copy or the system share sheet; she sends it herself.
 
 ## No tracking

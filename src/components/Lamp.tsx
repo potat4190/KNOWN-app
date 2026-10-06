@@ -4,6 +4,7 @@
  * Reduce Motion it is static.
  */
 import { useEffect } from 'react';
+import { useGradientId } from './svgId';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -21,6 +22,7 @@ export const BREATH_IN_MS = BREATH_MS * 0.4;
 
 export function LampGlow({ size = 120, opacity = 1 }: { size?: number; opacity?: number }) {
   const { c } = useTheme();
+  const id = useGradientId('lamp');
   return (
     <Svg
       width={size}
@@ -30,14 +32,14 @@ export function LampGlow({ size = 120, opacity = 1 }: { size?: number; opacity?:
       importantForAccessibility="no-hide-descendants"
     >
       <Defs>
-        <RadialGradient id="lamp" cx="50%" cy="50%" r="50%">
+        <RadialGradient id={id} cx="50%" cy="50%" r="50%">
           <Stop offset="0%" stopColor="#FFF4DD" stopOpacity={opacity} />
           <Stop offset="28%" stopColor={c.lamp} stopOpacity={0.95 * opacity} />
           <Stop offset="62%" stopColor={c.lamp} stopOpacity={0.28 * opacity} />
           <Stop offset="100%" stopColor={c.lamp} stopOpacity={0} />
         </RadialGradient>
       </Defs>
-      <Circle cx={50} cy={50} r={50} fill="url(#lamp)" />
+      <Circle cx={50} cy={50} r={50} fill={`url(#${id})`} />
     </Svg>
   );
 }

@@ -9,6 +9,7 @@ import { useT } from '@/i18n';
 import { colorsFor, radius, space, type Colors, type Scheme } from './tokens';
 import {
   TYPE,
+  clampTextScale,
   familyFor,
   lineHeightScale,
   needsFontWeight,
@@ -25,6 +26,8 @@ export type Theme = {
   radius: typeof radius;
   space: typeof space;
   reduceMotion: boolean;
+  /** Settings → Text size (1 = default). Already applied by type(); exposed for non-Text views such as BibleTextView. */
+  textScale: number;
   /** A text style for a type variant in the current language. */
   type: (v: TypeVariant, o?: { role?: FontRole; weight?: Weight; lang?: Lang }) => TextStyle;
 };
@@ -45,7 +48,8 @@ export function useReduceMotion() {
   return on;
 }
 
-export function makeType(lang: Lang) {
+export function makeType(lang: Lang, textScale = 1) {
+  const k = clampTextScale(textScale);
   return (v: TypeVariant, o: { role?: FontRole; weight?: Weight; lang?: Lang } = {}): TextStyle => {
     const l = o.lang ?? lang;
     const role: FontRole = o.role ?? (v === 'h1' || v === 'h2' ? 'heading' : v === 'scripture' ? 'reading' : 'ui');
@@ -53,8 +57,8 @@ export function makeType(lang: Lang) {
     const base = TYPE[v];
     const family = familyFor(l, role, weight);
     return {
-      fontSize: base.fontSize,
-      lineHeight: Math.round(base.lineHeight * lineHeightScale(l)),
+      fontSize: Math.round(base.fontSize * k),
+      lineHeight: Math.round(base.lineHeight * lineHeightScale(l) * k),
       ...(family ? { fontFamily: family } : {}),
       ...(needsFontWeight(l) || !family
         ? { fontWeight: weight === 'bold' ? '700' : weight === 'medium' ? '500' : '400' }
@@ -65,13 +69,22 @@ export function makeType(lang: Lang) {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const pref = usePrefs((p) => p.theme);
+  const textScale = clampTextScale(usePrefs((p) => p.textScale));
   const device = useColorScheme();
   const { lang } = useT();
   const reduceMotion = useReduceMotion();
   const scheme: Scheme = pref === 'system' ? (device === 'dark' ? 'dark' : 'light') : pref;
   const value = useMemo<Theme>(
-    () => ({ scheme, c: colorsFor(scheme), radius, space, reduceMotion, type: makeType(lang) }),
-    [scheme, reduceMotion, lang],
+    () => ({
+      scheme,
+      c: colorsFor(scheme),
+      radius,
+      space,
+      reduceMotion,
+      textScale,
+      type: makeType(lang, textScale),
+    }),
+    [scheme, reduceMotion, lang, textScale],
   );
   return <ThemeCtx.Provider value={value}>{children}</ThemeCtx.Provider>;
 }

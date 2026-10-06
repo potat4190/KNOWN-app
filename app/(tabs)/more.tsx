@@ -13,6 +13,7 @@ import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
 import { Card, Heading, InlineConfirm, Segmented, StatusLine, Tile } from '@/components/bits';
 import { Txt } from '@/components/Txt';
+import { TextSizeSlider } from '@/components/TextSizeSlider';
 import { applyLanguage, needsDirectionReload, useT } from '@/i18n';
 import { useTheme } from '@/theme';
 import { LANGS, LANG_INFO, type Lang } from '@/i18n/langs';
@@ -134,6 +135,8 @@ export default function More() {
           ]}
         />
       </Section>
+
+      <TextSizeSlider />
 
       {yvOk ? (
         <Section title={t('bible_version')}>

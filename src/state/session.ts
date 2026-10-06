@@ -185,6 +185,25 @@ export function bridgeFor(s: SessionState, lang: Lang): { h: string; p: string }
   return { h: b.h, p: s.path === primary ? b.p : P(s.path, 'frame', lang) };
 }
 
+/**
+ * The opening above the passage (Oct 6 redesign: the picture is a doorway, not a diagnosis).
+ * Heading: "Here's one place you might begin." Lead: "This may not match everything you're
+ * carrying." followed by the person's own line when the team wrote one (begin_<path>, e.g.
+ * David for Psalm 142), else the reviewed bridge line (or the story's frame when rotated).
+ * The bridge headings, which described what she might be carrying, are no longer shown.
+ */
+export function openingFor(
+  s: SessionState,
+  lang: Lang,
+  t: (key: string) => string,
+  has: (key: string, lang: Lang) => boolean,
+): { h: string; p: string } | null {
+  const b = bridgeFor(s, lang);
+  if (!b || !s.path) return null;
+  const own = `begin_${s.path}`;
+  return { h: t('begin_here'), p: `${t('begin_note')} ${has(own, lang) ? t(own) : b.p}` };
+}
+
 /** Options on the Doesn't-fit sheet: a person story (once) and the lament psalms not yet seen. */
 export function noFitOptions(s: SessionState): { person: PathKey | null; psalms: PathKey[] } {
   if (!s.path) return { person: null, psalms: [] };

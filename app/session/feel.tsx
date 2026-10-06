@@ -1,9 +1,10 @@
 /**
- * Feel, step 1. Pictures (choose 1–2) or her own words. "I don't have the
- * words" is always available and opens Psalm 77. Continue is tap 3 to Scripture.
+ * Feel, step 1. Pictures (choose 1–2) or her own words. Under the pictures, the quiet
+ * row "None of these feel right" opens Psalm 77 (team decision Oct 6; it was "I don't
+ * have the words"). Continue shows how many pictures are chosen and is tap 3 to Scripture.
  */
 import { router } from 'expo-router';
-import { TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
@@ -12,6 +13,7 @@ import { PictureGrid } from '@/components/PictureGrid';
 import { Txt } from '@/components/Txt';
 import { Icon } from '@/components/Icon';
 import { useT } from '@/i18n';
+import { localizeDigits } from '@/i18n/langs';
 import { useTheme } from '@/theme';
 import { FLAGS } from '@/config/flags';
 import { useSession, openPictures } from '@/state/session-store';
@@ -60,11 +62,15 @@ export default function Feel() {
           {words ? (
             <Button label={t('find_story')} onPress={findStory} disabled={!s.words.trim()} testID="find-story" />
           ) : (
-            <Button label={t('continue')} onPress={next} disabled={!n} testID="continue" />
+            <Button
+              label={t('continue')}
+              onPress={next}
+              disabled={!n}
+              badge={n ? localizeDigits(n, lang) : undefined}
+              accessibilityHint={n ? t('pics_count', { n }) : undefined}
+              testID="continue"
+            />
           )}
-          <TourTarget id="feel_nowords" fixed>
-            <Button kind="quiet" label={t('no_words')} onPress={noWords} testID="no-words" />
-          </TourTarget>
         </>
       }
     >
@@ -125,9 +131,30 @@ export default function Feel() {
               useUi.getState().say(t('pics_count', { n: after }));
             }}
           />
-          <Txt v="secondary" muted center accessibilityElementsHidden>
-            {n ? t('pics_count', { n }) : ' '}
-          </Txt>
+          <TourTarget id="feel_nowords">
+            <Pressable
+              onPress={noWords}
+              accessibilityRole="button"
+              testID="no-words"
+              style={({ pressed }) => ({
+                minHeight: 56,
+                marginTop: 4,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 12,
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                borderColor: c.border,
+                opacity: pressed ? 0.7 : 1,
+              })}
+            >
+              <Txt v="body" weight="bold" style={{ flex: 1 }}>
+                {t('no_words')}
+              </Txt>
+              <Icon name="chevron" size={20} color={c.textMuted} />
+            </Pressable>
+          </TourTarget>
         </View>
       )}
     </Screen>

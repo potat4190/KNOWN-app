@@ -1,18 +1,20 @@
 /**
- * Home (Design Lab "welcome"). Begin goes straight to Feel. Never shows a
- * moment's title, Scripture or her words: only a count (the phone may be shared).
+ * Home (Design Lab "welcome"), Night design (Oct 6): the lamp-lit room with the same
+ * lamp, at the same place and on the same clock, as the Welcome cards, so the light
+ * carries straight on. Less on the page: one line, the privacy line, Begin.
+ * Begin goes straight to Feel. Never shows a moment's title, Scripture or her words:
+ * only a count (the phone may be shared).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { Screen } from '@/components/Screen';
 import { Header } from '@/components/Header';
-import { Hero } from '@/components/SceneBanner';
+import { LampRoom } from '@/components/LivingLamp';
 import { Button } from '@/components/Button';
-import { Heading, Lead, Notice, Tile } from '@/components/bits';
+import { Heading, Notice, Tile } from '@/components/bits';
 import { Txt } from '@/components/Txt';
 import { Icon } from '@/components/Icon';
-import { SCENES } from '@/lib/content';
 import { useT } from '@/i18n';
 import { localizeDigits } from '@/i18n/langs';
 import { useTheme } from '@/theme';
@@ -101,6 +103,9 @@ export default function Home() {
     <Screen
       header={<Header />}
       testID="screen-home"
+      backdrop={<LampRoom lamp />}
+      bareActions
+      contentStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
       actions={
         <>
           <Button label={t('begin')} onPress={begin} testID="begin" />
@@ -114,9 +119,7 @@ export default function Home() {
       }
     >
       {notice ? <Notice icon="lock">{tc('paused_removed', ttlDays)}</Notice> : null}
-      <Hero source={SCENES.welcome} />
-      <Heading>{t('w_title')}</Heading>
-      <Lead>{t('w_sub')}</Lead>
+      <Heading>{t('home_line')}</Heading>
       {pausedTs ? (
         <Tile
           title={t('recover_continue')}

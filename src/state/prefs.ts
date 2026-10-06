@@ -11,7 +11,10 @@ export type ThemePref = 'system' | 'light' | 'dark';
 
 export type Prefs = {
   lang: Lang | null;
+  /** Appearance. New installs start in Dark (the Night design, team decision Oct 6); Settings still offers all three. */
   theme: ThemePref;
+  /** Settings → Text size multiplier (src/theme/fonts.ts TEXT_SCALE). */
+  textScale: number;
   /** Background music on/off. The speaker button and Settings share this flag. */
   musicOn: boolean;
   /** First-run cards finished (Skip or Start). */
@@ -44,7 +47,8 @@ const randomId = () =>
 
 export const defaultPrefs = (): Prefs => ({
   lang: null,
-  theme: 'system',
+  theme: 'dark',
+  textScale: 1,
   musicOn: MUSIC.enabledByDefault,
   tourDone: false,
   tipsOn: true,

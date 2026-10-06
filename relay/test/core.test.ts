@@ -3,12 +3,15 @@ import {
   KEYS,
   HttpError,
   RateLimiter,
+  handleLines,
   handleMatch,
   handleTranslate,
   library,
   matchPrompt,
   parseJson,
+  linesPrompt,
   translatePrompt,
+  validateLines,
   validateMatch,
 } from '../src/core';
 import { glooProvider } from '../src/providers.gloo';
@@ -99,6 +102,41 @@ describe('/translate', () => {
     await expect(handleTranslate({ text: 'x'.repeat(1501), from: 'en', to: 'ja' }, reply())).rejects.toMatchObject({
       status: 413,
     });
+  });
+});
+
+describe('/lines (AI chooses only where the lines break)', () => {
+  const prayer = 'God, I miss my family and I can’t reach them. Be my refuge today. Amen.';
+  it('accepts lines that are exactly her words', async () => {
+    const c = reply(
+      JSON.stringify({ lines: ['God, I miss my family', 'and I can’t reach them.', 'Be my refuge today.', 'Amen.'] }),
+    );
+    await expect(handleLines({ text: prayer, lang: 'en' }, c)).resolves.toEqual({
+      lines: ['God, I miss my family', 'and I can’t reach them.', 'Be my refuge today.', 'Amen.'],
+    });
+  });
+  it('rejects a reply that changes, adds or drops a word, then retries once', async () => {
+    const fixedTypo = JSON.stringify({
+      lines: ['God, I miss my family and I cannot reach them.', 'Be my refuge today. Amen.'],
+    });
+    const added = JSON.stringify({ lines: [prayer, 'In Jesus’ name.'] });
+    await expect(handleLines({ text: prayer, lang: 'en' }, reply(fixedTypo, added))).rejects.toMatchObject({
+      status: 502,
+    });
+    expect(validateLines({ lines: ['God, I miss my family'] }, prayer)).toBeNull();
+    expect(validateLines({ lines: [] }, prayer)).toBeNull();
+    expect(validateLines({ lines: ['God, I miss', '', 'my family'] }, 'God, I miss my family')).toBeNull();
+  });
+  it('works without spaces (Chinese, Japanese)', () => {
+    expect(validateLines({ lines: ['神啊，', '求你作我的避难所。'] }, '神啊，求你作我的避难所。')).toEqual({
+      lines: ['神啊，', '求你作我的避难所。'],
+    });
+  });
+  it('validates input and asks for her exact text', async () => {
+    await expect(handleLines({ text: '  ' }, reply())).rejects.toMatchObject({ status: 400 });
+    await expect(handleLines({ text: 'x'.repeat(1501) }, reply())).rejects.toMatchObject({ status: 413 });
+    expect(linesPrompt('my')).toMatch(/Burmese/);
+    expect(linesPrompt('en')).toMatch(/Copy her text EXACTLY/);
   });
 });
 

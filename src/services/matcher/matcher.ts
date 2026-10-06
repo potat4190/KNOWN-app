@@ -17,7 +17,7 @@ export const MATCH_TIMEOUT_MS = 8000;
 export const TRANSLATE_TIMEOUT_MS = 12000;
 
 export type LogFn = (e: {
-  kind: 'match' | 'translate';
+  kind: 'match' | 'translate' | 'lines';
   source: string;
   ms: number;
   input: string;

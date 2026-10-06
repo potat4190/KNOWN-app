@@ -5,7 +5,7 @@ import { AccessibilityInfo } from 'react-native';
 export type SheetName = 'exit' | 'nofit' | 'recover' | 'clear' | null;
 
 export type AiLogEntry = {
-  kind: 'match' | 'translate';
+  kind: 'match' | 'translate' | 'lines';
   source: string;
   ms: number;
   input: string;

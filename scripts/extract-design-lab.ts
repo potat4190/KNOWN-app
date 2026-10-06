@@ -209,7 +209,14 @@ rmSync(picDir, { recursive: true, force: true });
 rmSync(sceneDir, { recursive: true, force: true });
 mkdirSync(picDir, { recursive: true });
 mkdirSync(sceneDir, { recursive: true });
-for (const k of K.ORDER as string[]) writeFileSync(join(picDir, `${k}.jpg`), decode(K.IMG[k]));
+// Team-supplied replacement pictures win over the Design Lab's (docs/ASSETS.md). Same keys, same order.
+const PIC_OVERRIDES = join(IMG_OUT, 'picture-overrides');
+const replacedPics: string[] = [];
+for (const k of K.ORDER as string[]) {
+  const own = join(PIC_OVERRIDES, `${k}.jpg`);
+  if (existsSync(own)) replacedPics.push(k);
+  writeFileSync(join(picDir, `${k}.jpg`), existsSync(own) ? readFileSync(own) : decode(K.IMG[k]));
+}
 const sceneKeys = Object.keys(K.SCENE);
 for (const k of sceneKeys) writeFileSync(join(sceneDir, `${k}.jpg`), decode(K.SCENE[k]));
 
@@ -238,7 +245,8 @@ writeFileSync(
 console.log(
   `Extracted ${count(pack.passages)} passages, 16 paths × ${LANG_CODES.length} languages, ` +
     `${count(pack.strings.en)} English strings, ${sceneKeys.length} scenes, 4 pictures; ` +
-    `${applied.length} overrides applied (${applied.filter((o) => o.status === 'drafted').length} drafted).`,
+    `${applied.length} overrides applied (${applied.filter((o) => o.status === 'drafted').length} drafted)` +
+    (replacedPics.length ? `; team pictures for ${replacedPics.join(', ')}.` : '.'),
 );
 
 /* ---------- helpers ---------- */

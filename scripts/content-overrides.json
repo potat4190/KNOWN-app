@@ -3,14 +3,22 @@
   "overrides": [
     {
       "target": "storyChapters.hannah",
-      "value": { "book": "sa1", "from": 1, "to": 2 },
+      "value": {
+        "book": "sa1",
+        "from": 1,
+        "to": 2
+      },
       "reason": "Hannah's story is retold from 1 Samuel 1, but story_src used the passage chapter (1 Samuel 2). Judges' critique, 'Copy slips'.",
       "status": "drafted",
       "reviewer": "Deb"
     },
     {
       "target": "storyChapters.joseph",
-      "value": { "book": "gen", "from": 37, "to": 50 },
+      "value": {
+        "book": "gen",
+        "from": 37,
+        "to": 50
+      },
       "reason": "Joseph's story spans Genesis 37–50 but was labelled Genesis 50.",
       "status": "drafted",
       "reviewer": "Deb"
@@ -27,6 +35,71 @@
       "reason": "Time-neutral copy: she may open KNOWN at 2 p.m. 'Tonight' → 'Today' in all 5 languages (zh 今晚→今天, ja 今夜→今日, my ဒီည→ဒီနေ့, ar الليلة→اليوم).",
       "status": "drafted",
       "reviewer": "Dorcas + native readers"
+    },
+    {
+      "target": "strings.*.pics_title",
+      "value": {
+        "en": "Start with what feels familiar.",
+        "zh": "从你觉得熟悉的开始。",
+        "ja": "なじみのあるものから始めましょう。",
+        "my": "သင်နဲ့ ရင်းနှီးတယ်လို့ ထင်ရတာကနေ စလိုက်ပါ။",
+        "ar": "ابدأ بما يبدو مألوفًا لك."
+      },
+      "reason": "Pictures screen: the image is a doorway, not a diagnosis. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+      "status": "drafted",
+      "reviewer": "Dorcas + native readers"
+    },
+    {
+      "target": "strings.*.pics_sub",
+      "value": {
+        "en": "Choose one or two. It doesn’t have to describe exactly how you feel.",
+        "zh": "选一幅或两幅。不必完全符合你的感受。",
+        "ja": "ひとつか、ふたつ選んでください。いまの気持ちをぴったり表していなくてもかまいません。",
+        "my": "တစ်ပုံ သို့မဟုတ် နှစ်ပုံ ရွေးပါ။ သင့်စိတ်ထဲက အတိုင်း အတိအကျ ဖော်ပြစရာ မလိုပါဘူး။",
+        "ar": "اختر صورة أو اثنتين. لا يلزم أن تصف بالضبط ما في داخلك."
+      },
+      "reason": "Pictures screen. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+      "status": "drafted",
+      "reviewer": "Dorcas + native readers"
+    },
+    {
+      "target": "strings.*.no_words",
+      "value": {
+        "en": "None of these feel right",
+        "zh": "这些都不太对",
+        "ja": "どれもしっくりきません",
+        "my": "ဒီပုံတွေထဲက ဘယ်ဟာမှ မကိုက်ပါဘူး",
+        "ar": "لا شيء من هذه يناسبني"
+      },
+      "reason": "Pictures screen: the quiet row still opens Psalm 77 (team decision Oct 6). English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+      "status": "drafted",
+      "reviewer": "Dorcas + native readers"
+    },
+    {
+      "target": "strings.*.not_fit",
+      "value": {
+        "en": "Try another place to begin",
+        "zh": "换一个地方开始",
+        "ja": "ほかのところから始める",
+        "my": "တခြားနေရာကနေ စကြည့်ပါ",
+        "ar": "جرّب مكانًا آخر للبدء"
+      },
+      "reason": "Scripture screen: replaces “This doesn’t fit me”. Opens the same sheet. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+      "status": "drafted",
+      "reviewer": "Dorcas + native readers"
+    },
+    {
+      "target": "strings.*.pic_F",
+      "value": {
+        "en": "A figure wrapped in a blanket on a bed while lightning flashes outside",
+        "zh": "一个人裹着毯子坐在床上，窗外电闪雷鸣",
+        "ja": "外で稲妻が光るなか、毛布にくるまってベッドに座っている人",
+        "my": "အပြင်မှာ လျှပ်စီးလက်နေချိန် ကုတင်ပေါ်မှာ စောင်ခြုံပြီး ထိုင်နေတဲ့သူ",
+        "ar": "شخصية ملتفّة ببطانية على السرير بينما يلمع البرق في الخارج"
+      },
+      "reason": "Screen-reader description for the new F picture (assets/images/picture-overrides/F.jpg). Describes the image, never an emotion (boundary 1). Drafted by Claude.",
+      "status": "drafted",
+      "reviewer": "Kezia + native readers"
     }
   ]
 }

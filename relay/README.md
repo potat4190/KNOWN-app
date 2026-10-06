@@ -6,9 +6,11 @@ The app works fully without this relay. With it, "My own words" is matched by an
 |---|---|---|
 | `POST /match` | `{text, lang}` (text ≤ 1200 chars) | `{key, confidence, reason, feelings, risk}` |
 | `POST /translate` | `{text, from, to}` (text ≤ 1500 chars) | `{translation, back}` |
+| `POST /lines` | `{text, lang}` (her prayer, ≤ 1500 chars) | `{lines}`: her prayer split for slow reading in Stay here a moment |
 | `GET /health` | | `{ok: true}` |
 
 - Replies are validated: JSON only, the key must be in the content pack, a quoting reason is dropped, one retry, then `502` (the app falls back to its on-device matcher).
+- `/lines` (team decision 2026-10-06): the AI chooses only where her prayer breaks into lines. A reply whose lines are not exactly her text (any word added, dropped, corrected or translated) is rejected here and again in the app, which then splits the prayer on the phone.
 - **Request bodies are never logged.** Logs hold route, provider, status, latency and error class only.
 - Rate limits: 30/min per IP and 20/min per install id (random UUID from the app, not tied to identity). Per isolate, best effort; add a Cloudflare Rate Limiting binding for production.
 - No CORS (mobile only).

@@ -51,3 +51,14 @@ export const TYPE = {
   scripture: { fontSize: 20, lineHeight: 32 },
 } as const;
 export type TypeVariant = keyof typeof TYPE;
+
+/**
+ * Settings → Text size. Multiplies every type variant (on top of the phone's own text size,
+ * which still applies). 1 = the sizes above.
+ */
+export const TEXT_SCALE = { min: 0.85, max: 1.5, step: 0.05, default: 1 } as const;
+export const clampTextScale = (v: number) => {
+  if (!Number.isFinite(v)) return TEXT_SCALE.default;
+  const stepped = Math.round(v / TEXT_SCALE.step) * TEXT_SCALE.step;
+  return Math.min(TEXT_SCALE.max, Math.max(TEXT_SCALE.min, Math.round(stepped * 100) / 100));
+};

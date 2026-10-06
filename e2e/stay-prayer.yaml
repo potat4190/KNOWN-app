@@ -1,0 +1,24 @@
+# Stay here a moment: her own prayer, line by line; Amen works before the end and lights up at the end.
+appId: org.ifiusa.known.dev
+---
+- runFlow: subflows/fresh-start.yaml
+- tapOn: { id: "begin" }
+- tapOn: { id: "pic-1" }
+- tapOn: { id: "continue" }
+- tapOn: { id: "to-pray" }
+- tapOn: { id: "prayer-input" }
+- eraseText
+- inputText: "God, please hold my family. Be my refuge today. Amen."
+- hideKeyboard
+- tapOn: { id: "amen" }
+- tapOn: { id: "a-sit" }
+- assertVisible: { id: "breath-cue" }
+- extendedWaitUntil:
+    visible: "God, please hold my family."
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Amen."
+    timeout: 20000
+- tapOn: { id: "sit-again" }
+- tapOn: { id: "sit-amen" }
+- assertVisible: { id: "screen-after" }

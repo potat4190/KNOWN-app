@@ -48,6 +48,9 @@ import Panel from '../../app/panel';
 
 const i18n = createI18n('en');
 const tt = (lang: Lang, key: string, vars?: Record<string, string | number>) => translate(i18n, lang, key, vars);
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** The lead under "Here's one place you might begin.": the note, then the person's line. */
+const lead = (lang: Lang, rest: string) => new RegExp(`^${esc(tt(lang, 'begin_note'))} ${esc(rest)}$`);
 
 function Root() {
   return (
@@ -107,7 +110,13 @@ describe('every Scripture screen, all 10 selections × 5 languages', () => {
         startWith(lang, openSel(sel), ['feel', 'scripture']);
         renderRouter(routes, { initialUrl: '/session/scripture' });
         expect(await screen.findByTestId('screen-scripture')).toBeTruthy();
-        expect(screen.getByText(B(sel, lang).h)).toBeTruthy();
+        // The picture is a doorway, not a diagnosis: one opening for every selection, and the
+        // bridge headings (which described what she might be carrying) are no longer shown.
+        expect(screen.getByText(tt(lang, 'begin_here'))).toBeTruthy();
+        const path = MATRIX[sel].path;
+        const own = path === 'ps142' ? tt(lang, 'begin_ps142') : B(sel, lang).p;
+        expect(screen.getByText(lead(lang, own))).toBeTruthy();
+        expect(screen.queryByText(B(sel, lang).h)).toBeNull();
         expect(screen.getByText(P(MATRIX[sel].path, 'invite', lang))).toBeTruthy();
         // The edition is always named on the card.
         await waitFor(() => expect(screen.getByTestId('edition-abbr')).toHaveTextContent(/\S/));
@@ -148,7 +157,8 @@ it('no words opens Psalm 77 with a Help link', async () => {
   startWith('en', S.openNoWords, ['feel', 'scripture']);
   renderRouter(routes, { initialUrl: '/session/scripture' });
   expect(await screen.findByTestId('nw-help')).toBeTruthy();
-  expect(screen.getByText(B('NW', 'en').h)).toBeTruthy();
+  expect(screen.getByText(tt('en', 'begin_here'))).toBeTruthy();
+  expect(screen.getByText(lead('en', B('NW', 'en').p))).toBeTruthy();
 });
 
 it('tap count: Home → picture → Continue reaches Scripture in 3 taps', async () => {
@@ -167,8 +177,8 @@ it("doesn't fit: swap to the alternate person", async () => {
   fireEvent.press(await screen.findByTestId('not-fit'));
   fireEvent.press(await screen.findByTestId('nofit-person'));
   await waitFor(() => expect(useSession.getState().s?.path).toBe('ruth'));
-  // Bridge keeps h but uses Ruth's own frame (never names Nehemiah for Ruth).
-  expect(await screen.findByText(P('ruth', 'frame', 'en'))).toBeTruthy();
+  // The lead uses Ruth's own frame (never names Nehemiah for Ruth).
+  expect(await screen.findByText(lead('en', P('ruth', 'frame', 'en')))).toBeTruthy();
 });
 
 it("doesn't fit: asks before replacing a prayer she edited", async () => {

@@ -22,6 +22,8 @@ export const LANGS: Record<string, string> = {
 };
 export const MAX_MATCH = 1200;
 export const MAX_TRANSLATE = 1500;
+export const MAX_LINES_TEXT = 1500;
+export const MAX_LINES = 40;
 
 type PathEn = { name: string; title: string; frame: string; options: string[] };
 type Passage = { book: string; ch: number; from: number; to: number; vvText?: string };
@@ -69,6 +71,37 @@ Reply with only JSON: {"translation":"...","back":"..."}`;
 }
 
 export const translateUser = (msg: string) => `MESSAGE:\n<<<${msg.slice(0, MAX_TRANSLATE)}>>>`;
+
+/**
+ * /lines (team decision Oct 6, option 2): AI chooses only WHERE her prayer breaks into lines
+ * for slow reading. It never changes, adds, removes, corrects or translates a character, and
+ * validateLines() rejects any reply that does. The app checks again before using it.
+ */
+export function linesPrompt(lang: string): string {
+  return `A student wrote a short prayer in ${LANGS[lang] ?? 'their language'}. It will be shown one line at a time, slowly, while they breathe and pray.
+
+Split the prayer into short lines at natural pauses (breath groups): usually one sentence or one clause per line, at most about 12 words or 30 characters of Chinese or Japanese per line.
+
+RULES
+- Copy her text EXACTLY. Do not change, add, remove, correct, reorder or translate any character, word or punctuation mark. Only choose where the lines break.
+- Do not add a title, an Amen, a Bible verse or any comment.
+- At most ${MAX_LINES} lines.
+
+Reply with only JSON: {"lines":["...","..."]}`;
+}
+
+export const linesUser = (text: string) => `PRAYER:\n<<<${text.slice(0, MAX_LINES_TEXT)}>>>`;
+
+const squash = (s: string) => s.replace(/\s+/g, '');
+
+/** /lines schema check: the lines must be exactly her text (only spacing may differ). */
+export function validateLines(o: Record<string, unknown> | null, text: string): { lines: string[] } | null {
+  if (!o || !Array.isArray(o.lines)) return null;
+  const lines = o.lines.map((l) => (typeof l === 'string' ? l.trim() : '')).filter(Boolean);
+  if (!lines.length || lines.length > MAX_LINES || lines.length !== o.lines.length) return null;
+  if (squash(lines.join('')) !== squash(text)) return null;
+  return { lines };
+}
 
 /** Pulls the first JSON object out of a model reply (tolerates code fences). */
 export function parseJson(s: string): Record<string, unknown> | null {
@@ -151,6 +184,15 @@ export async function handleMatch(body: unknown, complete: Complete): Promise<Ma
   if (b.text.length > MAX_MATCH) throw new HttpError(413, 'text too long');
   const lang = typeof b.lang === 'string' && LANGS[b.lang] ? b.lang : 'en';
   return ask(complete, matchPrompt(lang), matchUser(b.text), validateMatch);
+}
+
+export async function handleLines(body: unknown, complete: Complete): Promise<{ lines: string[] }> {
+  const b = (body ?? {}) as { text?: unknown; lang?: unknown };
+  if (typeof b.text !== 'string' || !b.text.trim()) throw new HttpError(400, 'text required');
+  if (b.text.length > MAX_LINES_TEXT) throw new HttpError(413, 'text too long');
+  const text = b.text.trim();
+  const lang = typeof b.lang === 'string' && LANGS[b.lang] ? b.lang : 'en';
+  return ask(complete, linesPrompt(lang), linesUser(text), (o) => validateLines(o, text));
 }
 
 export async function handleTranslate(

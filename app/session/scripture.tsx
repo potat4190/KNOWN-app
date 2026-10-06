@@ -1,6 +1,6 @@
 /**
- * Scripture, step 2. Scene banner; the bridge (pictures / no words) or "You
- * said" + the AI's one-line reason (own words); the page card; the invite;
+ * Scripture, step 2. Scene banner; the opening "Here's one place you might begin."
+ * (pictures / no words, see S.openingFor) or "You said" + the AI's one-line reason (own words); the page card; the invite;
  * "Who was {name}?" with the team's own retelling (never styled as Scripture).
  */
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import { SceneBanner } from '@/components/SceneBanner';
 import { PageCard } from '@/components/PageCard';
 import { Txt } from '@/components/Txt';
 import { Icon } from '@/components/Icon';
-import { useT } from '@/i18n';
+import { hasKey, useT } from '@/i18n';
 import { useTheme } from '@/theme';
 import { NW, P, storySource } from '@/lib/content';
 import { useSession } from '@/state/session-store';
@@ -48,7 +48,7 @@ export default function Scripture() {
 
   if (!s || !s.path) return null;
   const path = s.path;
-  const bridge = S.bridgeFor(s, lang);
+  const opening = S.openingFor(s, lang, t, hasKey);
   const story = P(path, 'story', lang);
   const ai = s.ai;
   const aboutOpen = aboutFor === path;
@@ -97,10 +97,10 @@ export default function Scripture() {
           </SaidCard>
           <Heading srOnly>{`${P(path, 'name', lang)}: ${P(path, 'title', lang)}`}</Heading>
         </>
-      ) : bridge ? (
+      ) : opening ? (
         <>
-          <Heading>{bridge.h}</Heading>
-          <Lead>{bridge.p}</Lead>
+          <Heading>{opening.h}</Heading>
+          <Lead>{opening.p}</Lead>
         </>
       ) : null}
       {path === NW ? (

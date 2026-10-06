@@ -84,7 +84,7 @@ export function BundledVerses({
 }
 
 export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: Resolved | null; testID?: string }) {
-  const { c, radius, scheme } = useTheme();
+  const { c, radius, scheme, textScale } = useTheme();
   const { t, lang } = useT();
   const [full, setFull] = useState(false);
   const p = PASSAGES[path];
@@ -117,7 +117,13 @@ export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: 
         ) : resolved.source === 'youversion' ? (
           <View style={{ gap: 4 }}>
             {(full ? resolved.full : resolved.excerpt).map((r) => (
-              <BibleTextView key={r} reference={r} versionId={resolved.versionId} theme={scheme} fontSize={20} />
+              <BibleTextView
+                key={r}
+                reference={r}
+                versionId={resolved.versionId}
+                theme={scheme}
+                fontSize={Math.round(20 * textScale)}
+              />
             ))}
           </View>
         ) : (

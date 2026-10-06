@@ -1,7 +1,7 @@
 /**
- * The four pictures, 2×2 in ORDER (S, F, A, J), aspect 1:0.8. Selected: lamp
- * ring, glow and a numbered badge (1, 2); with two chosen the others are
- * desaturated. Screen readers hear a description of the image (pic_*), never
+ * The four pictures, 2×2 in ORDER (S, F, A, J), square (Reader design, Oct 6).
+ * Selected: a lamp ring set off by a thin gap, and a numbered circle (1, 2); with two
+ * chosen the others fade back. Screen readers hear a description of the image (pic_*), never
  * an emotion word. The internal keys are never shown.
  */
 import { Pressable, View } from 'react-native';
@@ -31,10 +31,10 @@ export function PictureGrid({ chosen, onToggle }: { chosen: Pic[]; onToggle: (k:
             accessibilityState={{ selected: on }}
             style={{
               width: '47.5%',
-              aspectRatio: 1 / 0.8,
-              borderRadius: radius.card,
+              aspectRatio: 1,
+              borderRadius: radius.card - 4,
               overflow: 'hidden',
-              borderWidth: on ? 4 : 1,
+              borderWidth: on ? 3 : 1,
               borderColor: on ? c.lamp : c.border,
               shadowColor: c.lamp,
               shadowOpacity: on ? 0.6 : 0,
@@ -58,9 +58,11 @@ export function PictureGrid({ chosen, onToggle }: { chosen: Pic[]; onToggle: (k:
                   position: 'absolute',
                   top: 8,
                   end: 8,
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
+                  minWidth: 30,
+                  height: 30,
+                  borderRadius: 15,
+                  borderWidth: 2,
+                  borderColor: c.background,
                   backgroundColor: c.lamp,
                   alignItems: 'center',
                   justifyContent: 'center',

@@ -26,9 +26,11 @@ describe('coach marks', () => {
     for (const [file, id] of [
       ['src/components/Header.tsx', 'header_x'],
       ['app/session/scripture.tsx', 'scripture_nofit'],
-      ['app/session/feel.tsx', 'feel_nowords'],
     ])
       expect(readFileSync(join(root, file), 'utf8')).toContain(`<TourTarget id="${id}" fixed>`);
+    // Since Oct 6, "None of these feel right" is a row under the pictures, not in the actions bar:
+    // an ordinary target, skipped like any other while it is off screen.
+    expect(readFileSync(join(root, 'app/session/feel.tsx'), 'utf8')).toContain('<TourTarget id="feel_nowords">');
   });
 
   it('leaving a screen counts the tips she was shown as seen, without "Got it"', () => {

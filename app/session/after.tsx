@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
 import { Heading, Lead, Tile } from '@/components/bits';
 import { useT } from '@/i18n';
+import { relayAvailable } from '@/services/matcher/deps';
 import { useSession, discardPaused } from '@/state/session-store';
 import { goSession, leaveTo, useSessionScreen } from '@/state/nav';
 import { TourTarget } from '@/features/tour/TourTarget';
@@ -39,7 +40,14 @@ export default function After() {
             onPress={() => goSession('reach')}
             testID="a-reach"
           />
-          <Tile icon="sit" title={t('a_sit')} sub={t('a_sit_d')} onPress={() => goSession('sit')} testID="a-sit" />
+          {/* With a relay, Stay here a moment sends her prayer to the AI only to find the pauses: say so first. */}
+          <Tile
+            icon="sit"
+            title={t('a_sit')}
+            sub={t(relayAvailable() ? 'a_sit_ai_d' : 'a_sit_d')}
+            onPress={() => goSession('sit')}
+            testID="a-sit"
+          />
         </View>
       </TourTarget>
     </Screen>

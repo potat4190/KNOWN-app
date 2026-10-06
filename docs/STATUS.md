@@ -1,6 +1,6 @@
 # Status
 
-Honest state of the build. Updated at the end of every phase. Last update: 2026-10-05.
+Honest state of the build. Updated at the end of every phase. Last update: 2026-10-06.
 
 ## Summary
 
@@ -18,7 +18,13 @@ Honest state of the build. Updated at the end of every phase. Last update: 2026-
 | 9 Hardening | Maestro flows (`e2e/`), `docs/QA.md`, EAS profiles, `PRIVACY.md`. Ad-hoc Maestro checks ran on the emulator 2026-10-04; the full `e2e/` suite was not re-run. |
 | Web | **Live** at https://potat4190.github.io/KNOWN/, built from this app's code (`npm run web:export`). See "Web version". |
 
-Tests: `npm test` = content validator + 333 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean (2026-10-05).
+Tests: `npm test` = content validator + 352 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean (2026-10-06).
+
+## Night redesign and new features (2026-10-06)
+
+Done in code and tests (see DECISIONS 2026-10-06): Night Welcome cards and Home with the living lamp (one clock, never restarts), Reader-style pictures with "None of these feel right" → Psalm 77, the Scripture opening "Here's one place you might begin.", "Try another place to begin", Settings → Text size, and Stay here a moment with her own prayer line by line (relay `/lines` + on-device fallback). New copy: 5 overrides and new drafted keys in all 5 languages (zh, ja, my, ar drafted by Claude for native readers; see CONTENT_REVIEW). Checked in a browser on a web export (screenshots of every changed screen, 390 px, Dark, Text size 115% and 150%).
+
+**Not yet:** run on an Android build; re-exported to the website (`npm run web:export`, then commit and push KNOWN-webapp); the relay's `/lines` with a real provider (the relay is still not deployed, so the app uses the on-device split).
 
 ## Web version (GitHub Pages)
 
@@ -108,6 +114,8 @@ Language → cards → Home; Feel → Nehemiah 1 (WEBBE); Psalm 142; Pray; Keep/
 - Native Fabric SIGSEGV seen twice on 2026-10-03 (not reproduced since).
 
 ## Not verified
+
+- The 2026-10-06 redesign on a phone (verified in Jest and in a browser only); `/lines` against a real AI provider.
 
 - TalkBack/VoiceOver focus after the `findNodeHandle` replacement.
 - The storage-failure path on a real device (unit-tested only).

@@ -4,15 +4,15 @@ The hackathon rules ask for a list of AI-generated assets and where they came fr
 
 ## AI-generated illustrations
 
-All 18 were extracted unchanged from `reference/KNOWN_Design_Lab.html` by `scripts/extract-design-lab.ts`.
+The 14 scenes are extracted unchanged from `reference/KNOWN_Design_Lab.html` by `scripts/extract-design-lab.ts`. Since 2026-10-06 the 4 Feel pictures are team-supplied replacements: the extraction copies `assets/images/picture-overrides/<S|F|A|J>.jpg` (resized to 520 px from Rhidaya's WebP files) over the Design Lab's pictures.
 
 | File | Used for | Source | Tool (team to fill) |
 |---|---|---|---|
-| `assets/images/pictures/S.jpg` | Feel picture: a figure sitting by a rainy window | Design Lab `IMG.S` | |
-| `assets/images/pictures/F.jpg` | Feel picture: a figure in a dark hallway holding a phone | Design Lab `IMG.F` | |
-| `assets/images/pictures/A.jpg` | Feel picture: a figure with clenched fists over a crumpled letter | Design Lab `IMG.A` | |
-| `assets/images/pictures/J.jpg` | Feel picture: a figure dancing in warm sunlight | Design Lab `IMG.J` | |
-| `assets/images/scenes/welcome.jpg` | Home hero | Design Lab `SCENE.welcome` | |
+| `assets/images/pictures/S.jpg` | Feel picture: a figure sitting on a window seat by a rainy window at dusk | Team-supplied (`assets/images/picture-overrides/S.jpg`, 2026-10-06) | |
+| `assets/images/pictures/F.jpg` | Feel picture: a figure wrapped in a red blanket on a bed while lightning flashes outside | Team-supplied (`assets/images/picture-overrides/F.jpg`, 2026-10-06) | |
+| `assets/images/pictures/A.jpg` | Feel picture: a figure standing with clenched fists over a crumpled sheet of paper | Team-supplied (`assets/images/picture-overrides/A.jpg`, 2026-10-06) | |
+| `assets/images/pictures/J.jpg` | Feel picture: a figure dancing on a sunny balcony with flowers | Team-supplied (`assets/images/picture-overrides/J.jpg`, 2026-10-06) | |
+| `assets/images/scenes/welcome.jpg` | Home hero (not shown since the 2026-10-06 Night Home; still bundled) | Design Lab `SCENE.welcome` | |
 | `assets/images/scenes/done.jpg` | Done hero | Design Lab `SCENE.done` | |
 | `assets/images/scenes/close.jpg` | Fallback scene (lament psalms) | Design Lab `SCENE.close` | |
 | `assets/images/scenes/ps77.jpg` | Asaph (Psalm 77) | Design Lab `SCENE.ps77` | |

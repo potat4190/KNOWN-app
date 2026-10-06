@@ -1,4 +1,4 @@
-# "I don't have the words" → Psalm 77, paired with a Help link that opens Help.
+# "None of these feel right" (was "I don't have the words") → Psalm 77, paired with a Help link that opens Help.
 appId: org.ifiusa.known.dev
 ---
 - runFlow: subflows/fresh-start.yaml

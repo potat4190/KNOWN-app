@@ -45,7 +45,7 @@ function useMomentScripture(m: Moment | null, lang: Lang): Resolved | null {
 export default function MomentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t, lang } = useT();
-  const { c, scheme } = useTheme();
+  const { c, scheme, textScale } = useTheme();
   const [m, setM] = useState<Moment | null | undefined>(undefined);
   const [confirm, setConfirm] = useState(false);
   const [askTranslate, setAskTranslate] = useState(false);
@@ -128,7 +128,13 @@ export default function MomentDetail() {
             <Skeleton />
           ) : scripture.source === 'youversion' ? (
             usfmRefs(path, PASSAGES[path].ex).map((r) => (
-              <BibleTextView key={r} reference={r} versionId={scripture.versionId} theme={scheme} fontSize={20} />
+              <BibleTextView
+                key={r}
+                reference={r}
+                versionId={scripture.versionId}
+                theme={scheme}
+                fontSize={Math.round(20 * textScale)}
+              />
             ))
           ) : (
             <BundledVerses path={path} verses={PASSAGES[path].ex} textLang={scripture.textLang} />

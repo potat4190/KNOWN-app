@@ -2,13 +2,14 @@
  * KNOWN relay (Cloudflare Worker).
  *   POST /match     {text, lang}      → {key, confidence, reason, feelings, risk}
  *   POST /translate {text, from, to}  → {translation, back}
+ *   POST /lines     {text, lang}      → {lines}   her prayer, split for slow reading; words unchanged
  *
  * Never logs request bodies: only counts, latency and errors. CORS is off
  * (mobile only). Rate-limited per IP and per install id (a random UUID from
  * the app, not tied to identity). `feelings` are for the app's internal
  * mapping only; the app never displays or stores them.
  */
-import { HttpError, RateLimiter, handleMatch, handleTranslate } from './core';
+import { HttpError, RateLimiter, handleLines, handleMatch, handleTranslate } from './core';
 import { providerFor, type Env } from './providers';
 
 const byIp = new RateLimiter(30, 60_000);
@@ -26,7 +27,7 @@ export default {
     const url = new URL(req.url);
     const route = url.pathname;
     if (req.method === 'GET' && route === '/health') return json(200, { ok: true });
-    if (req.method !== 'POST' || (route !== '/match' && route !== '/translate'))
+    if (req.method !== 'POST' || (route !== '/match' && route !== '/translate' && route !== '/lines'))
       return json(404, { error: 'not found' });
 
     const ip = req.headers.get('CF-Connecting-IP') ?? 'unknown';
@@ -37,7 +38,12 @@ export default {
     try {
       const body = await req.json().catch(() => null);
       const { complete, name } = providerFor(env);
-      const out = route === '/match' ? await handleMatch(body, complete) : await handleTranslate(body, complete);
+      const out =
+        route === '/match'
+          ? await handleMatch(body, complete)
+          : route === '/lines'
+            ? await handleLines(body, complete)
+            : await handleTranslate(body, complete);
       console.log(JSON.stringify({ route, provider: name, status, ms: Date.now() - t0 }));
       return json(200, out);
     } catch (e) {

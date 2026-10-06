@@ -42,5 +42,105 @@
       "ja": "誤解されたことがありました。今夜は少し息がつけます。",
       "ar": "أُسيء فهمي مرة. الليلة أستطيع أن أتنفس قليلًا."
     }
+  },
+  {
+    "target": "strings.*.pics_title",
+    "value": {
+      "en": "Start with what feels familiar.",
+      "zh": "从你觉得熟悉的开始。",
+      "ja": "なじみのあるものから始めましょう。",
+      "my": "သင်နဲ့ ရင်းနှီးတယ်လို့ ထင်ရတာကနေ စလိုက်ပါ။",
+      "ar": "ابدأ بما يبدو مألوفًا لك."
+    },
+    "reason": "Pictures screen: the image is a doorway, not a diagnosis. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+    "status": "drafted",
+    "reviewer": "Dorcas + native readers",
+    "previous": {
+      "en": "Which picture feels closest today?",
+      "my": "ဒီနေ့ ဘယ်ပုံက သင်နဲ့ အနီးစပ်ဆုံးလဲ။",
+      "zh": "今天哪一幅画最贴近你？",
+      "ja": "今日はどの絵がいちばん近いですか？",
+      "ar": "أي صورة هي الأقرب إليك اليوم؟"
+    }
+  },
+  {
+    "target": "strings.*.pics_sub",
+    "value": {
+      "en": "Choose one or two. It doesn’t have to describe exactly how you feel.",
+      "zh": "选一幅或两幅。不必完全符合你的感受。",
+      "ja": "ひとつか、ふたつ選んでください。いまの気持ちをぴったり表していなくてもかまいません。",
+      "my": "တစ်ပုံ သို့မဟုတ် နှစ်ပုံ ရွေးပါ။ သင့်စိတ်ထဲက အတိုင်း အတိအကျ ဖော်ပြစရာ မလိုပါဘူး။",
+      "ar": "اختر صورة أو اثنتين. لا يلزم أن تصف بالضبط ما في داخلك."
+    },
+    "reason": "Pictures screen. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+    "status": "drafted",
+    "reviewer": "Dorcas + native readers",
+    "previous": {
+      "en": "Choose one or two. There is no wrong answer.",
+      "my": "တစ်ပုံ သို့မဟုတ် နှစ်ပုံ ရွေးပါ။ မှားတဲ့အဖြေ မရှိပါ။",
+      "zh": "选一幅或两幅。没有错误的答案。",
+      "ja": "ひとつか、ふたつ選んでください。まちがった答えはありません。",
+      "ar": "اختر صورة أو اثنتين. لا توجد إجابة خاطئة."
+    }
+  },
+  {
+    "target": "strings.*.no_words",
+    "value": {
+      "en": "None of these feel right",
+      "zh": "这些都不太对",
+      "ja": "どれもしっくりきません",
+      "my": "ဒီပုံတွေထဲက ဘယ်ဟာမှ မကိုက်ပါဘူး",
+      "ar": "لا شيء من هذه يناسبني"
+    },
+    "reason": "Pictures screen: the quiet row still opens Psalm 77 (team decision Oct 6). English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+    "status": "drafted",
+    "reviewer": "Dorcas + native readers",
+    "previous": {
+      "en": "I don’t have the words",
+      "my": "စကားလုံး မရှိပါ",
+      "zh": "我找不到话语",
+      "ja": "言葉が見つかりません",
+      "ar": "ليست لديّ كلمات"
+    }
+  },
+  {
+    "target": "strings.*.not_fit",
+    "value": {
+      "en": "Try another place to begin",
+      "zh": "换一个地方开始",
+      "ja": "ほかのところから始める",
+      "my": "တခြားနေရာကနေ စကြည့်ပါ",
+      "ar": "جرّب مكانًا آخر للبدء"
+    },
+    "reason": "Scripture screen: replaces “This doesn’t fit me”. Opens the same sheet. English copy from Rhidaya (build lead), Oct 5–6 2026; zh, ja, my, ar drafted by Claude for native readers.",
+    "status": "drafted",
+    "reviewer": "Dorcas + native readers",
+    "previous": {
+      "en": "This doesn’t fit me",
+      "my": "ဒါက ကျွန်ုပ်နဲ့ မကိုက်ညီဘူး",
+      "zh": "这个不太适合我",
+      "ja": "これはわたしに合いません",
+      "ar": "هذا لا يناسبني"
+    }
+  },
+  {
+    "target": "strings.*.pic_F",
+    "value": {
+      "en": "A figure wrapped in a blanket on a bed while lightning flashes outside",
+      "zh": "一个人裹着毯子坐在床上，窗外电闪雷鸣",
+      "ja": "外で稲妻が光るなか、毛布にくるまってベッドに座っている人",
+      "my": "အပြင်မှာ လျှပ်စီးလက်နေချိန် ကုတင်ပေါ်မှာ စောင်ခြုံပြီး ထိုင်နေတဲ့သူ",
+      "ar": "شخصية ملتفّة ببطانية على السرير بينما يلمع البرق في الخارج"
+    },
+    "reason": "Screen-reader description for the new F picture (assets/images/picture-overrides/F.jpg). Describes the image, never an emotion (boundary 1). Drafted by Claude.",
+    "status": "drafted",
+    "reviewer": "Kezia + native readers",
+    "previous": {
+      "en": "A figure pressed against a wall in a dark hallway, holding a phone",
+      "my": "မှောင်နေတဲ့ စင်္ကြံမှာ နံရံကို ကပ်ပြီး ဖုန်းကိုင်ထားတဲ့သူ",
+      "zh": "一个人在昏暗的走廊里紧贴着墙，拿着手机",
+      "ja": "暗い廊下で壁にもたれ、スマートフォンを持っている人",
+      "ar": "شخصية منكمشة على جدار في ممر مظلم، تمسك هاتفًا"
+    }
   }
 ]
