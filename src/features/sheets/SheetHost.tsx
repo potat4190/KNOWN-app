@@ -25,6 +25,7 @@ import {
 } from '@/state/session-store';
 import { beginSession, leaveTo, restoreStack } from '@/state/nav';
 import * as S from '@/state/session';
+import { SheetMood } from '@/features/mood/SessionMood';
 
 function ExitSheet() {
   const { t, lang } = useT();
@@ -222,7 +223,7 @@ export function SheetHost() {
   const { t } = useT();
   if (!lang) return null;
   return (
-    <>
+    <SheetMood>
       <Sheet open={sheet === 'exit'} onClose={close} title={t('exit_title')} testID="sheet-exit">
         {sheet === 'exit' ? <ExitSheet /> : null}
       </Sheet>
@@ -239,6 +240,6 @@ export function SheetHost() {
       >
         {sheet === 'recover' ? <RecoverSheet /> : null}
       </Sheet>
-    </>
+    </SheetMood>
   );
 }

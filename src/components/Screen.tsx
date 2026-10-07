@@ -10,6 +10,7 @@ import { useTheme } from '@/theme';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { ACTIONS_TARGET } from '@/features/tour/TourProvider';
 import { Rise } from './Rise';
+import { MoodAura } from './MoodAura';
 
 type Props = {
   header?: ReactNode;
@@ -19,7 +20,7 @@ type Props = {
   center?: boolean;
   contentStyle?: ViewStyle;
   scroll?: boolean;
-  /** Drawn behind everything (e.g. the lamp-lit room). */
+  /** Drawn behind everything (e.g. the lamp-lit room). Default: the session mood's aura, if any. */
   backdrop?: ReactNode;
   /** Actions without the divider and page colour, so the backdrop shows through. */
   bareActions?: boolean;
@@ -58,7 +59,7 @@ export function Screen({
   );
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.background }} edges={['top', 'bottom']} testID={testID}>
-      {backdrop}
+      {backdrop ?? <MoodAura />}
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {header}
         {scroll ? (

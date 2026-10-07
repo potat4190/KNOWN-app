@@ -10,7 +10,6 @@ import { useT } from '@/i18n';
 import { useUi } from '@/state/ui';
 import { Txt } from './Txt';
 import { Icon } from './Icon';
-import { LampGlow } from './Lamp';
 import { TourTarget } from '@/features/tour/TourTarget';
 
 type Props = {
@@ -23,13 +22,11 @@ type Props = {
   hideGear?: boolean;
 };
 
+/** The KNOWN wordmark: the name alone, no lamp. */
 export function Mark() {
   const { c } = useTheme();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} accessible accessibilityLabel="KNOWN">
-      <View style={{ width: 22, height: 22, alignItems: 'center', justifyContent: 'center' }}>
-        <LampGlow size={26} />
-      </View>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }} accessible accessibilityLabel="KNOWN">
       <Txt v="secondary" face="heading" weight="bold" color={c.text} style={{ letterSpacing: 3 }} lang="en">
         KNOWN
       </Txt>
@@ -54,7 +51,9 @@ export function StepDots({ step }: { step: number }) {
             height: 8,
             width: i === step ? 20 : 8,
             borderRadius: 4,
-            backgroundColor: i <= step ? c.lamp : c.border,
+            // Steps ahead: muted ink, half strength (the border colour vanished on the darker moods).
+            backgroundColor: i <= step ? c.lamp : c.textMuted,
+            opacity: i <= step ? 1 : 0.4,
           }}
         />
       ))}

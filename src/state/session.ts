@@ -9,6 +9,7 @@ import {
   LAMENTS,
   MATRIX,
   NW,
+  ORDER,
   P,
   STEP_DOT,
   STEP_NAME,
@@ -145,6 +146,31 @@ export function openStory(
 
 export const openNoWords = (s: SessionState) => openStory(s, { from: 'nw', sel: 'NW', path: NW });
 
+/** The matcher's internal feelings → the picture choice they stand for ("sadness","fear" → SF). */
+const FEEL_PIC: Record<string, Pic> = { sadness: 'S', fear: 'F', anger: 'A', enjoyment: 'J' };
+export function selFromFeelings(feelings: readonly string[] | undefined): SelKey | null {
+  const picks = (feelings || []).map((f) => FEEL_PIC[String(f).toLowerCase()]).filter(Boolean);
+  const fk = ORDER.filter((k) => picks.includes(k)).join('') as SelKey;
+  return fk && MATRIX[fk] ? fk : null;
+}
+
+/** Each picture choice's own story (the matrix gives every choice a different one). */
+const CHOICE_OF: Partial<Record<PathKey, SelKey>> = Object.fromEntries(
+  (Object.keys(MATRIX) as SelKey[]).map((k) => [MATRIX[k].path, k]),
+);
+
+/**
+ * Which of the ten mood palettes the session wears from Scripture on (src/theme/moods.ts).
+ * Pictures: the pictures she chose (a swap keeps it). Own words: the feelings the matcher read,
+ * else the picture choice whose story it opened first. No words, or nothing to go on: null.
+ */
+export function moodFor(s: SessionState): SelKey | null {
+  if (!s.path) return null;
+  if (s.from === 'pics') return s.sel && s.sel !== 'NW' ? s.sel : null;
+  if (s.from !== 'words') return null;
+  return selFromFeelings(s.ai?.feelings) ?? CHOICE_OF[s.seen[0] ?? s.path] ?? null;
+}
+
 /**
  * Own-words result → story (Design Lab A.findStory acceptance rules).
  * Accept only keys in the content pack; below 0.45 use the internal feelings
@@ -157,11 +183,8 @@ export function acceptMatch(
   const key = r.key && isKey(r.key) ? r.key : null;
   let result: MatchResult = { ...r, key };
   if (!key || r.confidence < 0.45) {
-    const FE: Record<string, Pic> = { sadness: 'S', fear: 'F', anger: 'A', enjoyment: 'J' };
-    const order: Pic[] = ['S', 'F', 'A', 'J'];
-    const picks = (r.feelings || []).map((f) => FE[String(f).toLowerCase()]).filter(Boolean);
-    const fk = order.filter((k) => picks.includes(k)).join('') as SelKey;
-    const fromFeelings = fk && MATRIX[fk] ? MATRIX[fk].path : null;
+    const fk = selFromFeelings(r.feelings);
+    const fromFeelings = fk ? MATRIX[fk].path : null;
     // In a crisis with no confident match, Psalm 77 follows the Crisis screen (Design Lab).
     result = r.risk
       ? { ...result, key: NW, reason: '' }

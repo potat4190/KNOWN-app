@@ -25,8 +25,9 @@ import * as S from '@/state/session';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { useTips } from '@/features/tour/TourProvider';
 import { useMusic } from '@/services/music/MusicHost';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function Scripture() {
+function Scripture() {
   const s = useSessionScreen('scripture');
   const { t, lang } = useT();
   const { c } = useTheme();
@@ -155,3 +156,5 @@ export default function Scripture() {
     </Screen>
   );
 }
+
+export default withSessionMood(Scripture);

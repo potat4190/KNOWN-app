@@ -11,8 +11,9 @@ import { useSession, discardPaused } from '@/state/session-store';
 import { goSession, leaveTo, useSessionScreen } from '@/state/nav';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { useTips } from '@/features/tour/TourProvider';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function After() {
+function After() {
   const s = useSessionScreen('after');
   const { t } = useT();
   useTips('after', ['after_tiles', 'header_x']);
@@ -53,3 +54,5 @@ export default function After() {
     </Screen>
   );
 }
+
+export default withSessionMood(After);

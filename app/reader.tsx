@@ -9,8 +9,9 @@ import { BibleReader } from '@youversion/platform-react-native-expo-ui';
 import { Header } from '@/components/Header';
 import { useTheme } from '@/theme';
 import { BOOKS, PASSAGES, isPathKey } from '@/lib/content';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function Reader() {
+function Reader() {
   const { path, versionId } = useLocalSearchParams<{ path: string; versionId: string }>();
   const { c, scheme } = useTheme();
   if (!isPathKey(path) || !versionId) return null;
@@ -31,3 +32,5 @@ export default function Reader() {
     </SafeAreaView>
   );
 }
+
+export default withSessionMood(Reader);

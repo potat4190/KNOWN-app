@@ -15,8 +15,9 @@ import { wasSaved } from '@/state/done';
 import { useSession } from '@/state/session-store';
 import { leaveTo } from '@/state/nav';
 import { getStore } from '@/data/store';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function Done() {
+function Done() {
   const { t } = useT();
   const [saved] = useState(wasSaved());
   const home = () => {
@@ -49,3 +50,5 @@ export default function Done() {
     </Screen>
   );
 }
+
+export default withSessionMood(Done);

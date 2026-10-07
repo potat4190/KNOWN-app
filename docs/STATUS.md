@@ -1,6 +1,6 @@
 # Status
 
-Honest state of the build. Updated at the end of every phase. Last update: 2026-10-06.
+Honest state of the build. Updated at the end of every phase. Last update: 2026-10-07.
 
 ## Summary
 
@@ -18,13 +18,42 @@ Honest state of the build. Updated at the end of every phase. Last update: 2026-
 | 9 Hardening | Maestro flows (`e2e/`), `docs/QA.md`, EAS profiles, `PRIVACY.md`. Ad-hoc Maestro checks ran on the emulator 2026-10-04; the full `e2e/` suite was not re-run. |
 | Web | **Live** at https://potat4190.github.io/KNOWN/, built from this app's code (`npm run web:export`). See "Web version". |
 
-Tests: `npm test` = content validator + 352 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean (2026-10-06).
+Tests: `npm test` = content validator + 402 Jest tests (app + relay), all passing. `npm run typecheck` and `npm run lint` are clean (2026-10-07).
 
 ## Night redesign and new features (2026-10-06)
 
 Done in code and tests (see DECISIONS 2026-10-06): Night Welcome cards and Home with the living lamp (one clock, never restarts), Reader-style pictures with "None of these feel right" → Psalm 77, the Scripture opening "Here's one place you might begin.", "Try another place to begin", Settings → Text size, and Stay here a moment with her own prayer line by line (relay `/lines` + on-device fallback). New copy: 5 overrides and new drafted keys in all 5 languages (zh, ja, my, ar drafted by Claude for native readers; see CONTENT_REVIEW). Checked in a browser on a web export (screenshots of every changed screen, 390 px, Dark, Text size 115% and 150%).
 
 **Not yet:** run on an Android build; re-exported to the website (`npm run web:export`, then commit and push KNOWN-webapp); the relay's `/lines` with a real provider (the relay is still not deployed, so the app uses the on-device split).
+
+## Critique palette, mood themes and Scripture fixes (2026-10-07)
+
+Done in code and tests (see DECISIONS 2026-10-07), checked in a browser (dev server, 400 px and 1366 px, Light and Dark, English, Arabic and Japanese):
+
+- House palette from `reference/KNOWN-Judges-Critique.html`; all texts and images unchanged. The header wordmark is "KNOWN" without the lamp.
+- Ten mood themes from Scripture to Done, for all 10 picture choices and for own words (walked: every choice's Scripture screen; Scripture → doesn't-fit sheet → Pray → After → Sit → Keep → Done; own words → Nehemiah → Fear theme). Contrast of every palette is tested (AA).
+- Demo pin: the rain picture alone always opens Psalm 13 (not in production builds).
+- Scripture card: no "?" heading; psalm verse 1 numbered on its first line; footer names the verses shown; Psalm 13 shows 1–2, 5; no dead "Read the full passage". Scan of every pathway in BSB, JA1955, CSBS and SAT: the garbled heading was only BSB Psalm 13; titled verse 1 in BSB Psalms 13, 61, 77, 139, 142; chapter labels ("第13篇", "第2章") and section headings on JA1955, CSBS and SAT cards; all hidden on the card now.
+- "Who was David?" on all five David psalm paths, in 5 languages (drafted for review).
+- Web fixes found on the way: Share on Reach out did nothing in browsers without the Web Share API (now copies the message); react-native-svg passed phone-only accessibility props into the page (console errors and the dev overlay); light scrollbars on the night palette.
+
+**Not verified:** the mood themes and the card's injected styles on a phone (iOS or Android build). The card rules use CSS `:has()` (Android System WebView 105+, iOS 15.4+); on an older WebView the psalm title simply loses its "1".
+
+## Phone app vs website
+
+The website is built from the same code, so every screen, text, flow and feature is the same. These are the places where a browser behaves differently from the phone:
+
+| Feature | Phone app | Website |
+|---|---|---|
+| Moments, paused moment, settings | Encrypted SQLite (SQLCipher) and MMKV | `localStorage`, **not encrypted** (team decision: no extra notice) |
+| Share (Reach out) | The phone's share sheet | The browser's share sheet where it has one (Chrome/Edge on Windows and Android, Safari); otherwise the message is copied and "Copied" is shown |
+| Call / Text a Help line | Opens the phone's dialer or messages | Opens `tel:`/`sms:` links: works in phone browsers; on a computer it depends on what the computer has set up for calls |
+| Switching to or from Arabic | Restarts the app right-to-left | Reloads the page right-to-left |
+| Reload on the Paused screen | Always relaunches at Home | A browser reload keeps the URL, so Paused shows again |
+| Bible version picker | The YouVersion SDK's sheet | KNOWN's own sheet (`BibleVersionSheet.web.tsx`), same list |
+| Scripture card styling | Rules injected into each YouVersion WebView | A `<style>` scoped to the card |
+| App-switcher privacy cover | Covers the screen when KNOWN leaves the foreground | Follows the browser tab's visibility (not checked) |
+| Not checked on the web | | Safari/iOS, Firefox, screen readers |
 
 ## Web version (GitHub Pages)
 

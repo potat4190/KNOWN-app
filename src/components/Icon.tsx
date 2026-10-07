@@ -1,6 +1,7 @@
 /** Line icons from the Design Lab (ICON / ICO), drawn with react-native-svg. */
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { isRTL } from '@/i18n/direction';
+import { svgHidden } from './svgId';
 
 export type IconName =
   | 'help'
@@ -49,8 +50,7 @@ export function Icon({
       height={size}
       viewBox="0 0 24 24"
       style={flip && isRTL() ? { transform: [{ scaleX: -1 }] } : undefined}
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...svgHidden}
     >
       {name === 'help' && (
         <>

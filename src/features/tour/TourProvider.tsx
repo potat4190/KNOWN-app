@@ -25,6 +25,7 @@ import { Txt } from '@/components/Txt';
 import { Button } from '@/components/Button';
 import { useFrameWidth } from '@/components/AppFrame';
 import { isFixedTarget, measureTarget, type Rect } from './targets';
+import { SheetMood } from '@/features/mood/SessionMood';
 
 /** Tip id → its drafted text key. */
 export const TIPS: Record<string, string> = {
@@ -77,6 +78,9 @@ export function tipsEnabled(): boolean {
   return p.tourDone && (p.tipsOn || guided) && !useUi.getState().sheet;
 }
 
+const sameRect = (a: Rect, b: Rect) =>
+  Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1 && Math.abs(a.width - b.width) < 1 && Math.abs(a.height - b.height) < 1;
+
 export function TourProvider({ children }: { children: ReactNode }) {
   const [queue, setQueue] = useState<string[]>([]);
   const [measured, setMeasured] = useState<{ id: string; rect: Rect } | null>(null);
@@ -107,14 +111,20 @@ export function TourProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
     if (!current) return;
-    void measureTarget(current).then((r) => {
-      if (!alive) return;
-      if (!r)
-        setQueue((q) => q.slice(1)); // target not on screen: skip it
-      else setMeasured({ id: current, rect: r });
-    });
+    const measure = () =>
+      void measureTarget(current).then((r) => {
+        if (!alive) return;
+        if (!r)
+          setQueue((q) => q.slice(1)); // target not on screen: skip it
+        else setMeasured((m) => (m && m.id === current && sameRect(m.rect, r) ? m : { id: current, rect: r }));
+      });
+    measure();
+    // Keep the ring on its target while the tip shows: content above it can still grow after the
+    // first measure (the YouVersion text loads after the Scripture screen appears).
+    const timer = setInterval(measure, 400);
     return () => {
       alive = false;
+      clearInterval(timer);
     };
   }, [current]);
 
@@ -134,15 +144,18 @@ export function TourProvider({ children }: { children: ReactNode }) {
     <TourCtx.Provider value={{ show, clear }}>
       {children}
       {current && rect && !sheet ? (
-        <Coach
-          key={current}
-          id={current}
-          rect={rect}
-          onGotIt={gotIt}
-          onSkip={skipAll}
-          onShown={onShown}
-          onOffscreen={skipOne}
-        />
+        // A tip over a Scripture-to-Keep screen wears that screen's mood.
+        <SheetMood>
+          <Coach
+            key={current}
+            id={current}
+            rect={rect}
+            onGotIt={gotIt}
+            onSkip={skipAll}
+            onShown={onShown}
+            onOffscreen={skipOne}
+          />
+        </SheetMood>
       ) : null}
     </TourCtx.Provider>
   );

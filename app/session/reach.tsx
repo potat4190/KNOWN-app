@@ -4,7 +4,7 @@
  * back-translation to check the meaning) appears only when a relay is set.
  */
 import { useState } from 'react';
-import { Pressable, Share, TextInput, View } from 'react-native';
+import { Platform, Pressable, Share, TextInput, View } from 'react-native';
 import { router } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { Screen } from '@/components/Screen';
@@ -22,8 +22,9 @@ import { useSessionScreen } from '@/state/nav';
 import { translateMessage } from '@/services/matcher/matcher';
 import { relayAvailable, relayDeps } from '@/services/matcher/deps';
 import * as S from '@/state/session';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function Reach() {
+function Reach() {
   const s = useSessionScreen('reach');
   const update = useSession((x) => x.update);
   const { t, lang } = useT();
@@ -43,8 +44,13 @@ export default function Reach() {
     setStatus(t('copied'));
   };
   const share = async () => {
+    const message = tr ? tr.translation : text;
+    // Web: browsers without the Web Share API (Firefox, some desktops) can't open a share sheet,
+    // so the message is copied instead of the button doing nothing.
+    if (Platform.OS === 'web' && typeof navigator !== 'undefined' && typeof navigator.share !== 'function')
+      return copy(message);
     try {
-      await Share.share({ message: tr ? tr.translation : text });
+      await Share.share({ message });
     } catch {
       // She closed the sheet; nothing was sent.
     }
@@ -220,3 +226,5 @@ export default function Reach() {
     </Screen>
   );
 }
+
+export default withSessionMood(Reach);

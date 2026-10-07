@@ -21,8 +21,9 @@ import * as S from '@/state/session';
 import { TourTarget } from '@/features/tour/TourTarget';
 import { useTips } from '@/features/tour/TourProvider';
 import { useMusic } from '@/services/music/MusicHost';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
-export default function Pray() {
+function Pray() {
   const s = useSessionScreen('pray');
   const update = useSession((x) => x.update);
   const { t, lang } = useT();
@@ -142,3 +143,5 @@ export default function Pray() {
     </Screen>
   );
 }
+
+export default withSessionMood(Pray);

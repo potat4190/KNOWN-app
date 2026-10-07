@@ -22,10 +22,11 @@ import * as S from '@/state/session';
 import { useMsgText } from '@/state/useMsgText';
 import { setLastSaved } from '@/state/done';
 import { getStore } from '@/data/store';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
 const clip = (s: string, n = 90) => (s.length > n ? `${s.slice(0, n)}…` : s);
 
-export default function Keep() {
+function Keep() {
   const s = useSessionScreen('keep');
   const update = useSession((x) => x.update);
   const { t, lang } = useT();
@@ -118,3 +119,5 @@ export default function Keep() {
     </Screen>
   );
 }
+
+export default withSessionMood(Keep);

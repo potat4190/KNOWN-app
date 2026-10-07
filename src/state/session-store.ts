@@ -7,7 +7,8 @@
 import { create } from 'zustand';
 import { getStore } from '@/data/store';
 import { PAUSE_TTL_MS } from '@/config/privacy';
-import { MATRIX, ROTATION, selKey, type PathKey, type SelKey } from '@/lib/content';
+import { MATRIX, ROTATION, isPathKey, selKey, type PathKey, type SelKey } from '@/lib/content';
+import { DEMO_FIRST_STORY } from '@/config/flags';
 import { draw, type Rng } from '@/services/rotation/rotation';
 import { now } from './clock';
 import { usePrefs } from './prefs';
@@ -65,6 +66,12 @@ export async function openPictures(): Promise<PathKey | null> {
   opening = true;
   try {
     const sel = selKey(s.pics) as SelKey;
+    // Demo pin (src/config/flags.ts): this choice always opens one story; the rotation is left as it was.
+    const pinned = DEMO_FIRST_STORY[sel];
+    if (pinned && isPathKey(pinned)) {
+      useSession.getState().update((x) => S.openStory(x, { from: 'pics', sel, path: pinned }));
+      return pinned;
+    }
     const store = getStore();
     const all = await store.rotation.getAll();
     const { path, entry } = draw(all[sel], MATRIX[sel].path, ROTATION[sel] ?? [MATRIX[sel].path], rng);

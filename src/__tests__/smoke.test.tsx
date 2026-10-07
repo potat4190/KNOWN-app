@@ -232,6 +232,49 @@ it('double tap on Continue draws the story once (the rotation advances once)', a
   expect(put).toHaveBeenCalledTimes(1);
 });
 
+it('demo pin: the rain picture alone opens Psalm 13 every time and leaves the rotation alone', async () => {
+  const put = jest.spyOn(getStore().rotation, 'put');
+  for (let i = 0; i < 3; i++) {
+    startWith('en', (s) => ({ ...s, pics: ['S'] as S.SessionState['pics'] }), ['feel']);
+    expect(await openPictures()).toBe('ps13');
+    expect(useSession.getState().s?.sel).toBe('S');
+  }
+  expect(put).not.toHaveBeenCalled();
+  // Other choices still rotate.
+  startWith('en', (s) => ({ ...s, pics: ['F'] as S.SessionState['pics'] }), ['feel']);
+  expect(await openPictures()).toBe('neh');
+  expect(put).toHaveBeenCalledTimes(1);
+});
+
+it('Psalm 13: the card shows 1–2, 5 with nothing more to "read in full", and "Who was David?"', async () => {
+  startWith(
+    'en',
+    (s) => S.openStory({ ...s, pics: ['S'] }, { from: 'pics', sel: 'S', path: 'ps13' }),
+    ['feel', 'scripture'],
+  );
+  renderRouter(routes, { initialUrl: '/session/scripture' });
+  expect(await screen.findByTestId('shown-ref')).toHaveTextContent('Psalm 13:1–2, 5');
+  expect(screen.queryByTestId('read-full')).toBeNull();
+  fireEvent.press(screen.getByTestId('about-toggle'));
+  expect(await screen.findByText(P('ps13', 'story', 'en')[0])).toBeTruthy();
+});
+
+it('mood: Feel keeps the house palette', async () => {
+  startWith('en', (s) => ({ ...s, pics: ['F', 'J'] as S.SessionState['pics'] }), ['feel']);
+  renderRouter(routes, { initialUrl: '/session/feel' });
+  expect(await screen.findByTestId('screen-feel')).toBeTruthy();
+  expect(screen.queryByTestId(/^mood-aura-/, { includeHiddenElements: true })).toBeNull();
+});
+
+it('mood: Scripture onward wears the pictures she chose', async () => {
+  startWith('en', openSel('FJ'), ['feel', 'scripture']);
+  renderRouter(routes, { initialUrl: '/session/scripture' });
+  expect(await screen.findByTestId('mood-aura-FJ', { includeHiddenElements: true })).toBeTruthy();
+  act(() => router.push('/session/pray'));
+  expect(await screen.findByTestId('screen-pray')).toBeTruthy();
+  expect(screen.getByTestId('mood-aura-FJ', { includeHiddenElements: true })).toBeTruthy();
+});
+
 const atKeep = () =>
   startWith('en', (s) => S.toggleStay(openSel('F')(s), 0), ['feel', 'scripture', 'pray', 'after', 'keep']);
 

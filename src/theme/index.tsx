@@ -7,6 +7,7 @@ import { AccessibilityInfo, useColorScheme } from 'react-native';
 import { usePrefs } from '@/state/prefs';
 import { useT } from '@/i18n';
 import { colorsFor, radius, space, type Colors, type Scheme } from './tokens';
+import { MOODS, moodColors, type MoodKey } from './moods';
 import {
   TYPE,
   clampTextScale,
@@ -23,7 +24,9 @@ import type { Lang } from '@/i18n/langs';
 export type Theme = {
   scheme: Scheme;
   c: Colors;
-  radius: typeof radius;
+  /** The session's mood palette (Scripture to Done), else null for the house palette. */
+  mood: MoodKey | null;
+  radius: { card: number; sheet: number; full: number };
   space: typeof space;
   reduceMotion: boolean;
   /** Settings → Text size (1 = default). Already applied by type(); exposed for non-Text views such as BibleTextView. */
@@ -78,6 +81,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     () => ({
       scheme,
       c: colorsFor(scheme),
+      mood: null,
       radius,
       space,
       reduceMotion,
@@ -85,6 +89,29 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       type: makeType(lang, textScale),
     }),
     [scheme, reduceMotion, lang, textScale],
+  );
+  return <ThemeCtx.Provider value={value}>{children}</ThemeCtx.Provider>;
+}
+
+/**
+ * Lays a mood palette over the theme for everything inside (null = the house palette).
+ * Appearance, text size and Reduce Motion still come from the provider above.
+ */
+export function MoodScope({ mood, children }: { mood: MoodKey | null; children: ReactNode }) {
+  const base = useTheme();
+  const value = useMemo<Theme>(
+    () =>
+      mood
+        ? {
+            ...base,
+            mood,
+            c: moodColors(colorsFor(base.scheme), mood, base.scheme),
+            radius: { ...base.radius, card: MOODS[mood].cardRadius },
+          }
+        : base.mood
+          ? { ...base, mood: null, c: colorsFor(base.scheme), radius }
+          : base,
+    [base, mood],
   );
   return <ThemeCtx.Provider value={value}>{children}</ThemeCtx.Provider>;
 }

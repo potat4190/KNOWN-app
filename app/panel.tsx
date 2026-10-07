@@ -10,13 +10,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePrefs } from '@/state/prefs';
 import { useUi } from '@/state/ui';
 import { useSession, cleanupPaused, daysLeft } from '@/state/session-store';
+import { moodFor } from '@/state/session';
+import { MOODS } from '@/theme/moods';
 import { now } from '@/state/clock';
 import { recoverOffered } from '@/state/launch';
 import { getStore } from '@/data/store';
 import { DAY_MS, PAUSE_TTL_MS } from '@/config/privacy';
 import { BIBLE_TRACK } from '@/config/bible-track';
 import { BIBLE_VERSIONS } from '@/config/bible-versions';
-import { AI_RELAY_URL, VARIANT, YOUVERSION_APP_KEY } from '@/config/flags';
+import { AI_RELAY_URL, DEMO_FIRST_STORY, VARIANT, YOUVERSION_APP_KEY } from '@/config/flags';
 import { MUSIC, type MusicMoment } from '@/config/music';
 import { MATRIX, NW, PATHS, ROTATION, ref, SEL_KEYS } from '@/lib/content';
 import { LANGS, LANG_INFO } from '@/i18n/langs';
@@ -238,6 +240,13 @@ export default function Panel() {
           <KV k="path" v={s?.path ? `${PATHS.en[s.path].name} · ${ref(s.path, 'en')}` : '–'} />
           <KV k="from" v={s?.from ?? '–'} />
           <KV
+            k="theme"
+            v={(() => {
+              const m = s ? moodFor(s) : null;
+              return m ? `${MOODS[m].name} (${m}), from Scripture on` : 'house palette';
+            })()}
+          />
+          <KV
             k="paused"
             v={
               paused != null && age != null
@@ -342,7 +351,10 @@ export default function Panel() {
           {SEL_KEYS.map((sel) => (
             <View key={sel} style={{ borderTopWidth: 1, borderColor: '#f0ebe1', paddingTop: 6 }}>
               <T b>
-                {sel} · next: {peek(rot[sel], MATRIX[sel].path, ROTATION[sel])}
+                {sel} · next:{' '}
+                {DEMO_FIRST_STORY[sel]
+                  ? `${DEMO_FIRST_STORY[sel]} (demo pin, every time)`
+                  : peek(rot[sel], MATRIX[sel].path, ROTATION[sel])}
               </T>
               <T style={{ color: MUTED }}>pool: {ROTATION[sel].join(', ')}</T>
               <T style={{ color: MUTED }}>

@@ -4,7 +4,7 @@
  * Reduce Motion it is static.
  */
 import { useEffect } from 'react';
-import { useGradientId } from './svgId';
+import { svgHidden, useGradientId } from './svgId';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -28,8 +28,7 @@ export function LampGlow({ size = 120, opacity = 1 }: { size?: number; opacity?:
       width={size}
       height={size}
       viewBox="0 0 100 100"
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
+      {...svgHidden}
     >
       <Defs>
         <RadialGradient id={id} cx="50%" cy="50%" r="50%">

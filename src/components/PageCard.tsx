@@ -5,18 +5,19 @@
  * passage" and "Open in YouVersion". The footer always says which edition is
  * shown, and the YouVersion pill opens exactly the version it names.
  */
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { BibleTextView } from '@youversion/platform-react-native-expo-ui';
-import { PASSAGES, range, ref, verseText, type PathKey } from '@/lib/content';
+import { PASSAGES, isWholePassage, range, shownRef, verseText, type PathKey } from '@/lib/content';
 import { useTheme } from '@/theme';
 import { useT } from '@/i18n';
 import { localizeDigits, LANG_INFO } from '@/i18n/langs';
 import { youVersionLink, type Resolved } from '@/services/scripture/scripture';
 import { Txt } from './Txt';
 import { LampGlow } from './Lamp';
+import { useScriptureCardStyle } from './scriptureCardStyle';
 import { TourTarget } from '@/features/tour/TourTarget';
 
 function Pill({ label, onPress, testID }: { label: string; onPress: () => void; testID?: string }) {
@@ -88,8 +89,12 @@ export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: 
   const { t, lang } = useT();
   const [full, setFull] = useState(false);
   const p = PASSAGES[path];
-  const verses = full ? range(p) : p.ex;
+  // When the excerpt is already the whole passage, "Read the full passage" would change nothing.
+  const whole = isWholePassage(path, p.ex);
+  const verses = full || whole ? range(p) : p.ex;
   const link = resolved ? youVersionLink(resolved, path) : null;
+  const cardId = `known-card-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  const yvDom = useScriptureCardStyle(cardId, c);
 
   const openYouVersion = () => {
     if (!link) return;
@@ -115,14 +120,18 @@ export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: 
         {!resolved ? (
           <Skeleton />
         ) : resolved.source === 'youversion' ? (
-          <View style={{ gap: 4 }}>
-            {(full ? resolved.full : resolved.excerpt).map((r) => (
+          <View style={{ gap: 4 }} nativeID={cardId}>
+            {(full || whole ? resolved.full : resolved.excerpt).map((r) => (
               <BibleTextView
                 key={r}
                 reference={r}
                 versionId={resolved.versionId}
                 theme={scheme}
                 fontSize={Math.round(20 * textScale)}
+                // Translator notes stay in the reader. On the card their popover named the verse
+                // twice ("Psalm 56:8:8"), and the bundled text never shows them.
+                renderNotes={false}
+                dom={yvDom}
               />
             ))}
           </View>
@@ -130,8 +139,8 @@ export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: 
           <BundledVerses path={path} verses={verses} textLang={resolved.textLang} />
         )}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
-          <Txt v="secondary" weight="bold">
-            {ref(path, lang)}
+          <Txt v="secondary" weight="bold" testID="shown-ref">
+            {shownRef(path, verses, lang)}
           </Txt>
           <Txt v="secondary" muted testID="edition-abbr">
             {resolved ? resolved.abbr : ' '}
@@ -148,9 +157,11 @@ export function PageCard({ path, resolved, testID }: { path: PathKey; resolved: 
           </Txt>
         ) : null}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-          <TourTarget id="scripture_full">
-            <Pill label={t(full ? 'show_less' : 'read_full')} onPress={() => setFull((f) => !f)} testID="read-full" />
-          </TourTarget>
+          {whole ? null : (
+            <TourTarget id="scripture_full">
+              <Pill label={t(full ? 'show_less' : 'read_full')} onPress={() => setFull((f) => !f)} testID="read-full" />
+            </TourTarget>
+          )}
           {link ? (
             <Pill
               testID="open-youversion"

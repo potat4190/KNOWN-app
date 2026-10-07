@@ -4,10 +4,15 @@ import {
   NW,
   P,
   PATH_KEYS,
+  PASSAGES,
   ROTATION,
+  bookName,
   bundledVersion,
   hasLang,
+  isWholePassage,
+  range,
   ref,
+  shownRef,
   runs,
   selKey,
   storySource,
@@ -15,6 +20,36 @@ import {
   verseText,
 } from '@/lib/content';
 import { LANGS } from '@/i18n/langs';
+
+describe('the card names the verses it shows', () => {
+  it('the excerpt reference, and the passage reference when the excerpt is all of it', () => {
+    expect(shownRef('ps142', [4, 5], 'en')).toBe('Psalm 142:4–5');
+    expect(shownRef('ps142', [1, 2, 3, 4, 5, 6, 7], 'en')).toBe('Psalm 142:1–7');
+    expect(shownRef('mary', [32, 35], 'en')).toBe('John 11:32, 35');
+    expect(shownRef('ruth', [16], 'en')).toBe('Ruth 1:16');
+    expect(shownRef('ps13', [1, 2, 5], 'en')).toBe('Psalm 13:1–2, 5');
+    expect(shownRef('ps142', [4, 5], 'my')).toBe(`${bookName('psa', 'my')} ၁၄၂:၄–၅`);
+  });
+
+  it('Psalm 13 shows the whole passage, verse 2 included (its reference said 1–2, 5)', () => {
+    expect(isWholePassage('ps13', PASSAGES.ps13.ex)).toBe(true);
+    expect(PASSAGES.ps13.ex).toEqual([1, 2, 5]);
+    expect(isWholePassage('ps142', PASSAGES.ps142.ex)).toBe(false);
+  });
+
+  it('every excerpt is a subset of its passage', () => {
+    for (const k of PATH_KEYS) {
+      const all = range(PASSAGES[k]);
+      expect(PASSAGES[k].ex.every((v) => all.includes(v))).toBe(true);
+    }
+  });
+});
+
+describe('"Who was …?" on every story', () => {
+  it.each(LANGS)('every path has a retelling in %s', (lang) => {
+    for (const k of PATH_KEYS) expect(P(k, 'story', lang).length).toBeGreaterThan(0);
+  });
+});
 
 describe('content pack', () => {
   it('has 16 paths and 10 selections', () => {

@@ -38,6 +38,7 @@ import { useMusic } from '@/services/music/MusicHost';
 import { relayAvailable, relayDeps } from '@/services/matcher/deps';
 import { isCrisis } from '@/services/matcher/matcher';
 import { LINES_WAIT_MS, breakLines, lineMs, splitLocal, type PrayerLines } from '@/services/prayer/lines';
+import { withSessionMood } from '@/features/mood/SessionMood';
 
 const IN = BREATH_IN_MS / BREATH_MS;
 
@@ -110,7 +111,7 @@ function Line({ text, state, testID }: { text: string; state: 'hidden' | 'past' 
   );
 }
 
-export default function Sit() {
+function Sit() {
   const s = useSessionScreen('sit');
   const { t, lang } = useT();
   const { c, textScale } = useTheme();
@@ -238,3 +239,5 @@ export default function Sit() {
     </Screen>
   );
 }
+
+export default withSessionMood(Sit);

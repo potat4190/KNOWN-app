@@ -6,6 +6,47 @@ import { LANGS } from '@/i18n/langs';
 const fresh = () => S.freshSession('en');
 const t = S.tFor(createI18n('en'), 'en');
 
+describe('mood (the palette from Scripture on)', () => {
+  it.each(Object.keys(MATRIX))('pictures %s wear their own mood, and a swap keeps it', (sel) => {
+    const k = sel as keyof typeof MATRIX;
+    const s = S.openStory(fresh(), { from: 'pics', sel: k, path: MATRIX[k].path });
+    expect(S.moodFor(s)).toBe(k);
+    expect(S.moodFor(S.swap(s, 'ps13'))).toBe(k);
+  });
+
+  it('no words (Psalm 77) keeps the house palette', () => {
+    expect(S.moodFor(S.openNoWords(fresh()))).toBeNull();
+    expect(S.moodFor(fresh())).toBeNull();
+  });
+
+  it('own words: the feelings the matcher read, else the choice whose story opened first', () => {
+    const ai = (feelings: string[]): S.MatchResult => ({
+      key: 'neh',
+      confidence: 0.6,
+      reason: '',
+      feelings,
+      risk: false,
+      source: 'local',
+    });
+    const words = (path: 'neh' | 'ps77' | 'joseph', feelings: string[] = []) =>
+      S.openStory(fresh(), { from: 'words', sel: null, path, ai: ai(feelings) });
+    expect(S.moodFor(words('neh', ['fear', 'sadness']))).toBe('SF');
+    expect(S.moodFor(words('neh', ['Enjoyment']))).toBe('J');
+    expect(S.moodFor(words('neh'))).toBe('F');
+    expect(S.moodFor(words('joseph'))).toBe('AJ');
+    expect(S.moodFor(S.swap(words('joseph'), 'ruth'))).toBe('AJ');
+    expect(S.moodFor(words('ps77'))).toBeNull();
+  });
+
+  it('own words below the confidence bar still map feelings to the matrix', () => {
+    const r = S.acceptMatch(
+      { key: null, confidence: 0.2, reason: '', feelings: ['anger', 'enjoyment'], risk: false, source: 'local' },
+      isPathKey,
+    );
+    expect(r.result.key).toBe(MATRIX.AJ.path);
+  });
+});
+
 describe('pictures', () => {
   it('chooses 1–2; a third tap replaces the oldest; tapping again clears', () => {
     let s = fresh();

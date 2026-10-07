@@ -115,6 +115,25 @@ export function ref(path: PathKey, lang: Lang): string {
   return `${bookName(p.book, lang)} ${refNumbers(localizeDigits(r, lang), lang)}`;
 }
 
+/** True when `vv` is every verse of the passage (the card's excerpt is the whole of it). */
+export const isWholePassage = (path: PathKey, vv: readonly number[]) => {
+  const all = range(PASSAGES[path]);
+  return vv.length === all.length && vv.every((v, i) => v === all[i]);
+};
+
+/**
+ * The reference for the verses a card actually shows: "Psalm 142:4–5" under the excerpt,
+ * the passage's own reference ("Psalm 142:1–7", "Psalm 13:1–2, 5") when it shows all of it.
+ */
+export function shownRef(path: PathKey, vv: readonly number[], lang: Lang): string {
+  if (isWholePassage(path, vv)) return ref(path, lang);
+  const p = PASSAGES[path];
+  const r = `${p.ch}:${runs([...vv])
+    .map(([a, z]) => (a === z ? `${a}` : `${a}–${z}`))
+    .join(', ')}`;
+  return `${bookName(p.book, lang)} ${refNumbers(localizeDigits(r, lang), lang)}`;
+}
+
 /** The {ref} in "In our words, from {ref}": a reviewed storyChapters override, else the passage chapter. */
 export function storySource(path: PathKey, lang: Lang): string {
   const o = STORY_CHAPTERS[path];
