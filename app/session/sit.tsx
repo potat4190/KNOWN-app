@@ -11,7 +11,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
-import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  ReduceMotion,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { Screen } from '@/components/Screen';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/Button';
@@ -80,7 +87,11 @@ function Line({ text, state, testID }: { text: string; state: 'hidden' | 'past' 
   const opacity = useSharedValue(0);
   const y = useSharedValue(reduceMotion ? 0 : 10);
   useEffect(() => {
-    opacity.value = withTiming(state === 'hidden' ? 0 : state === 'past' ? 0.55 : 1, { duration: 1100 });
+    // A fade is not motion: lines still fade in under Reduce Motion; only the rise is dropped.
+    opacity.value = withTiming(state === 'hidden' ? 0 : state === 'past' ? 0.55 : 1, {
+      duration: 1100,
+      reduceMotion: ReduceMotion.Never,
+    });
     y.value = withTiming(state === 'hidden' && !reduceMotion ? 10 : 0, { duration: 1100 });
   }, [state, reduceMotion, opacity, y]);
   const style = useAnimatedStyle(() => ({ opacity: opacity.value, transform: [{ translateY: y.value }] }));

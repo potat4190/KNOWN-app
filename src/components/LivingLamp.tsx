@@ -10,12 +10,14 @@
  *           "Breathe out" (6 s), the same 10-second rhythm as BREATH_MS.
  *
  * Reduce Motion: nothing grows or moves. The glow only brightens and dims slowly, and the
- * flame is still.
+ * flame is still. (Reanimated is told not to apply the system setting itself, which would
+ * freeze the lamp completely.)
  */
 import { useEffect, useState } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 import Animated, {
   Easing,
+  ReduceMotion,
   cancelAnimation,
   interpolate,
   useAnimatedStyle,
@@ -57,7 +59,16 @@ function useClock(periodMs: number, running: boolean) {
       return;
     }
     raw.value = 0;
-    raw.value = withRepeat(withTiming(1, { duration: periodMs, easing: Easing.linear }), -1);
+    // ReduceMotion.Never: this clock decides for itself what Reduce Motion means (no growing, no
+    // flicker, only a slow brighten and dim). Left to Reanimated's default, the system setting
+    // would skip the animation and freeze the lamp on every phone or computer that has it on.
+    raw.value = withRepeat(
+      withTiming(1, { duration: periodMs, easing: Easing.linear, reduceMotion: ReduceMotion.Never }),
+      -1,
+      false,
+      undefined,
+      ReduceMotion.Never,
+    );
     return () => cancelAnimation(raw);
   }, [periodMs, running, raw]);
   return { raw, start };
